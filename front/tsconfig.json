@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "ES6",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "removeComments": true,
+    "strict": true, 
+    "strictPropertyInitialization": false, 
+
+    "baseUrl": "./", 
+      "paths": {
+      "@/*": ["src/*"],
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./typings"]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+  ],
+}

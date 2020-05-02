@@ -10,7 +10,9 @@ const commonConfig = require('./webpack.config');
 const prodConfigs = {
     mode: 'production',
     output: {
-        path: path.resolve(__dirname, '..', 'stomServer', 'client'),
+        path: path.resolve(__dirname, '..', '..', 'savb_testing', 'client'),
+        publicPath: '/',
+        filename: 'bundle.js'
     },
     optimization: {
         minimizer: [
@@ -20,19 +22,12 @@ const prodConfigs = {
     },
     plugins: [
         new MiniCssExtractPlugin({
+            filename: 'main.css',
             chunkFilename: '[id].css'
         }),
     ],
     module: {
         rules: [
-            {
-                test: /.vue$/,
-                use: [
-                    {
-                        loader: 'vue-loader',
-                    }
-                ]
-            },
             {
                 test: /\.(c|le)ss$/,
                 use: [

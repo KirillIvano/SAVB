@@ -2,18 +2,14 @@ const merge = require('webpack-merge');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJs = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ImageminPlugin = require('imagemin-webpack');
 const autoprefixer = require('autoprefixer');
-const path = require('path');
 
 const commonConfig = require('./webpack.config');
 
 const prodConfigs = {
     mode: 'production',
-    output: {
-        path: path.resolve(__dirname, '..', '..', 'savb_testing', 'client'),
-        publicPath: '/',
-        filename: 'bundle.js'
-    },
+
     optimization: {
         minimizer: [
             new TerserJs(),
@@ -25,6 +21,26 @@ const prodConfigs = {
             filename: 'main.css',
             chunkFilename: '[id].css'
         }),
+        new ImageminPlugin({
+            cache: true,
+            imageminOptions: {
+              plugins: [
+                ["gifsicle", { interlaced: true }],
+                ["jpegtran", { progressive: true }],
+                ["optipng", { optimizationLevel: 5 }],
+                [
+                  "svgo",
+                  {
+                    plugins: [
+                      {
+                        removeViewBox: false
+                      }
+                    ]
+                  }
+                ]
+              ]
+            }
+          })
     ],
     module: {
         rules: [

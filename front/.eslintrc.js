@@ -52,6 +52,7 @@ module.exports = {
         'vue/no-custom-modifiers-on-v-model': 'off',
         'vue/no-multiple-template-root': 'off',
         'vue/no-v-model-argument': 'off',
-        'vue/mustache-interpolation-spacing': ['error', 'never']
+        'vue/mustache-interpolation-spacing': ['error', 'never'],
+        'vue/require-default-prop': 'off',
     }
 };

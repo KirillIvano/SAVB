@@ -5,11 +5,6 @@ const webpack = require('webpack');
 
 const dev = {
     mode: 'development',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: '/',
-        filename: 'bundle.js',
-    },
     devServer: {
         historyApiFallback: true,
         hotOnly: true,

@@ -1,8 +1,14 @@
-import vue from 'vue';
-import App from './components/App/App.vue';
+import Vue from 'vue';
+import './main.less';
+import VueRouter from 'vue-router';
+import App from './App/index.vue';
+import {router} from './router';
 
-new vue({
+Vue.use(VueRouter);
+
+new Vue({
     el: '#id',
     components: {App},
     template: '<App />',
+    router,
 });

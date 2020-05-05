@@ -4,11 +4,20 @@ import {
     VkAuthPage,
     VkAuthValidatePage,
     NotFoundPage,
+    GroupsPage,
 } from './pages';
 
 const routes: RouteConfig[] = [
-    {path: '/vk_auth', component: VkAuthPage},
-    {path: '/validate_auth', component: VkAuthValidatePage},
+    {path: '/vkAuth', component: VkAuthPage},
+    {path: '/groups', component: GroupsPage},
+    {
+        path: '/validateAuth',
+        component: VkAuthValidatePage,
+        props: route => ({
+            code: route.query.code,
+            redirectUri: route.query.state,
+        }),
+    },
     {path: '*', component: NotFoundPage},
 ];
 

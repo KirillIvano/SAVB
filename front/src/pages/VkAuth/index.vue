@@ -1,13 +1,9 @@
-<script>
-import Vue from 'vue';
-export default Vue.extend({
-
-});
-</script>
+<script src="./script.ts" lang="ts"></script>
 
 <template>
-	<div />
+	<div @click="vk">
+		authenticate
+	</div>
 </template>
 
-<style scoped>
-</style>
+<style></style>

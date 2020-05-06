@@ -14,10 +14,10 @@ keyboard = {
     [
     ]
 }
-keyboard['buttons'].append([get_button(label="positive color", color="positive")])
-keyboard['buttons'].append([get_button(label="negative color", color="negative")])
-keyboard['buttons'].append([get_button(label="default color", color="default")])
-keyboard['buttons'].append([get_button(label="primary color", color="primary")])
+keyboard['buttons'].append([get_button(label="Positive color", color="positive")])
+keyboard['buttons'].append([get_button(label="Negative color", color="negative")])
+keyboard['buttons'].append([get_button(label="Default color", color="default")])
+keyboard['buttons'].append([get_button(label="Primary color", color="primary")])
 
-keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
-keyboard = str(keyboard.decode('utf-8'))
+keyboard = json.dumps(keyboard, ensure_ascii=False)
+keyboard = str(keyboard)

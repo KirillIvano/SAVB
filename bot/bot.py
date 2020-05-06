@@ -12,10 +12,7 @@ secret = os.environ.get('secret')
 confirmation_token = os.environ.get('confirmation_token')
 
 vk = vk_api.VkApi(token = token)
-
 app = Flask(__name__)
-
-
 
 @app.route('/', methods=['GET'])
 def home():
@@ -23,7 +20,7 @@ def home():
 
 @app.route('/newmessage', methods=['GET'])
 def nm():
-    data = '''{
+    data = {
     "type": "message_new",
     "object": {
         "message": {
@@ -32,11 +29,10 @@ def nm():
             "text": "New user"
         }
     },
-    "secret": "'''f"{secret}"'''"
-}'''
-    print(data)
-    requests.post("http://194.67.109.99", data=data)
-    return "Message was sent"
+    "secret": secret
+    }
+    requests.post("http://194.67.109.99", data=json.dumps(data, ensure_ascii=False))
+    return 'Message was sent'
 
 
 @app.route('/', methods=['POST'])

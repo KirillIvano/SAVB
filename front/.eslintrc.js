@@ -54,5 +54,8 @@ module.exports = {
         'vue/no-v-model-argument': 'off',
         'vue/mustache-interpolation-spacing': ['error', 'never'],
         'vue/require-default-prop': 'off',
+        'vue/component-tags-order': ["error", {
+            "order": ['script', 'style', 'template']
+        }]
     }
 };

@@ -5,7 +5,7 @@ import os
 import traceback
 from keyboards import keyboard
 import json
-
+import Library
 
 TOKEN = os.environ.get('VK_TOKEN')
 SECRET = os.environ.get('SECRET')
@@ -31,9 +31,7 @@ def nm():
         },
         "secret": SECRET
     }
-
     requests.post("http://194.67.109.99", data=json.dumps(data, ensure_ascii=False))
-
     return 'Message was sent'
 
 @app.route('/', methods=['POST'])
@@ -45,10 +43,10 @@ def messages():
             return CONFIRMATION_TOKEN
 
         elif data['secret'] == SECRET:
+            bot_id = data['object']['group_id']
             if data['type'] == 'message_new':
                 id = data['object']['message']['from_id']
                 body = data['object']['message']['text']
-
                 vk.method("messages.send", {"peer_id": id, "message": body, "keyboard": keyboard, "random_id": 0})
 
                 return 'OK'

@@ -62,7 +62,12 @@ const prodConfigs = {
                             ],
                         },
                     },
-                    'less-loader',
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            paths: [path.resolve(__dirname, 'src', 'styles')],
+                        }
+                    }
                 ],
             },
             {

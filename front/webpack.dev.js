@@ -26,9 +26,11 @@ const dev = {
                 use: [
                     'style-loader',
                     {
-                        loader: 'css-loader',
+                        loader: 'typings-for-css-modules-loader',
                         options: {
-                            import: true,
+                            modules: true,
+                            namedExport: true,
+                            exportOnlyLocals: true,
                         },
                     },
                     {

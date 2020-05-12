@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "ES6",
+    "module": "ESNEXT",
     "moduleResolution": "node",
     "outDir": "./dist",
     "removeComments": true,
-    "strict": true, 
-    "strictPropertyInitialization": false, 
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "jsx": "react",
 
-    "baseUrl": "./", 
+    "baseUrl": "./",
       "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["src/*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

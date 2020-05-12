@@ -53,7 +53,14 @@ const prodConfigs = {
                             esModule: true,
                         },
                     },
-                    'css-loader',
+                    {
+                        loader: 'typings-for-css-modules-loader',
+                        options: {
+                            modules: true,
+                            namedExport: true,
+                            exportOnlyLocals: true,
+                        },
+                    },
                     {
                         loader: 'postcss-loader',
                         options: {

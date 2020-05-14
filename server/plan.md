@@ -6,7 +6,7 @@
 
 ## Авторизация
 
-### `POST /auth/login`
+### `POST /api/auth/login`
 #### Request
 Логиним с помощью вк и вытаскиваем свежий токен
 ```js
@@ -27,7 +27,7 @@
     }
 ```
 
-### `POST /auth/refreshTokens`
+### `POST /api/auth/refreshTokens`
 #### Request
 Обновляем токены
 ```js
@@ -56,7 +56,7 @@
     }
 ```
 
-### `GET /group?userId=<string>`
+### `GET /api/group?userId=<string>`
 Получает все группы, админом которых является юзер
 #### Response
 ```js

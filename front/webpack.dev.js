@@ -5,6 +5,7 @@ const webpack = require('webpack');
 
 const dev = {
     mode: 'development',
+    devtool: 'inline-cheap-source-map',
     devServer: {
         historyApiFallback: true,
         hotOnly: true,

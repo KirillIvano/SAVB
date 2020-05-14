@@ -5,10 +5,9 @@ import {isOfType} from 'typesafe-actions';
 import {RootAction, RootState} from '@/store/types';
 import {uselessAction} from '@/store/actions';
 
-import {GroupsActionsType, GroupsStateType} from './types';
 import * as names from './names';
 
-const getMessagesEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+const getGroupsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
         filter(isOfType(names.GROUPS_GET_START)),
         tap(
@@ -19,4 +18,4 @@ const getMessagesEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         map(() => uselessAction()),
     );
 
-export default combineEpics(getMessagesEpic);
+export default combineEpics(getGroupsEpic);

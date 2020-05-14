@@ -6,7 +6,7 @@ import {GroupsStateType} from './types';
 import * as actions from './actions';
 
 const initialState: GroupsStateType = {
-    groups: {},
+    groups: [],
 
     groupsLoading: false,
     groupsLoadingSuccess: false,
@@ -23,22 +23,5 @@ export const groupsReducer = createReducer<typeof initialState, RootAction>(
         groupsLoadingSuccess: false,
         groupsLoadingError: null,
     }),
-).handleAction(
-    actions.getGroupsSuccessAction,
-    (state, {payload}) => ({
-        ...state,
-        groups: payload,
-        groupsLoading: false,
-        groupsLoadingSuccess: true,
-    }),
-).handleAction(
-    actions.getGroupsErrorAction,
-    (state, {payload}) => ({
-        ...state,
-        groups: {},
-        groupsLoading: false,
-        groupsLoadingError: payload,
-    }),
 );
-
 

@@ -14,25 +14,25 @@ class Bot(BaseModel):
     bot_id = PrimaryKeyField()
     token = CharField()
     name = CharField()
-    admin_is = ForeignKeyField(Admin, backref='belongs_to')
+    admin_id = ForeignKeyField(Admin, backref='belongs_to')
 
 class User(BaseModel):
     user_id = PrimaryKeyField()
 
-class Dialog_state(BaseModel):
+class DialogState(BaseModel):
     state_id = PrimaryKeyField()
     bot_id = ForeignKeyField(Bot) 
 
 class Dialog(BaseModel):
     bot_id = ForeignKeyField(Bot)
     user_id = ForeignKeyField(User)
-    current_state_id = ForeignKeyField(Dialog_state)
+    current_state_id = ForeignKeyField(DialogState)
 
 class Action(BaseModel):
     action_id = PrimaryKeyField()
-    target_state_id = ForeignKeyField(Dialog_state)
+    target_state_id = ForeignKeyField(DialogState)
 
-class Bot_message(BaseModel):
+class BotMessage(BaseModel):
     message_id = PrimaryKeyField()
     bot_id = ForeignKeyField(Bot)
     text = CharField()
@@ -40,15 +40,15 @@ class Bot_message(BaseModel):
 
 class Trigger(BaseModel):
     trigger_id = PrimaryKeyField()
-    initial_state_id = ForeignKeyField(Dialog_state)
+    initial_state_id = ForeignKeyField(DialogState)
     action_id = ForeignKeyField(Action)
 
-class User_message(BaseModel):
+class UserMessage(BaseModel):
     message_id = PrimaryKeyField()
     text = CharField()
     trigger_id = ForeignKeyField(Trigger)
 
-class Keyboard_button(BaseModel):
+class KeyboardButton(BaseModel):
     button_id = PrimaryKeyField()
     text = CharField()
     color = CharField()

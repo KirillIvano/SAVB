@@ -8,6 +8,7 @@ module.exports = {
         extensions: ['.ts', '.js', '.tsx'],
         alias: {
             '@': path.resolve(__dirname, 'src'),
+            'colors.less': '/src/styles/colors.less'
         },
     },
     output: {

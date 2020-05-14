@@ -5,6 +5,7 @@ import asyncio
 import traceback
 from aiohttp import ClientSession
 import aiohttp
+from aiohttp import web
 
 dotenv.load_dotenv()
 token = os.environ.get('vk_token')
@@ -18,8 +19,11 @@ values = {}
 values['v'] = "5.92"
 values['access_token'] = token
 
-info =  {}
-info['lasttime'] = 0
+info = {
+    'lasttime': 0,
+    'cnt': 0,
+    'start': time.time()
+}
 
 def enchance_params(params: dict):
     params.update(values)
@@ -30,9 +34,12 @@ async def execute_method(
     method: str,
     params: dict
 ):
-    async with session.get(f"https://api.vk.com/method/{method}", params = enchance_params(params)) as response:
+    async with session.get(f'https://api.vk.com/method/{method}', params = enchance_params(params)) as response:
         data = await response.json()
-        print(data['response']['count'])
+        # info['cnt'] = info['cnt'] + 1
+        # print(time.time() - info['start'], info['cnt']) 
+        # print(data['response']['count'])
+        return data['response']['count']
 
 async def vk_method(method, params):
     async with aiohttp.ClientSession() as session:
@@ -44,7 +51,7 @@ async def vk_method(method, params):
             info['lasttime'] = time.time() + 0.06
 
         # тут не было await, выполнение функции не ожидалось, и программа оканчивала свою работу до окончания запроса
-        await asyncio.gather(
+        return await asyncio.gather(
             execute_method(session, method, params) 
         )
 
@@ -52,37 +59,11 @@ start = time.time()
 
 loop = asyncio.get_event_loop()
 
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
-loop.run_until_complete(
-    vk_method(methodsMap['history'], {"user_id": 169871363})
-)
+async def hello(request: web.Request):
+    res = await loop.create_task(vk_method(methodsMap['history'], {"user_id": 169871363}))
+    return web.Response(text=str(res))
 
+app = web.Application()
+app.add_routes([web.get('/hello', hello)])
 
-
-print(time.time() - start, "seconds passed")
+web.run_app(app)

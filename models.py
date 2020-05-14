@@ -6,54 +6,54 @@ class BaseModel(Model):
     class Meta():
         database = database
 
-class admin(BaseModel):
+class Admin(BaseModel):
     admin_id = PrimaryKeyField()
-    token = CharField(unique=True)
+    token = CharField()
 
-class bot(BaseModel):
+class Bot(BaseModel):
     bot_id = PrimaryKeyField()
-    token = CharField(unique=True)
+    token = CharField()
     name = CharField()
-    admin_is = ForeignKeyField(admin, backref='belongs_to')
+    admin_is = ForeignKeyField(Admin, backref='belongs_to')
 
-class user(BaseModel):
+class User(BaseModel):
     user_id = PrimaryKeyField()
 
-class dialog_state(BaseModel):
+class Dialog_state(BaseModel):
     state_id = PrimaryKeyField()
-    bot_id = ForeignKeyField(bot) # don't really understand how to back ref here
+    bot_id = ForeignKeyField(Bot) 
 
-class dialog(BaseModel):
-    bot_id = ForeignKeyField(bot)
-    user_id = ForeignKeyField(user)
-    current_state_id = ForeignKeyField(dialog_state)
+class Dialog(BaseModel):
+    bot_id = ForeignKeyField(Bot)
+    user_id = ForeignKeyField(User)
+    current_state_id = ForeignKeyField(Dialog_state)
 
-class action(BaseModel):
+class Action(BaseModel):
     action_id = PrimaryKeyField()
-    target_state_id = ForeignKeyField(dialog_state)
+    target_state_id = ForeignKeyField(Dialog_state)
 
-class bot_messege(BaseModel):
-    messege_id = PrimaryKeyField()
-    bot_id = ForeignKeyField(bot)
+class Bot_message(BaseModel):
+    message_id = PrimaryKeyField()
+    bot_id = ForeignKeyField(Bot)
     text = CharField()
-    action_id = ForeignKeyField(action)
+    action_id = ForeignKeyField(Action)
 
-class trigger(BaseModel):
+class Trigger(BaseModel):
     trigger_id = PrimaryKeyField()
-    initial_state_id = ForeignKeyField(dialog_state)
-    action_id = ForeignKeyField(action)
+    initial_state_id = ForeignKeyField(Dialog_state)
+    action_id = ForeignKeyField(Action)
 
-class user_messege(BaseModel):
-    messege_id = PrimaryKeyField()
+class User_message(BaseModel):
+    message_id = PrimaryKeyField()
     text = CharField()
-    trigger_id = ForeignKeyField(trigger)
+    trigger_id = ForeignKeyField(Trigger)
 
-class keyboard_button(BaseModel):
+class Keyboard_button(BaseModel):
     button_id = PrimaryKeyField()
     text = CharField()
     color = CharField()
     inline = BooleanField()
-    trigger_id = ForeignKeyField(trigger)
+    trigger_id = ForeignKeyField(Trigger)
 
 database.connect()
 database.close()

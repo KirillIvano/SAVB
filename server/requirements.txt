@@ -17,3 +17,8 @@ six==1.14.0
 toml==0.10.0
 wrapt==1.12.1
 yarl==1.4.2
+peewee==3.13.3
+pendulum==2.1.0
+python-dateutil==2.8.1
+pytzdata==2019.3
+six==1.14.0

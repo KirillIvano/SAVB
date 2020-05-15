@@ -5,11 +5,7 @@ const webpack = require('webpack');
 
 const dev = {
     mode: 'development',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: '/',
-        filename: 'bundle.js',
-    },
+    devtool: 'inline-cheap-source-map',
     devServer: {
         historyApiFallback: true,
         hotOnly: true,
@@ -31,12 +27,19 @@ const dev = {
                 use: [
                     'style-loader',
                     {
-                        loader: 'css-loader',
+                        loader: 'typings-for-css-modules-loader',
                         options: {
-                            import: true,
+                            modules: true,
+                            namedExport: true,
+                            exportOnlyLocals: true,
                         },
                     },
-                    'less-loader',
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            paths: [path.resolve(__dirname, 'src', 'styles')],
+                        }
+                    }
                 ],
             },
             {

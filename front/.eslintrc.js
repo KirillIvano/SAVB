@@ -6,23 +6,24 @@ module.exports = {
     },
     'extends': [
         'eslint:recommended',
+        'plugin:react/recommended',
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'plugin:vue/recommended'
     ],
     'globals': {
-        'Atomics': 'readonly',
-        'SharedArrayBuffer': 'readonly'
     },
     'plugins': [
-        '@typescript-eslint',
-        'vue'
+        'react',
+        'react-hooks',
+        '@typescript-eslint'
     ],
-    'parser': 'vue-eslint-parser',
+    "parser": "@typescript-eslint/parser",
     'parserOptions': {
-        'parser': '@typescript-eslint/parser',
         'ecmaVersion': 2019,
         'sourceType': 'module',
+        'ecmaFeatures': {
+            'jsx': true
+        }
     },
     'globals': {
         SERVER_ORIGIN: true,
@@ -46,12 +47,25 @@ module.exports = {
         'max-len': ['warn', {code: 120}],
         'no-console': ['error'],
 
-        '@typescript-eslint/explicit-function-return-type': ['off'],
+        'react/prop-types': 'off',
+        'react/jsx-uses-react': 'error',
+        'react/jsx-uses-vars': 'error',
+        'react/boolean-prop-naming': 'error',
+        'react/button-has-type': 'off',
+        'react/destructuring-assignment': 'error',
+        'react/no-deprecated': 'error',
+        'react/no-typos': 'error',
+        'react/no-unescaped-entities': 'error',
+        'react/react-in-jsx-scope': 'error',
+        'react/jsx-no-undef': 'error',
+        'react/jsx-no-useless-fragment': 'error',
+        'react/jsx-one-expression-per-line': 'off',
+        'react/jsx-pascal-case': 'error',
+        'react/jsx-tag-spacing': 'error',
+        'react/jsx-uses-react': 'error',
+        'react/jsx-uses-vars': 'error',
+        'react/jsx-wrap-multilines': 'error',
 
-        'vue/html-indent': ['error', 'tab'],
-        'vue/no-custom-modifiers-on-v-model': 'off',
-        'vue/no-multiple-template-root': 'off',
-        'vue/no-v-model-argument': 'off',
-        'vue/mustache-interpolation-spacing': ['error', 'never']
+        '@typescript-eslint/explicit-function-return-type': ['off'],
     }
 };

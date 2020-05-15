@@ -2,16 +2,14 @@ const merge = require('webpack-merge');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJs = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ImageminPlugin = require('imagemin-webpack');
 const autoprefixer = require('autoprefixer');
-const path = require('path');
 
 const commonConfig = require('./webpack.config');
 
 const prodConfigs = {
     mode: 'production',
-    output: {
-        path: path.resolve(__dirname, '..', 'stomServer', 'client'),
-    },
+
     optimization: {
         minimizer: [
             new TerserJs(),
@@ -20,19 +18,32 @@ const prodConfigs = {
     },
     plugins: [
         new MiniCssExtractPlugin({
+            filename: 'main.css',
             chunkFilename: '[id].css'
         }),
+        new ImageminPlugin({
+            cache: true,
+            imageminOptions: {
+              plugins: [
+                ["gifsicle", { interlaced: true }],
+                ["jpegtran", { progressive: true }],
+                ["optipng", { optimizationLevel: 5 }],
+                [
+                  "svgo",
+                  {
+                    plugins: [
+                      {
+                        removeViewBox: false
+                      }
+                    ]
+                  }
+                ]
+              ]
+            }
+          })
     ],
     module: {
         rules: [
-            {
-                test: /.vue$/,
-                use: [
-                    {
-                        loader: 'vue-loader',
-                    }
-                ]
-            },
             {
                 test: /\.(c|le)ss$/,
                 use: [
@@ -42,7 +53,14 @@ const prodConfigs = {
                             esModule: true,
                         },
                     },
-                    'css-loader',
+                    {
+                        loader: 'typings-for-css-modules-loader',
+                        options: {
+                            modules: true,
+                            namedExport: true,
+                            exportOnlyLocals: true,
+                        },
+                    },
                     {
                         loader: 'postcss-loader',
                         options: {
@@ -51,7 +69,12 @@ const prodConfigs = {
                             ],
                         },
                     },
-                    'less-loader',
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            paths: [path.resolve(__dirname, 'src', 'styles')],
+                        }
+                    }
                 ],
             },
             {

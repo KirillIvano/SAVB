@@ -15,6 +15,7 @@ const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>()
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 const logger: Middleware = () => next => action => {
+    // eslint-disable-next-line no-console
     console.log(action);
     next(action);
 };

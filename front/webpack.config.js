@@ -12,7 +12,7 @@ module.exports = {
         },
     },
     output: {
-        path: path.resolve(__dirname, '..', '..', 'savb_testing', 'client'),
+        path: path.resolve(__dirname, 'dist'),
         publicPath: '/',
         filename: 'bundle.js'
     },

@@ -25,13 +25,19 @@ const dev = {
             {
                 test: /\.(c|le)ss$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: 'style-loader',
+ 
+                    },
                     {
                         loader: 'typings-for-css-modules-loader',
                         options: {
                             modules: true,
                             namedExport: true,
+                            camelCase: 'camelCase',
                             exportOnlyLocals: true,
+                            include: /flexboxgrid/,
+                            // localsConvention: 'camelCase',
                         },
                     },
                     {

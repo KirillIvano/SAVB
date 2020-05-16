@@ -12,9 +12,9 @@ import * as names from './names';
 const pushPopupMessageEpic: Epic<RootAction, RootAction, RootState> = (action$, state$) =>
     action$.pipe(
         filter(isOfType(names.PUSH_POPUP_MESSAGE)),
-        delay(15000),
+        delay(10000),
         mergeMap(({payload}) => {
-            const messages = state$.value.popup.messages;
+            const messages = state$.value.popupState.messages;
             const isMessageShown = messages.some(({id}) => payload.id === id);
 
             if (isMessageShown) {

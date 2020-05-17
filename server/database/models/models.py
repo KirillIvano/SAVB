@@ -3,7 +3,7 @@ from peewee import *
 database = PostgresqlDatabase('database') # буду соединяться с сервером, пока локально делаю
 
 class BaseModel(Model):
-    class Meta():
+    class Meta:
         database = database
 
 class Admin(BaseModel):

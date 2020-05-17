@@ -1,0 +1,34 @@
+.errorViewContainer {
+    padding: 40px;
+
+    .errorView {
+        padding: 16px 20px 16px 40px;
+        border-radius: 5px;   
+        border: 1px solid #ff8888;
+        background: white;
+
+        .headline {
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .headline::after {
+            content: "";
+
+            position: absolute;
+            left: -25px;
+            top: 3px;
+
+            background-image: url('./images/error.png');
+            background-size: 16px 16px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .content {
+            margin-top: 10px;
+            font-size: .9rem;
+            color: #606E7F;
+        }
+    }
+}

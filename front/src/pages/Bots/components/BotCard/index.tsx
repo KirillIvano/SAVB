@@ -27,7 +27,7 @@ const BotCard: React.FC<BotCardProps> = ({
             onClick={handleClick}
             className={className}
             xs={12}
-            md={4}
+            md={3}
         >
             <Card className={styles.botCard}>
                 <Tooltip src={image} size={'large'} />

@@ -21,9 +21,11 @@
         refreshJwt: string, HttpOnly;
     },
     body: {
-        accessJwt: string;
-        csrf: string;
-        userId: string;
+        data: {
+            accessJwt: string;
+            csrf: string;
+            userId: string;
+        }
     }
 ```
 
@@ -41,8 +43,10 @@
         refreshJwt: string, HttpOnly;
     },
     body: {
-        accessJwt: string;
-        csrf: string;
+        data {
+            accessJwt: string;
+            csrf: string;
+        }   
     }
 ```
 
@@ -61,6 +65,8 @@
 #### Response
 ```
 {
-    groups: [Group]
+    data {
+        groups: [Group]
+    }
 }
 ```

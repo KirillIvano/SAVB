@@ -8,6 +8,7 @@ from helpers import vk_api
 import random
 
 from aiohttp import web
+
 routes = web.RouteTableDef()
 
 
@@ -15,11 +16,11 @@ routes = web.RouteTableDef()
 async def auth_login(request: web.Request):
 	code = request.query.get('code')
 	async with sess.get(
-		f"http://oauth.vk.com/access_token?"
-		f"client_id={settings.CLIENT_ID}&"
-		f"client_secret={settings.CLIENT_SECRET}&"
-		f"redirect_uri=http://0.0.0.0:8080/api/auth/showCode&"
-		f"code={code}"
+			f"http://oauth.vk.com/access_token?"
+			f"client_id={settings.CLIENT_ID}&"
+			f"client_secret={settings.CLIENT_SECRET}&"
+			f"redirect_uri=http://0.0.0.0:8080/api/auth/showCode&"
+			f"code={code}"
 	) as resp:
 		responce_json = await resp.json()
 		user_id = responce_json.get('user_id')
@@ -36,26 +37,37 @@ async def auth_login(request: web.Request):
 		code=request_dict.get('code')
 	)
 	user_id = (await access_token_response).get('user_id')
+
+	if user_id is None:
+		resp = web.Response(
+			body=json.dumps({
+				"error"
+			})
+		)
+
 	csrf = random.getrandbits(64)
 
 	access_jwt = jwt.encode(
 		payload={"userId": user_id},
 		key=settings.JWT_TOKEN,
 	).decode()
+
 	refresh_jwt = jwt.encode(
 		payload={"userId": user_id, "csrf": csrf},
 		key=settings.JWT_TOKEN,
 	).decode()
+
 	responce_body = json.dumps({
-		"accessJwt": access_jwt,
-		"csrf": csrf,
-		"userId": user_id
+		"data": {
+			"accessJwt": access_jwt,
+			"csrf": csrf,
+			"userId": user_id
+		}
 	})
-	resp = web.Response(
-		body=responce_body
-	)
+	resp = web.Response(body=responce_body)
 	resp.cookies['refreshJwt'] = refresh_jwt
 	return resp
+
 
 @routes.post('/api/auth/refreshTokens')
 async def auth_refresh_tokens(request: web.Request):

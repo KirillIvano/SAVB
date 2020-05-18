@@ -50,7 +50,12 @@ const dev = {
             },
             {
                 test: /\.(png|svg|jpg|ico)$/,
-                use: 'url-loader',
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        esModule: false
+                    }
+                }
             },
         ],
     },

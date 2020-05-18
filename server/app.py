@@ -2,7 +2,6 @@ from aiohttp import web
 
 app = web.Application()
 
-
 # adding index route.
 # any path will get response of STATIC_HTML
 STATIC_HTML = './static/index.html'

@@ -6,6 +6,7 @@ from helpers.csrf import generate_csrf
 from helpers import responses
 from helpers import vk_api
 
+import time
 from aiohttp import web
 import json
 
@@ -28,7 +29,7 @@ def generate_access_response(user_id: str):
 	resp = web.Response(body=response_body)
 	resp.set_cookie(
 		'refreshJwt', refresh_jwt,
-		httponly=True
+		httponly=True, expires=time.time().__int__() + 300
 	)
 	return resp
 
@@ -45,7 +46,7 @@ async def auth_login(request: web.Request):
 	user_id = access_token_response.get('user_id')
 
 	if user_id is None:
-		return responses.generate_error_response('no user id')
+		return responses.generate_error_response(access_token_response)
 
 	return generate_access_response(user_id)
 
@@ -58,7 +59,7 @@ async def auth_refresh_tokens(request: web.Request):
 		assert user_id is not None, 'userId is null'
 
 		jwt.verify_refresh(
-			cookies=dict(request.cookies),
+			cookies=request.cookies,
 			body=request_dict
 		)
 	except AssertionError as e:

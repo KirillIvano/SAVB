@@ -1,9 +1,20 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import styles from './styles.less';
 
-const PageHeadline = ({
-    content,
-}: {content: string}) => (<h1 className={styles.pageHeadline}>{content}</h1>);
+type PageHeadlineProps = {
+    children: React.ReactNode;
+    className: string;
+}
+
+const PageHeadline: React.FC<PageHeadlineProps> = ({
+    children,
+    className,
+}) => (
+    <h1 className={classnames(styles.pageHeadline, className)}>
+        {children}
+    </h1>
+);
 
 export default PageHeadline;

@@ -3,7 +3,7 @@ import React, {useEffect, useRef} from 'react';
 import styles from './styles.less';
 
 type FadeProps = {
-    children: React.ReactChild[] | React.ReactChild;
+    children: React.ReactNode;
     duration: number;
 }
 

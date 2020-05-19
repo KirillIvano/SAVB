@@ -5,7 +5,7 @@ import styles from './styles.less';
 
 interface CardProps {
     className?: string;
-    children: React.ReactChild | React.ReactChild[];
+    children: React.ReactNode;
 }
 
 const Card: React.FC<CardProps> = ({

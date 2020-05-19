@@ -53,6 +53,7 @@ async def auth_login(request: web.Request):
 
 @routes.post('/api/auth/refreshTokens')
 async def auth_refresh_tokens(request: web.Request):
+	print(request.headers)
 	request_dict: dict = await request.json()
 	try:
 		user_id = request_dict.get('userId')

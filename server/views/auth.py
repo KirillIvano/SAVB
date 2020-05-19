@@ -36,7 +36,7 @@ def generate_access_response(user_id: str):
 @routes.post('/api/auth/login')
 async def auth_login(request: web.Request):
 	request_dict: dict = await request.json()
-	access_token_response = await vk_api.access_token(
+	access_token_response = await vk_api.get_access_token(
 		client_id=settings.CLIENT_ID,
 		client_secret=settings.CLIENT_SECRET,
 		redirect_uri=request_dict.get('redirectUri'),
@@ -53,19 +53,15 @@ async def auth_login(request: web.Request):
 @routes.post('/api/auth/refreshTokens')
 async def auth_refresh_tokens(request: web.Request):
 	request_dict: dict = await request.json()
+	try:
+		user_id = request_dict.get('userId')
+		assert user_id is not None, 'userId is null'
 
-	user_id = request_dict.get('userId')
-
-	if user_id is None:
-		return responses.generate_error_response('no user id')
-
-	if not jwt.verify_refresh(
-		cookies=dict(request.cookies),
-		body=request_dict
-	):
-		message = f'cookies: {request.cookies};' \
-		          f'{jwt.decode(request.cookies["refreshJwt"])};' \
-		          f'body: {request_dict}'''
-		return responses.generate_error_response(message)
+		jwt.verify_refresh(
+			cookies=dict(request.cookies),
+			body=request_dict
+		)
+	except AssertionError as e:
+		return responses.generate_error_response(';'.join(e.args))
 
 	return generate_access_response(user_id)

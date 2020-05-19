@@ -4,15 +4,18 @@
     bottom: 0;
     left: 0;
     right: 0;
+    overflow-y: auto;
+
     background: rgba(27, 48, 72, 0.8);
 
     .modal {
-        background: #F3F7FB;
+        background: rgb(227, 233, 238);
         position: absolute;
-        left: 10%;
-        right: 10%;
-        top: 10%;
-        bottom: 10%;
+        left: 10vw;
+        right: 10vw;
+        top: 10vh;
+        margin-bottom: 10vh;
+        min-height: 80%;
         border-radius: 10px;
         padding: 0 20px 20px 20px;
 
@@ -38,6 +41,10 @@
                 width: 25px;
                 height: 25px;
             }
+        }
+
+        .modalContent {
+            padding-top: 24px;
         }
     }
 }

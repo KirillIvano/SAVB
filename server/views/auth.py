@@ -1,61 +1,22 @@
 # API routes for authorisation
 # Should start with /api/auth
-import json
-import jwt
 import settings
-from helpers.session import sess
+from helpers import jwt
+from helpers.csrf import generate_csrf
+from helpers import responses
 from helpers import vk_api
-import os
-import binascii
 
 from aiohttp import web
+import json
 
 routes = web.RouteTableDef()
 
 
-@routes.get('/api/auth/showCode')
-async def auth_login(request: web.Request):
-	# development method
-	code = request.query.get('code')
-	resp = await vk_api.access_token(
-		client_id=settings.CLIENT_ID,
-		client_secret=settings.CLIENT_SECRET,
-		redirect_uri="http://0.0.0.0:8080/api/auth/showCode",
-		code={code}
-	)
-	response_json = await resp.json()
-	user_id = response_json.get('user_id')
-	return web.Response(text=str('worked'))
+def generate_access_response(user_id: str):
+	csrf = generate_csrf()
 
-@routes.post('/api/auth/login')
-async def auth_login(request: web.Request):
-	request_dict = await request.json()
-	access_token_response = vk_api.access_token(
-		client_id=settings.CLIENT_ID,
-		client_secret=settings.CLIENT_SECRET,
-		redirect_uri=request_dict.get('redirectUri'),
-		code=request_dict.get('code')
-	)
-	user_id = (await access_token_response).get('user_id')
-
-	if user_id is None:
-		resp = web.Response(
-			body=json.dumps({
-				"error": {}
-			})
-		)
-
-	csrf = binascii.a2b_hex(os.urandom(32))
-
-	access_jwt = jwt.encode(
-		payload={"userId": user_id},
-		key=settings.JWT_TOKEN,
-	).decode()
-
-	refresh_jwt = jwt.encode(
-		payload={"userId": user_id, "csrf": csrf},
-		key=settings.JWT_TOKEN,
-	).decode()
+	access_jwt = jwt.encode(payload={"userId": user_id})
+	refresh_jwt = jwt.encode(payload={"userId": user_id, "csrf": csrf})
 
 	response_body = json.dumps({
 		"data": {
@@ -65,10 +26,46 @@ async def auth_login(request: web.Request):
 		}
 	})
 	resp = web.Response(body=response_body)
-	resp.cookies['refreshJwt'] = refresh_jwt
+	resp.set_cookie(
+		'refreshJwt', refresh_jwt,
+		httponly=True
+	)
 	return resp
+
+
+@routes.post('/api/auth/login')
+async def auth_login(request: web.Request):
+	request_dict: dict = await request.json()
+	access_token_response = await vk_api.access_token(
+		client_id=settings.CLIENT_ID,
+		client_secret=settings.CLIENT_SECRET,
+		redirect_uri=request_dict.get('redirectUri'),
+		code=request_dict.get('code')
+	)
+	user_id = access_token_response.get('user_id')
+
+	if user_id is None:
+		return responses.generate_error_response('no user id')
+
+	return generate_access_response(user_id)
 
 
 @routes.post('/api/auth/refreshTokens')
 async def auth_refresh_tokens(request: web.Request):
-	return web.Response(text='not_yet')
+	request_dict: dict = await request.json()
+
+	user_id = request_dict.get('userId')
+
+	if user_id is None:
+		return responses.generate_error_response('no user id')
+
+	if not jwt.verify_refresh(
+		cookies=dict(request.cookies),
+		body=request_dict
+	):
+		message = f'cookies: {request.cookies};' \
+		          f'{jwt.decode(request.cookies["refreshJwt"])};' \
+		          f'body: {request_dict}'''
+		return responses.generate_error_response(message)
+
+	return generate_access_response(user_id)

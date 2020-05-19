@@ -1,6 +1,7 @@
 from helpers.session import sess
 
-async def access_token(
+
+async def get_access_token(
 		client_id,
 		client_secret,
 		redirect_uri,

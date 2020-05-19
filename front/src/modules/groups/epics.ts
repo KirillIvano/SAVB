@@ -1,21 +1,24 @@
-import {createEpicMiddleware, ofType, Epic, combineEpics} from 'redux-observable';
-import {mergeMap, filter, tap, map} from 'rxjs/operators';
+import {Epic, combineEpics} from 'redux-observable';
+import {from} from 'rxjs';
+import {switchMap, filter, map} from 'rxjs/operators';
 import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
-import {uselessAction} from '@/store/actions';
+import {getGroups} from '@/services/groups/mock';
 
 import * as names from './names';
+import {getGroupsErrorAction, getGroupsSuccessAction} from './actions';
 
 const getGroupsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
-        filter(isOfType(names.GROUPS_GET_START)),
-        tap(
-            action => {
-                console.log(action);
-            },
+        filter(isOfType(names.GET_GROUPS_START)),
+        switchMap(
+            () => from(getGroups()),
         ),
-        map(() => uselessAction()),
+        map(res => res.ok ?
+            getGroupsSuccessAction(res.data.groups) :
+            getGroupsErrorAction(res.error),
+        ),
     );
 
 export default combineEpics(getGroupsEpic);

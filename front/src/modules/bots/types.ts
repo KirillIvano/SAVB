@@ -15,7 +15,7 @@ export type BotsActionType = ActionType<typeof actions>;
 export type BotsStateType = {
     bots: BotsStorageType;
 
-    botsLoading: boolean;
-    botsLoadingSuccess: boolean;
-    botsLoadingError: string | null;
+    botsGettingInProgress: boolean;
+    botsGettingSuccess: boolean;
+    botsGettingError: string | null;
 };

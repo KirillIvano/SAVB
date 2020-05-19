@@ -1,8 +1,8 @@
 import React from 'react';
 import {PopupMessageType} from '@/modules/popup/types';
 
-import {withMessages} from './withMessages';
-import PopupMessage from './PopupMessage';
+import {withMessages} from './containers/withMessages';
+import {PopupMessage} from './components';
 import styles from './styles.less';
 
 interface PopupBoxProps {

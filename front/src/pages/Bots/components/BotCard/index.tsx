@@ -2,7 +2,7 @@ import React from 'react';
 import {Col} from 'react-flexbox-grid';
 import {useHistory} from 'react-router-dom';
 
-import {Card, Tooltip} from '@/components';
+import {Card, Tooltip} from '@/uikit';
 import {BotType} from '@/modules/bots/types';
 
 import styles from './styles.less';
@@ -12,7 +12,6 @@ type BotCardProps = {
 } & BotType;
 
 const BotCard: React.FC<BotCardProps> = ({
-    className,
     image,
     name,
     id,
@@ -23,12 +22,7 @@ const BotCard: React.FC<BotCardProps> = ({
     const handleClick = () => history.push(`/bots/${id}`);
 
     return (
-        <Col
-            onClick={handleClick}
-            className={className}
-            xs={12}
-            md={3}
-        >
+        <Col onClick={handleClick} xs={12} md={3}>
             <Card className={styles.botCard}>
                 <Tooltip src={image} size={'large'} />
                 <div className={styles.botData}>

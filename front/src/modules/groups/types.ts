@@ -5,18 +5,17 @@ import * as actions from './actions';
 export type GroupType = {
     id: number;
     name: string;
-    membersCount: number;
     image: string;
-    isSelected: true;
+    isUsed: boolean;
 };
 
-export type GroupsObjType = GroupType[];
+export type GroupsStoreType = GroupType[];
 
 export type GroupsActionsType = ActionType<typeof actions>;
 export type GroupsStateType = {
-    groups: GroupsObjType;
+    groups: GroupsStoreType;
 
-    groupsLoading: boolean;
-    groupsLoadingSuccess: boolean;
-    groupsLoadingError: string | null;
+    groupsGettingInProgress: boolean;
+    groupsGettingSuccess: boolean;
+    groupsGettingError: string | null;
 };

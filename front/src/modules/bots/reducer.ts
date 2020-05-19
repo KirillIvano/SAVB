@@ -8,9 +8,9 @@ import {BotsStateType} from './types';
 const initialState: BotsStateType = {
     bots: {},
 
-    botsLoading: false,
-    botsLoadingSuccess: false,
-    botsLoadingError: null,
+    botsGettingInProgress: false,
+    botsGettingSuccess: false,
+    botsGettingError: null,
 };
 
 export const botsReducer = createReducer<typeof initialState, RootAction>(
@@ -19,25 +19,27 @@ export const botsReducer = createReducer<typeof initialState, RootAction>(
     actions.getBotsAction,
     state => ({
         ...state,
-        botsLoading: true,
-        botsLoadingSuccess: false,
-        botsLoadingError: null,
+        botsGettingInProgress: true,
+        botsGettingSuccess: false,
+        botsGettingError: null,
     }),
 ).handleAction(
     actions.getBotsSuccessAction,
     (state, {payload}) => ({
         ...state,
         bots: payload,
-        botsLoading: false,
-        botsLoadingSuccess: true,
+        botsGettingInProgress: false,
+        botsGettingError: null,
+        botsGettingSuccess: true,
     }),
 ).handleAction(
     actions.getBotsErrorAction,
     (state, {payload}) => ({
         ...state,
         bots: {},
-        botsLoading: false,
-        botsLoadingError: payload,
+        botsGettingInProgress: false,
+        botsGettingError: payload,
+        botsGettingSuccess: true,
     }),
 );
 

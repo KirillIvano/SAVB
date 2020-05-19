@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Tooltip} from '@/components';
+import {Tooltip} from '@/uikit';
 
 import styles from './styles.less';
 import leaveIcon from './images/leave.svg';

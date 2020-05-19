@@ -8,9 +8,9 @@ import * as actions from './actions';
 const initialState: GroupsStateType = {
     groups: [],
 
-    groupsLoading: false,
-    groupsLoadingSuccess: false,
-    groupsLoadingError: null,
+    groupsGettingInProgress: false,
+    groupsGettingSuccess: false,
+    groupsGettingError: null,
 };
 
 export const groupsReducer = createReducer<typeof initialState, RootAction>(
@@ -19,9 +19,27 @@ export const groupsReducer = createReducer<typeof initialState, RootAction>(
     actions.getGroupsAction,
     state => ({
         ...state,
-        groupsLoading: true,
-        groupsLoadingSuccess: false,
-        groupsLoadingError: null,
+        groupsGettingInProgress: true,
+        groupsGettingSuccess: false,
+        groupsGettingError: null,
+    }),
+).handleAction(
+    actions.getGroupsSuccessAction,
+    (state, {payload: groups}) => ({
+        ...state,
+        groups,
+
+        groupsGettingInProgress: false,
+        groupsGettingSuccess: true,
+        groupsGettingError: null,
+    }),
+).handleAction(
+    actions.getGroupsErrorAction,
+    (state, {payload: error}) => ({
+        ...state,
+        groupsGettingInProgress: false,
+        groupsGettingSuccess: false,
+        groupsGettingError: error,
     }),
 );
 

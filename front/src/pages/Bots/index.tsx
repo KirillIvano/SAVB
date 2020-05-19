@@ -1,53 +1,71 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Grid, Row} from 'react-flexbox-grid';
 
-import {PageHeadline, Preloader, Fade} from '@/components';
+import {
+    PageHeadline,
+    Preloader,
+    Fade,
+} from '@/uikit';
 import {BotType} from '@/modules/bots/types';
+import {AddIcon} from '@/uikit/Icons';
 
-import {BotCard} from './components';
+import {BotCard, GroupsModal} from './components';
 import {withBots} from './containers/withBots';
+import styles from './styles.less';
 
 type BotsPageProps = {
     bots: Record<string, BotType>;
-    botsLoading: boolean;
-    botsLoadingError: null | string;
-    botsLoadingSuccess: boolean;
+    botsGettingInProgress: boolean;
+    botsGettingError: null | string;
+    botsGettingSuccess: boolean;
 
     getBots: () => void;
 }
 
 const BotsPage: React.FC<BotsPageProps> = ({
     bots,
-    botsLoading,
-    botsLoadingError,
+    botsGettingInProgress,
+    botsGettingError,
 
     getBots,
 }) => {
+    const [isOpen, setOpened] = useState(false);
+
     useEffect(() => {
         getBots();
     }, []);
 
-    if (botsLoading) {
+    if (botsGettingInProgress) {
         return <Preloader />;
     }
 
-    if (botsLoadingError) {
+    if (botsGettingError) {
         return <div>error...</div>;
     }
 
     return (
-        <Grid>
-            <Fade duration={0.5}>
-                <PageHeadline content={'Боты'} />
-                <Row>
-                    {Object.keys(bots).map(botId => {
-                        const {id} = bots[botId];
+        <>
+            <Grid>
+                <Fade duration={0.5}>
+                    <PageHeadline className={styles.pageHeadline}>
+                        {'Боты'}
+                        <AddIcon
+                            className={styles.addIcon}
+                            size={'large'}
+                            onClick={() => setOpened(true)}
+                        />
+                    </PageHeadline>
+                    <Row>
+                        {Object.keys(bots).map(botId => {
+                            const {id} = bots[botId];
 
-                        return <BotCard key={id} {...bots[botId]} />;
-                    })}
-                </Row>
-            </Fade>
-        </Grid>
+                            return <BotCard key={id} {...bots[botId]} />;
+                        })}
+                    </Row>
+                </Fade>
+            </Grid>
+            <GroupsModal handleClose={() => setOpened(false)} isOpen={isOpen} />
+        </>
     );
 };
 

@@ -1,10 +1,9 @@
-import {createEpicMiddleware, ofType, Epic, combineEpics} from 'redux-observable';
-import {mergeMap, filter, tap, map} from 'rxjs/operators';
+import {Epic, combineEpics} from 'redux-observable';
+import {filter, map, switchMap} from 'rxjs/operators';
 import {from} from 'rxjs';
 import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
-import {uselessAction} from '@/store/actions';
 import {getBots} from '@/services/bots/mock';
 
 import * as botsNames from './names';
@@ -14,12 +13,12 @@ import { RawBotType } from '@/services/bots/dto';
 const getBotsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
         filter(isOfType(botsNames.BOTS_GET_START)),
-        mergeMap(
+        switchMap(
             () => from(getBots()),
         ),
         map(
-            bots => bots.ok ?
-                botsActions.getBotsSuccessAction(bots.data.bots.reduce(
+            res => res.ok ?
+                botsActions.getBotsSuccessAction(res.data.bots.reduce(
                     (
                         acc: Record<string, RawBotType>,
                         bot,
@@ -28,7 +27,7 @@ const getBotsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
                         return acc;
                     }, {}),
                 ) :
-                botsActions.getBotsErrorAction(bots.error),
+                botsActions.getBotsErrorAction(res.error),
         ),
     );
 

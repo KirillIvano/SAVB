@@ -1,33 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {useDispatch, connect} from 'react-redux';
+import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import {addPopupSuccessMessage, addPopupErrorMessage} from '@/modules/popup/actions';
-import {Groups} from '@/pages';
+import {Bots} from '@/pages';
 import {PopupBox, Header} from '@/parts';
-import {Button, PageWrapper} from '@/components';
+import {PageWrapper} from '@/uikit';
 
-const App = () => {
-    const [state, setState] = useState('');
-    const dispatch = useDispatch();
-
-    const handleClick = () => {
-        dispatch(addPopupSuccessMessage('asd saf adg asdg asdg'));
-        dispatch(addPopupErrorMessage('Ответ убил'));
-    };
-
-    return (
-        <div className="col-xs-2">
-            <Header />
-            <PageWrapper>
-                <Switch>
-                    <Route path="/groups" component={Groups} />
-                </Switch>
-            </PageWrapper>
-            <Button onClick={handleClick}>сообщение</Button>
-            <PopupBox />
-        </div>
-    );
-};
+const App = () => (
+    <>
+        <Header />
+        <PageWrapper>
+            <Switch>
+                <Route path="/bots" component={Bots} />
+            </Switch>
+        </PageWrapper>
+        <PopupBox />
+    </>
+);
 
 export default App;

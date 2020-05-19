@@ -7,16 +7,16 @@ import {getBotsAction} from '@/modules/bots/actions';
 const mapStateToProps = ({botsState}: RootState) => {
     const {
         bots,
-        botsLoading,
-        botsLoadingError,
-        botsLoadingSuccess,
+        botsGettingInProgress,
+        botsGettingError,
+        botsGettingSuccess,
     } = botsState;
 
     return {
         bots,
-        botsLoading,
-        botsLoadingError,
-        botsLoadingSuccess,
+        botsGettingInProgress,
+        botsGettingError,
+        botsGettingSuccess,
     };
 };
 

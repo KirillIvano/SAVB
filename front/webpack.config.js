@@ -8,10 +8,11 @@ module.exports = {
         extensions: ['.ts', '.js', '.tsx'],
         alias: {
             '@': path.resolve(__dirname, 'src'),
+            'colors.less': '/src/styles/colors.less'
         },
     },
     output: {
-        path: path.resolve(__dirname, '..', '..', 'savb_testing', 'client'),
+        path: path.resolve(__dirname, 'dist'),
         publicPath: '/',
         filename: 'bundle.js'
     },

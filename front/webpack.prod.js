@@ -87,15 +87,6 @@ const prodConfigs = {
                             name: '[name].[ext]'
                         }
                     },
-                    {
-                        loader: 'image-webpack-loader',
-                        options: {
-                            pngquant: {
-                                quality: 70,
-                                speed: 4,
-                            },
-                        },
-                    },
                 ],
             },
         ],

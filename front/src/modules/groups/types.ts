@@ -2,20 +2,20 @@ import {ActionType} from 'typesafe-actions';
 
 import * as actions from './actions';
 
-
 export type GroupType = {
     id: number;
     name: string;
-    membersCount: number;
+    image: string;
+    isUsed: boolean;
 };
 
-export type GroupsObjType = {[id: number]: GroupType};
+export type GroupsStoreType = GroupType[];
 
 export type GroupsActionsType = ActionType<typeof actions>;
 export type GroupsStateType = {
-    groups: GroupsObjType;
+    groups: GroupsStoreType;
 
-    groupsLoading: boolean;
-    groupsLoadingSuccess: boolean;
-    groupsLoadingError: string | null;
+    groupsGettingInProgress: boolean;
+    groupsGettingSuccess: boolean;
+    groupsGettingError: string | null;
 };

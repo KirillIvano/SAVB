@@ -6,11 +6,11 @@ import {GroupsStateType} from './types';
 import * as actions from './actions';
 
 const initialState: GroupsStateType = {
-    groups: {},
+    groups: [],
 
-    groupsLoading: false,
-    groupsLoadingSuccess: false,
-    groupsLoadingError: null,
+    groupsGettingInProgress: false,
+    groupsGettingSuccess: false,
+    groupsGettingError: null,
 };
 
 export const groupsReducer = createReducer<typeof initialState, RootAction>(
@@ -19,26 +19,27 @@ export const groupsReducer = createReducer<typeof initialState, RootAction>(
     actions.getGroupsAction,
     state => ({
         ...state,
-        groupsLoading: true,
-        groupsLoadingSuccess: false,
-        groupsLoadingError: null,
+        groupsGettingInProgress: true,
+        groupsGettingSuccess: false,
+        groupsGettingError: null,
     }),
 ).handleAction(
     actions.getGroupsSuccessAction,
-    (state, {payload}) => ({
+    (state, {payload: groups}) => ({
         ...state,
-        groups: payload,
-        groupsLoading: false,
-        groupsLoadingSuccess: true,
+        groups,
+
+        groupsGettingInProgress: false,
+        groupsGettingSuccess: true,
+        groupsGettingError: null,
     }),
 ).handleAction(
     actions.getGroupsErrorAction,
-    (state, {payload}) => ({
+    (state, {payload: error}) => ({
         ...state,
-        groups: {},
-        groupsLoading: false,
-        groupsLoadingError: payload,
+        groupsGettingInProgress: false,
+        groupsGettingSuccess: false,
+        groupsGettingError: error,
     }),
 );
-
 

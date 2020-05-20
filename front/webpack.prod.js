@@ -4,6 +4,7 @@ const TerserJs = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminPlugin = require('imagemin-webpack');
 const autoprefixer = require('autoprefixer');
+const path = require('path');
 
 const commonConfig = require('./webpack.config');
 

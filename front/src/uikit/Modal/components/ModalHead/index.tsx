@@ -1,6 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
-import {Grid} from 'react-flexbox-grid';
 
 import styles from './styles.less';
 import closeIcon from './images/close.png';
@@ -21,7 +19,6 @@ const ModalHead: React.FC<ModalHeadProps> = ({
             className={styles.closeIcon}
             onClick={handleClose}
         />
-
     </div>
 );
 

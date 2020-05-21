@@ -6,7 +6,7 @@ from helpers.csrf import generate_csrf
 from helpers import responses
 from helpers import vk_api
 
-import time
+import jwt as jwt_lib
 from aiohttp import web
 import json
 
@@ -38,11 +38,13 @@ async def auth_refresh_tokens(request: web.Request):
 		user_id = request_dict.get('userId')
 		assert user_id is not None, 'userId is null'
 
-		jwt.verify_refresh(
+		jwt.verify_refresh_request(
 			cookies=request.cookies,
 			body=request_dict
 		)
 	except AssertionError as e:
 		return responses.generate_error_response(';'.join(e.args))
+	except jwt_lib.ExpiredSignatureError as e:
+		return responses.generate_error_response('refresh token expired')
 
 	return responses.generate_access_response(user_id)

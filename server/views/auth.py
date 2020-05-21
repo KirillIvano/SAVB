@@ -13,27 +13,6 @@ import json
 routes = web.RouteTableDef()
 
 
-def generate_access_response(user_id: str):
-	csrf = generate_csrf()
-
-	access_jwt = jwt.encode(payload={"userId": user_id})
-	refresh_jwt = jwt.encode(payload={"userId": user_id, "csrf": csrf})
-
-	response_body = json.dumps({
-		"data": {
-			"accessJwt": access_jwt,
-			"csrf": csrf,
-			"userId": user_id
-		}
-	})
-	resp = web.Response(body=response_body)
-	resp.set_cookie(
-		'refreshJwt', refresh_jwt,
-		httponly=True,
-	)
-	return resp
-
-
 @routes.post('/api/auth/login')
 async def auth_login(request: web.Request):
 	request_dict: dict = await request.json()
@@ -48,7 +27,7 @@ async def auth_login(request: web.Request):
 	if user_id is None:
 		return responses.generate_error_response(access_token_response)
 
-	return generate_access_response(user_id)
+	return responses.generate_access_response(user_id)
 
 
 @routes.post('/api/auth/refreshTokens')
@@ -66,4 +45,4 @@ async def auth_refresh_tokens(request: web.Request):
 	except AssertionError as e:
 		return responses.generate_error_response(';'.join(e.args))
 
-	return generate_access_response(user_id)
+	return responses.generate_access_response(user_id)

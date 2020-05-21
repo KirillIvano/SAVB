@@ -25,7 +25,7 @@ async def auth_login(request: web.Request):
 	user_id = access_token_response.get('user_id')
 
 	if user_id is None:
-		return responses.generate_error_response(access_token_response)
+		return responses.generate_error_response('no user id in request body')
 
 	return responses.generate_access_response(user_id)
 

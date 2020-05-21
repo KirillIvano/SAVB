@@ -29,7 +29,7 @@ def generate_access_response(user_id: str):
 	resp = web.Response(body=response_body)
 	resp.set_cookie(
 		'refreshJwt', refresh_jwt,
-		httponly=True, expires=time.time().__int__() + 300
+		httponly=True,
 	)
 	return resp
 

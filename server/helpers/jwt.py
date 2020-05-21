@@ -2,6 +2,7 @@ import jwt
 import settings
 import http.cookies
 
+
 def encode(payload: dict):
 	return jwt.encode(
 		payload=payload,
@@ -9,15 +10,11 @@ def encode(payload: dict):
 	).decode()
 
 
-def decode(token: str):
+def verify(token: str):
 	return jwt.decode(
 		jwt=token,
 		key=settings.JWT_TOKEN
 	)
-
-
-def verify(token: str, payload: dict):
-	return payload == decode(token)
 
 
 def verify_refresh(
@@ -26,7 +23,7 @@ def verify_refresh(
 ):
 	print(cookies)
 	assert 'refreshJwt' in cookies.keys(), "cookies don't have refreshJwt"
-	refresh_jwt = decode(cookies['refreshJwt'])
+	refresh_jwt = verify(cookies['refreshJwt'])
 
 	keys = ['csrf', 'userId']
 

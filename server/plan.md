@@ -6,6 +6,12 @@
 
 ## Авторизация
 
+### Cookies 
+```
+refreshToken: jwt(userId, csrf, exp)
+accessToken: jwt(userId, exp)
+```
+
 ### `POST /api/auth/login`
 #### Request
 Логиним с помощью вк и вытаскиваем свежий токен
@@ -18,7 +24,8 @@
 #### Response
 ```
     cookies: {
-        refreshJwt: string, HttpOnly;
+        refreshJwt: string;
+        acessJwt: string;
     },
     body: {
         data: {
@@ -33,6 +40,10 @@
 #### Request
 Обновляем токены
 ```
+    cookies: {
+        refreshJwt: string;
+        acessJwt: string;
+    },
     body: {
         csrf: string;   
     }
@@ -40,7 +51,8 @@
 #### Response
 ```
     cookies: {
-        refreshJwt: string, HttpOnly;
+        refreshJwt: string;
+        acessJwt: string;
     },
     body: {
         data {

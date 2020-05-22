@@ -72,7 +72,9 @@ accessToken: jwt(userId, exp)
     }
 ```
 
-### `GET /api/group?userId=<string>`
+### Request
+`GET /api/group?userId=<string>`
+
 Получает все группы, админом которых является юзер
 #### Response
 ```
@@ -82,3 +84,18 @@ accessToken: jwt(userId, exp)
     }
 }
 ```
+
+## Пользователь
+
+#### Request
+`GET /api/user/info?userId=<string>`
+
+#### Response
+```
+   data: {
+        userId: number,
+        name: string;
+        image: string;
+   } 
+```
+

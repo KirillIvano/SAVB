@@ -16,24 +16,28 @@ def generate_error_response(message: str, status: int = 500):
 def generate_access_response(user_id: str):
 	csrf_: str = csrf.generate_csrf()
 
+	access_exp = time.time().__int__() + settings.ACCESS_TOKEN_EXP
 	access_jwt = jwt.encode(
 		payload={
 			"userId": user_id,
-			"exp": time.time().__int__() + settings.ACCESS_TOKEN_EXP,
+			"exp": access_exp,
 		}
 	)
+	refresh_exp = time.time().__int__() + settings.REFRESH_TOKEN_EXP
 	refresh_jwt = jwt.encode(
 		payload={
 			"userId": user_id,
 			"csrf": csrf_,
-			"exp": time.time().__int__() + settings.REFRESH_TOKEN_EXP,
+			"exp": refresh_exp,
 		}
 	)
 
 	response_body: str = json.dumps({
 		"data": {
 			"csrf": csrf_,
-			"userId": user_id
+			"userId": user_id,
+			"accessExp": access_exp,
+			"refreshExp": refresh_exp,
 		}
 	})
 

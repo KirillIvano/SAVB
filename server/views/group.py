@@ -4,6 +4,7 @@
 from aiohttp import web
 routes = web.RouteTableDef()
 
+
 @routes.get('/api/group')
 async def handle(request: web.Request):
 	# user_id = request ...

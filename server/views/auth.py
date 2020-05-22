@@ -15,7 +15,13 @@ routes = web.RouteTableDef()
 
 @routes.post('/api/auth/login')
 async def auth_login(request: web.Request):
-	request_dict: dict = await request.json()
+	try:
+		request_dict: dict = await request.json()
+	except TypeError:
+		return responses.generate_error_response(
+			'Could not get json from request'
+		)
+
 	access_token_response = await vk_api.get_access_token(
 		client_id=settings.CLIENT_ID,
 		client_secret=settings.CLIENT_SECRET,
@@ -25,7 +31,9 @@ async def auth_login(request: web.Request):
 	user_id = access_token_response.get('user_id')
 
 	if user_id is None:
-		return responses.generate_error_response('no user id in request body')
+		return responses.generate_error_response(
+			f'no user id in vk response: {access_token_response}'
+		)
 
 	return responses.generate_access_response(user_id)
 
@@ -48,3 +56,8 @@ async def auth_refresh_tokens(request: web.Request):
 		return responses.generate_error_response('refresh token expired')
 
 	return responses.generate_access_response(user_id)
+
+
+# check auth decorator
+def check_auth(func):
+	pass

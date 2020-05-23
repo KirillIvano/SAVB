@@ -1,3 +1,17 @@
+@keyframes blick {
+    from {
+        background: #ccc;
+    }
+
+    50% {
+        background: #888;
+    }
+
+    to {
+        background: #ccc;
+    }
+}
+
 .userInfoBlock {
     display: flex;
     align-items: center;
@@ -13,8 +27,31 @@
             font-weight: bold;
         }
     }
+
+    .userInfo.preview {
+        flex: 1 0 auto;
+
+        .userName {
+            flex: 1 0;
+            height: 20px;
+            background: #ccc;
+        }
+    }
+
+    .userInfo.preview.loading {
+        .userName, .userIcon {
+            animation: blick 1s infinite linear;
+        }
+    }
+
     .leaveIcon {
+        cursor: pointer;
         display: block;
         width: 20px;
     }
+}
+
+.authButtonContainer {
+    display: flex;
+    justify-content: flex-end;
 }

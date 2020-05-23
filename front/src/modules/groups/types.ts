@@ -16,6 +16,5 @@ export type GroupsStateType = {
     groups: GroupsStoreType;
 
     groupsGettingInProgress: boolean;
-    groupsGettingSuccess: boolean;
     groupsGettingError: string | null;
 };

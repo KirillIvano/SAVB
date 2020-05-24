@@ -26,7 +26,10 @@ async def auth_login(request: web.Request):
 		code=request_dict.get('code')
 	)
 	user_id: int = access_token_response.get('user_id')
-	cache.vk_access_tokens[user_id] = access_token_response.get('access_token')
+	print(cache)
+	cache.VkAccessTokens().set(
+		user_id, access_token_response.get('access_token')
+	)
 
 	if user_id is None:
 		return responses.generate_error_response(

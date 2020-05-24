@@ -19,7 +19,7 @@ def generate_access_response(user_id: int):
 	user_id: str = str(user_id)
 
 	access_exp = time.time().__int__() + settings.ACCESS_TOKEN_EXP
-	access_jwt = jwt.encode(
+	access_jwt: str = jwt.encode(
 		payload={
 			"userId": user_id,
 			"exp": access_exp,
@@ -27,7 +27,7 @@ def generate_access_response(user_id: int):
 	)
 
 	refresh_exp = time.time().__int__() + settings.REFRESH_TOKEN_EXP
-	refresh_jwt = jwt.encode(
+	refresh_jwt: str = jwt.encode(
 		payload={
 			"userId": user_id,
 			"csrf": csrf_,
@@ -45,6 +45,6 @@ def generate_access_response(user_id: int):
 	})
 
 	resp = web.Response(body=response_body)
-	resp.set_cookie('refreshJwt', refresh_jwt)
-	resp.set_cookie('accessJwt', access_jwt)
+	resp.set_cookie('refreshJwt', refresh_jwt, httponly=False, domain='localhost')
+	resp.set_cookie('accessJwt', access_jwt, httponly=False, domain='localhost')
 	return resp

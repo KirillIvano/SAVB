@@ -45,6 +45,6 @@ def generate_access_response(user_id: int):
 	})
 
 	resp = web.Response(body=response_body)
-	resp.set_cookie('refreshJwt', refresh_jwt, httponly=False, domain='localhost')
-	resp.set_cookie('accessJwt', access_jwt, httponly=False, domain='localhost')
+	resp.set_cookie('refreshJwt', refresh_jwt, httponly=False)
+	resp.set_cookie('accessJwt', access_jwt, httponly=False)
 	return resp

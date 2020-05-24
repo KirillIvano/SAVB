@@ -21,12 +21,11 @@ def verify(token: str) -> dict:
 def match(token: str, body: dict, *keys: str) -> bool:
 	payload = verify(token)
 	matched = True
-
 	for key in keys:
 		assert key in body.keys(), f'{key} not in request body'
 		assert key in payload.keys(), f'{key} not in jwt'
 
-		if body[key] != payload[key]:
+		if str(body[key]) != str(payload[key]):
 			matched = False
 			break
 

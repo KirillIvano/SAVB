@@ -41,13 +41,12 @@ async def auth_login(request: web.Request):
 
 @routes.post('/api/auth/refreshTokens')
 async def auth_refresh_tokens(request: web.Request):
-	print(request.headers)
 	request_dict: dict = await request.json()
 	try:
 		user_id = request_dict.get('userId')
 		assert user_id is not None, 'userId is null'
 
-		jwt.verify_refresh_request(
+		jwt_verified = jwt.verify_refresh_request(
 			cookies=request.cookies,
 			body=request_dict
 		)
@@ -56,6 +55,9 @@ async def auth_refresh_tokens(request: web.Request):
 
 	except jwt_lib.ExpiredSignatureError as e:
 		return responses.generate_error_response('refresh token expired')
+
+	if not jwt_verified:
+		return responses.generate_error_response('refresh jwt does not match body')
 
 	return responses.generate_access_response(user_id)
 

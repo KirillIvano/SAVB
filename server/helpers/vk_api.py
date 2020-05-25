@@ -41,4 +41,9 @@ async def vk_method(
 
 
 async def users_info(access_token: str, user_id: str):
-	return await vk_method('users.get', access_token, user_id=user_id)
+	return await vk_method(
+		'users.get',
+		access_token,
+		user_id=user_id,
+		fields='photo_200'
+	)

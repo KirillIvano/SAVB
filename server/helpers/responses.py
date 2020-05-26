@@ -6,7 +6,7 @@ from helpers import jwt, csrf
 import settings
 
 
-def generate_error_response(message: str, status: int = 500):
+def generate_error_response(message: str, status: int = 401):
     return web.Response(
         status=status,
         body=json.dumps({'error': message})

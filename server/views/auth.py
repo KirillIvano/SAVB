@@ -8,8 +8,31 @@ from helpers import cache
 
 import jwt as jwt_lib
 from aiohttp import web
+import functools
+import json
 
 routes = web.RouteTableDef()
+
+
+# check auth decorator
+def check_auth(func):
+	@functools.wraps(func)
+	async def process(request):
+		try:
+			request_dict: dict = request.query
+		except json.decoder.JSONDecodeError:
+			return responses.generate_error_response('no request params', 401)
+
+		try:
+			verified = jwt.verify_access_request(request.cookies, request_dict)
+		except AssertionError as e:
+			return responses.generate_error_response(' '.join(e.args), 401)
+
+		if verified:
+			return await func(request)
+		else:
+			return responses.generate_error_response('bad accessJwt ot no accessJwt')
+	return process
 
 
 @routes.post('/api/auth/login')
@@ -60,8 +83,3 @@ async def auth_refresh_tokens(request: web.Request):
 		return responses.generate_error_response('refresh jwt does not match body')
 
 	return responses.generate_access_response(user_id)
-
-
-# check auth decorator
-def check_auth(func):
-	pass

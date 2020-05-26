@@ -1,6 +1,6 @@
 import jwt
 import settings
-import http.cookies
+from aiohttp import web
 
 
 def encode(payload: dict) -> str:
@@ -19,7 +19,13 @@ def verify(token: str) -> dict:
 
 
 def match(token: str, body: dict, *keys: str) -> bool:
-	payload = verify(token)
+	try:
+		payload = verify(token)
+	except jwt.exceptions.InvalidSignatureError:
+		return False
+	except jwt.exceptions.ExpiredSignatureError:
+		return False
+
 	matched = True
 	for key in keys:
 		assert key in body.keys(), f'{key} not in request body'
@@ -36,7 +42,17 @@ def verify_refresh_request(
 		cookies: [str, str],
 		body: dict
 ) -> bool:
-	assert 'refreshJwt' in cookies.keys(), "cookies don't have refreshJwt"
-	refresh_jwt = cookies['refreshJwt']
+	refresh_jwt = cookies.get('refreshJwt')
+	assert refresh_jwt, "cookies don't have refreshJwt"
 
 	return match(refresh_jwt, body, 'csrf', 'userId')
+
+
+def verify_access_request(
+		cookies: [str, str],
+		body: dict
+) -> bool:
+	access_jwt = cookies.get('accessJwt')
+	assert access_jwt, "cookies don't have accessJwt"
+
+	return match(access_jwt, body, 'userId')

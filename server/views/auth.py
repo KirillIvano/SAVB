@@ -24,7 +24,7 @@ def check_auth(func):
 			return responses.generate_error_response('no request params', 401)
 
 		try:
-			verified = jwt.verify_access_request(request.cookies, request_dict)
+			verified = jwt.verify_access_request(request.cookies)
 		except AssertionError as e:
 			return responses.generate_error_response(' '.join(e.args), 401)
 

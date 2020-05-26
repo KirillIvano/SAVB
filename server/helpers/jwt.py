@@ -50,9 +50,8 @@ def verify_refresh_request(
 
 def verify_access_request(
 		cookies: [str, str],
-		body: dict
 ) -> bool:
-	access_jwt = cookies.get('accessJwt')
+	access_jwt: str = cookies.get('accessJwt')
 	assert access_jwt, "cookies don't have accessJwt"
 
-	return match(access_jwt, body, 'userId')
+	return True if verify(access_jwt) else False

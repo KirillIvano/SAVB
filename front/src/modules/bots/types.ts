@@ -16,6 +16,5 @@ export type BotsStateType = {
     bots: BotsStorageType;
 
     botsGettingInProgress: boolean;
-    botsGettingSuccess: boolean;
     botsGettingError: string | null;
 };

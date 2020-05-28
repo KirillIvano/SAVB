@@ -31,7 +31,7 @@ const dev = {
                 use: [
                     {
                         loader: 'style-loader',
- 
+
                     },
                     {
                         loader: 'typings-for-css-modules-loader',
@@ -47,7 +47,9 @@ const dev = {
                     {
                         loader: 'less-loader',
                         options: {
-                            paths: [path.resolve(__dirname, 'src', 'styles')],
+                            lessOptions: {
+                                paths: [path.resolve(__dirname, 'src', 'styles')],
+                            }
                         }
                     }
                 ],

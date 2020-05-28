@@ -13,6 +13,7 @@ type HeaderUserInfoProps = {
     info: UserInfoType | null;
     isLoggedIn: boolean;
     userGettingInProgress: boolean;
+    logout: () => void;
 }
 
 const UserInfoPreview = ({
@@ -34,6 +35,8 @@ const HeaderUserInfo = ({
     info,
     isLoggedIn,
     userGettingInProgress,
+
+    logout,
 }: HeaderUserInfoProps) => {
     if (!isLoggedIn) {
         return (
@@ -61,7 +64,11 @@ const HeaderUserInfo = ({
                     <p className={styles.userName}>{name}</p>
                 </div>
 
-                <img src={leaveIcon} className={styles.leaveIcon} alt="" />
+                <img
+                    src={leaveIcon}
+                    className={styles.leaveIcon}
+                    onClick={logout}
+                />
             </div>
         </Fade>
     );

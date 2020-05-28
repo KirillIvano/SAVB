@@ -19,7 +19,7 @@ const mapStateToProps = ({userState}: RootState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    unlogin: () => dispatch(logoutStartAction()),
+    logout: () => dispatch(logoutStartAction()),
 });
 
 export const withUserInfo = connect(mapStateToProps, mapDispatchToProps);

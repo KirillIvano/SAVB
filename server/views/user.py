@@ -16,8 +16,8 @@ async def info(request: web.Request):
     except KeyError:
         return responses.generate_error_response('no user_id parameter', 401)
 
-    if cache.get_vk_access_token_cache().includes(user_id):
-        access_token = cache.get_vk_access_token_cache().get(user_id)
+    if cache.get_vk_token_cache().includes(user_id):
+        access_token = cache.get_vk_token_cache().get(user_id)
     else:
         access_token = heavy_cache.get_vk_access_token(user_id)
         if access_token is None:

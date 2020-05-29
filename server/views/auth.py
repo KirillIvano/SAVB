@@ -5,6 +5,7 @@ from helpers import jwt
 from helpers import responses
 from helpers import vk_api
 from helpers import cache
+from helpers import heavy_cache
 
 import jwt as jwt_lib
 from aiohttp import web
@@ -49,10 +50,10 @@ async def auth_login(request: web.Request):
 		code=request_dict.get('code')
 	)
 	user_id: int = access_token_response.get('user_id')
+	access_token: str = access_token_response.get('access_token')
 	print(cache)
-	cache.get_vk_access_token_cache().set(
-		user_id, access_token_response.get('access_token')
-	)
+	cache.get_vk_access_token_cache().set(user_id, access_token)
+	heavy_cache.set_vk_access_token(user_id, access_token)
 
 	if user_id is None:
 		return responses.generate_error_response(

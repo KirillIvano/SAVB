@@ -1,14 +1,12 @@
 BOT_REQUESTS_CACHE = 'bot_requests'
 GROUP_CREDS_CACHE = 'group_creds'
-USER_CREDS_CACHE = 'user_creds'
-VK_ACCESS_TOKEN_CACHE = 'vk_access_token'
+VK_TOKEN_CACHE = 'user_creds'
 
 # dictionary that contains all caches {[name: string]: Cache}
 _cache_storage = {
 	BOT_REQUESTS_CACHE: {},
 	GROUP_CREDS_CACHE: {},
-	USER_CREDS_CACHE: {},
-	VK_ACCESS_TOKEN_CACHE: {},
+	VK_TOKEN_CACHE: {},
 }
 
 
@@ -42,11 +40,6 @@ def get_group_creds_cache():
 	return get_cache(GROUP_CREDS_CACHE)
 
 
-def get_user_creds_cache():
-	return get_cache(USER_CREDS_CACHE)
-
-
-def get_vk_access_token_cache():
-	return get_cache(USER_CREDS_CACHE)
-
+def get_vk_token_cache():
+	return get_cache(VK_TOKEN_CACHE)
 

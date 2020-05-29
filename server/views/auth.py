@@ -50,7 +50,7 @@ async def auth_login(request: web.Request):
 		code=request_dict.get('code')
 	)
 
-	user_id: int = access_token_response.get('user_id')
+  user_id: int = access_token_response.get('user_id')
 	if user_id is None:
 		return responses.generate_error_response(
 			f'no user_id in vk response: {access_token_response}'

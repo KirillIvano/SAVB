@@ -1,19 +1,21 @@
-from database.models import User
+from database.models import objects, User
 
 #  выглядит очень хуево, но пока не придумал,
 #  как сделать это для динамический моделей
 
 
-def get_vk_access_token(user_id: int):
+async def get_vk_access_token(user_id: int):
     try:
-        q = User.get_by_id(user_id)
+        q = await objects.get(User, user_id=user_id)
         return q.access_token
     except:
         return None
 
 
-def set_vk_access_token(user_id: int, access_token: str):
-    if get_vk_access_token(user_id) is None:
-        User().create(user_id=user_id, access_token=access_token)
+async def set_vk_access_token(user_id: int, access_token: str):
+    user = await get_vk_access_token(user_id)
+    if user is None:
+        objects.create(User, user_id=user_id, access_token=access_token)
     else:
-        User.set_by_id(user_id, {User.access_token: access_token})
+        objects.update(user, {User.access_token: access_token})
+

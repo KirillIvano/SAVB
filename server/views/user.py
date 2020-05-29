@@ -12,15 +12,16 @@ routes = web.RouteTableDef()
 @check_auth
 async def info(request: web.Request):
     try:
-        user_id: str = request.query['userId']
+        user_id: int = int(request.query['userId'])
     except KeyError:
         return responses.generate_error_response('no user_id parameter', 401)
 
-    access_token = cache.get_vk_access_token_cache().get(int(user_id))
-    if access_token is None:
-        access_token = heavy_cache.get_vk_access_token(int(user_id))
-    if access_token is None:
-        return responses.generate_error_response('no access token in cache', 401)
+    if cache.get_vk_access_token_cache().includes(user_id):
+        access_token = cache.get_vk_access_token_cache().get(user_id)
+    else:
+        access_token = heavy_cache.get_vk_access_token(user_id)
+        if access_token is None:
+            return responses.generate_error_response('no access token in cache', 401)
 
     vk_response = await vk_api.users_info(access_token, user_id)
     try:

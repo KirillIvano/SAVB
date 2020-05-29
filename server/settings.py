@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-ENV_PATH = '../.env'
+ENV_PATH = '.env'
 load_dotenv(ENV_PATH)
 
 DB_PASSWORD = os.getenv('DB_PASSWORD')

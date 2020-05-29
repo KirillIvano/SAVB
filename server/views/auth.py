@@ -49,16 +49,21 @@ async def auth_login(request: web.Request):
 		redirect_uri=request_dict.get('redirectUri'),
 		code=request_dict.get('code')
 	)
-	user_id: int = access_token_response.get('user_id')
-	access_token: str = access_token_response.get('access_token')
-	print(cache)
-	cache.get_vk_access_token_cache().set(user_id, access_token)
-	heavy_cache.set_vk_access_token(user_id, access_token)
 
+	user_id: int = access_token_response.get('user_id')
 	if user_id is None:
 		return responses.generate_error_response(
 			f'no user_id in vk response: {access_token_response}'
 		)
+
+	access_token: str = access_token_response.get('access_token')
+	if access_token is None:
+		return responses.generate_error_response(
+			f'no access_token in vk response: {access_token_response}'
+		)
+
+	cache.get_vk_access_token_cache().set(user_id, access_token)
+	heavy_cache.set_vk_access_token(user_id, access_token)
 
 	return responses.generate_access_response(user_id)
 

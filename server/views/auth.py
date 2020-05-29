@@ -50,7 +50,7 @@ async def auth_login(request: web.Request):
 	)
 	user_id: int = access_token_response.get('user_id')
 	print(cache)
-	cache.get_vk_access_token_cache().set(
+	cache.get_vk_token_cache().set(
 		user_id, access_token_response.get('access_token')
 	)
 

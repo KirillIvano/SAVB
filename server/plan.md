@@ -6,61 +6,96 @@
 
 ## Авторизация
 
+### Cookies 
+```
+refreshToken: jwt(userId, csrf, exp)
+accessToken: jwt(userId, exp)
+```
+
 ### `POST /api/auth/login`
 #### Request
 Логиним с помощью вк и вытаскиваем свежий токен
-```js
+```
     {
         code: string;
         redirectUri: string;
     }
 ```
 #### Response
-```js
+```
     cookies: {
-        refreshJwt: string, HttpOnly;
+        refreshJwt: string;
+        acessJwt: string;
     },
     body: {
-        accessJwt: string;
-        cors: string;
-        userId: string;
+        data: {
+            accessJwt: string;
+            csrf: string;
+            userId: string;
+        }
     }
 ```
 
 ### `POST /api/auth/refreshTokens`
 #### Request
 Обновляем токены
-```js
+```
+    cookies: {
+        refreshJwt: string;
+        acessJwt: string;
+    },
     body: {
-        cors: string;   
+        csrf: string;   
     }
 ```
 #### Response
-```js
+```
     cookies: {
-        refreshJwt: string, HttpOnly;
+        refreshJwt: string;
+        acessJwt: string;
     },
     body: {
-        accessJwt: string;
-        cors: string;
+        data {
+            accessJwt: string;
+            csrf: string;
+        }   
     }
 ```
 
 ## Группы
 
 ### Сущность 
-```js
+```
     Group: {
         name: string;
         id: number;
     }
 ```
 
-### `GET /api/group?userId=<string>`
+### Request
+`GET /api/group?userId=<string>`
+
 Получает все группы, админом которых является юзер
 #### Response
-```js
+```
 {
-    groups: [Group]
+    data {
+        groups: [Group]
+    }
 }
 ```
+
+## Пользователь
+
+#### Request
+`GET /api/user/info?userId=<string>`
+
+#### Response
+```
+   data: {
+        userId: number,
+        name: string;
+        image: string;
+   } 
+```
+

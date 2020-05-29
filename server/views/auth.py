@@ -32,7 +32,7 @@ def check_auth(func):
 		if verified:
 			return await func(request)
 		else:
-			return responses.generate_error_response('bad accessJwt ot no accessJwt')
+			return responses.generate_error_response('bad accessJwt or no accessJwt')
 	return process
 
 

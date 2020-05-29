@@ -16,9 +16,9 @@ USER_CREDS_CACHE = 'user_creds'
 
 # dictionary that contains all caches {[name: string]: Cache}
 _cache_storage = {
-	'bot_requests': {},
-	'group_creds': {},
-	'user_creds': {}
+	BOT_REQUESTS_CACHE: {},
+	GROUP_CREDS_CACHE: {},
+	USER_CREDS_CACHE: {}
 }
 
 class Cache:
@@ -39,3 +39,11 @@ class Cache:
 
 def getCache(name: str):
 	return Cache(name)
+
+# some sugar
+def getBotRequestsCache():
+	return getCache(BOT_REQUESTS_CACHE)
+def getGroupCredsCache():
+	return getCache(GROUP_CREDS_CACHE)
+def getUserCredsCache():
+	return getCache(USER_CREDS_CACHE)

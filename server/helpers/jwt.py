@@ -54,5 +54,4 @@ def verify_access_request(
 ) -> bool:
 	access_jwt = cookies.get('accessJwt')
 	assert access_jwt, "cookies don't have accessJwt"
-
 	return match(access_jwt, body, 'userId')

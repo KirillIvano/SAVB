@@ -1,6 +1,15 @@
 from peewee import *
+import settings
 
-database = PostgresqlDatabase('database')  # буду соединяться с сервером, пока локально делаю
+database = PostgresqlDatabase(
+    'savb',
+    user='kirill',
+    password=settings.DB_PASSWORD,
+    host='194.67.109.99',
+    port=5432,
+
+    autocommit=True,
+)
 
 
 class BaseModel(Model):
@@ -22,6 +31,7 @@ class Bot(BaseModel):
 
 class User(BaseModel):
     user_id = PrimaryKeyField()
+    access_token = CharField(max_length=512, null=True)
 
 
 class DialogState(BaseModel):
@@ -67,5 +77,5 @@ class KeyboardButton(BaseModel):
     trigger_id = ForeignKeyField(Trigger)
 
 
-database.connect()
-database.close()
+# database.connect(reuse_if_open=True)
+# database.close()

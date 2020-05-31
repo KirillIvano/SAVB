@@ -27,7 +27,7 @@ async def vk_method(
 		method_name: str,
 		access_token: str,
 		**parameters
-):
+) -> dict:
 	url = f"https://api.vk.com/method/{method_name}?"
 	parameters.update(
 		{
@@ -45,5 +45,16 @@ async def users_info(access_token: str, user_id: int):
 		'users.get',
 		access_token,
 		user_id=user_id,
+		fields='photo_200'
+	)
+
+
+async def group(access_token: str, user_id: int):
+	return await vk_method(
+		'groups.get',
+		access_token,
+		user_id=user_id,
+		extended=1,
+		filter='admin',
 		fields='photo_200'
 	)

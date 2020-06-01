@@ -1,6 +1,6 @@
 from peewee import *
 
-database = PostgresqlDatabase('database') # буду соединяться с сервером, пока локально делаю
+database = PostgresqlDatabase('database')
 
 class BaseModel(Model):
     class Meta():
@@ -15,7 +15,7 @@ class Bot(BaseModel):
     token = CharField()
     name = CharField()
     admin_id = ForeignKeyField(Admin, backref='belongs_to')
-
+ 
 class User(BaseModel):
     user_id = PrimaryKeyField()
 
@@ -55,5 +55,15 @@ class KeyboardButton(BaseModel):
     inline = BooleanField()
     trigger_id = ForeignKeyField(Trigger)
 
+class Log(BaseModel):
+    log_id = PrimaryKeyField()
+    status = IntegerField()
+    date = DateTimeField()
+    req_data = CharField()
+    method = CharField()
+    url = CharField()
+    res_data = CharField(null=True)
+    error = CharField(null=True)
+
 database.connect()
-database.close()
+#database.close()

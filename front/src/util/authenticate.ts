@@ -1,0 +1,2 @@
+const getUserAuthUrl = () => '';
+const getGroupAuthUrl = () => '';

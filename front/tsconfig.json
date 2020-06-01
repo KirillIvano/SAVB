@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "ESNEXT",
     "moduleResolution": "node",
     "outDir": "./dist",
@@ -16,7 +16,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
-    "typeRoots": ["./typings"]
+    "typeRoots": ["./types"]
   },
   "exclude": [
     "node_modules",

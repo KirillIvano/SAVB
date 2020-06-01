@@ -5,6 +5,7 @@ const webpack = require('webpack');
 
 const dev = {
     mode: 'development',
+    devtool: 'inline-cheap-source-map',
     devServer: {
         historyApiFallback: true,
         hotOnly: true,
@@ -24,13 +25,19 @@ const dev = {
             {
                 test: /\.(c|le)ss$/,
                 use: [
-                    'style-loader',
+                    {
+                        loader: 'style-loader',
+ 
+                    },
                     {
                         loader: 'typings-for-css-modules-loader',
                         options: {
                             modules: true,
                             namedExport: true,
+                            camelCase: 'camelCase',
                             exportOnlyLocals: true,
+                            include: /flexboxgrid/,
+                            // localsConvention: 'camelCase',
                         },
                     },
                     {
@@ -43,7 +50,12 @@ const dev = {
             },
             {
                 test: /\.(png|svg|jpg|ico)$/,
-                use: 'url-loader',
+                use: {
+                    loader: 'url-loader',
+                    options: {
+                        esModule: false
+                    }
+                }
             },
         ],
     },

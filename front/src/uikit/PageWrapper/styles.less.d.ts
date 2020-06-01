@@ -1,0 +1,1 @@
+export const pageWrapper: string;

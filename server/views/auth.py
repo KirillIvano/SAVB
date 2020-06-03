@@ -59,7 +59,7 @@ async def auth_login(request: web.Request):
         )
 
     cache.get_vk_token_cache().set(user_id, access_token)
-    heavy_cache.set_vk_access_token(user_id, access_token)
+    await heavy_cache.set_vk_access_token(user_id, access_token)
 
     return responses.generate_access_response(user_id)
 

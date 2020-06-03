@@ -1,7 +1,9 @@
+import asyncio
 from peewee import *
+import peewee_async
 import settings
 
-database = PostgresqlDatabase(
+database = peewee_async.PostgresqlDatabase(
     'savb',
     user='kirill',
     password=settings.DB_PASSWORD,
@@ -77,5 +79,6 @@ class KeyboardButton(BaseModel):
     trigger_id = ForeignKeyField(Trigger)
 
 
-# database.connect(reuse_if_open=True)
-# database.close()
+loop = asyncio.new_event_loop()
+objects = peewee_async.Manager(database, loop=loop)
+database.set_allow_sync(False)

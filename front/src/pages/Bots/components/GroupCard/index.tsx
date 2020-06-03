@@ -15,7 +15,7 @@ const GroupCard: React.FC<GroupCardProps> = ({
     image,
 }) => {
     return (
-        <Col xs={4}>
+        <Col xs={12} md={4}>
             <Card className={styles.groupCard}>
                 <Tooltip src={image} size={'large'} />
                 <div className={styles.groupData}>

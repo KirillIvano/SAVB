@@ -11,6 +11,8 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
     ],
     'globals': {
+        __SERVER_ORIGIN__: true,
+        __CLIENT_ORIGIN__: true,
     },
     'plugins': [
         'react',
@@ -24,10 +26,6 @@ module.exports = {
         'ecmaFeatures': {
             'jsx': true
         }
-    },
-    'globals': {
-        SERVER_ORIGIN: true,
-        IMAGE_HOST: true,
     },
     'rules': {
         'indent': ['error', 4],

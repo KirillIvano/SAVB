@@ -1,20 +1,45 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import {Bots} from '@/pages';
+import {Bots, Main, UserAuth} from '@/pages';
 import {PopupBox, Header} from '@/parts';
-import {PageWrapper} from '@/uikit';
+import {withAuthRegulation} from '@/containers/withAuthRegulation';
+import {PageWrapper, Preloader} from '@/uikit';
+import {withAuth} from './containers/withAuth';
 
-const App = () => (
-    <>
-        <Header />
-        <PageWrapper>
-            <Switch>
-                <Route path="/bots" component={Bots} />
-            </Switch>
-        </PageWrapper>
-        <PopupBox />
-    </>
-);
+type AppProps = {
+    isAppInitialized: boolean;
 
-export default App;
+    tryAuth: () => void;
+}
+
+const App = ({
+    isAppInitialized,
+    tryAuth,
+}: AppProps) => {
+    useEffect(() => {
+        tryAuth();
+    }, []);
+
+    if (!isAppInitialized) {
+        return <Preloader />;
+    }
+
+    return (
+        <>
+            <Header />
+            <PageWrapper>
+                <Switch>
+                    <Route exact path="/" component={Main} />
+                    <Route exact path="/bots" component={withAuthRegulation(Bots)} />
+                    <Route exact path="/userAuthPending" component={UserAuth} />
+                </Switch>
+            </PageWrapper>
+            <PopupBox />
+        </>
+    );
+};
+
+const enchancedApp = withAuth(App);
+
+export default enchancedApp;

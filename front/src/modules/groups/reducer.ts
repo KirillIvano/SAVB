@@ -9,7 +9,6 @@ const initialState: GroupsStateType = {
     groups: [],
 
     groupsGettingInProgress: false,
-    groupsGettingSuccess: false,
     groupsGettingError: null,
 };
 
@@ -20,7 +19,6 @@ export const groupsReducer = createReducer<typeof initialState, RootAction>(
     state => ({
         ...state,
         groupsGettingInProgress: true,
-        groupsGettingSuccess: false,
         groupsGettingError: null,
     }),
 ).handleAction(
@@ -30,7 +28,6 @@ export const groupsReducer = createReducer<typeof initialState, RootAction>(
         groups,
 
         groupsGettingInProgress: false,
-        groupsGettingSuccess: true,
         groupsGettingError: null,
     }),
 ).handleAction(
@@ -38,7 +35,6 @@ export const groupsReducer = createReducer<typeof initialState, RootAction>(
     (state, {payload: error}) => ({
         ...state,
         groupsGettingInProgress: false,
-        groupsGettingSuccess: false,
         groupsGettingError: error,
     }),
 );

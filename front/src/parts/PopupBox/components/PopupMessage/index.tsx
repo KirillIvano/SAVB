@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import classnames from 'classnames';
-
+import {} from 'react-transition-group';
 import {PopupMessageType} from '@/modules/popup/types';
 
 import styles from './styles.less';
@@ -18,18 +18,25 @@ const PopupMessage: React.FC<PopupMessageProps> = ({
 
     handleRemove,
 }) => {
-    const [isBeingDeleted, setDeleted] = useState(false);
+    const [isGoingToUnmount, setUnmonted] = useState(false);
 
     const handleClick = () => {
-        setDeleted(true);
-        handleRemove(id);
+        setUnmonted(true);
+
+        setTimeout(
+            () => {
+                setUnmonted(false);
+                handleRemove(id);
+            },
+            500,
+        );
     };
 
     return (
         <div
             className={classnames(
                 styles.message,
-                {[styles.deleted]: isBeingDeleted},
+                {[styles.deleted]: isGoingToUnmount},
             )}
             onClick={handleClick}
         >

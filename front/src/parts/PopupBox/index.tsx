@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {PopupMessageType} from '@/modules/popup/types';
 
 import {withMessages} from './containers/withMessages';
@@ -17,11 +18,13 @@ const PopupBox: React.FC<PopupBoxProps> = ({
     return (
         <div className={styles.popupBox}>
             {messages.map(
-                message => (<PopupMessage
-                    handleRemove={removeMessage}
-                    key={message.id}
-                    {...message}
-                />),
+                message => (
+                    <PopupMessage
+                        key={message.id}
+                        handleRemove={removeMessage}
+                        {...message}
+                    />
+                ),
             )}
         </div>
     );

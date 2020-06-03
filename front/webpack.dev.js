@@ -19,6 +19,10 @@ const dev = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            __SERVER_ORIGIN__: '"http://194.67.109.99:500"',
+            __CLIENT_ORIGIN__: '"http://localhost:8080"'
+        }),
     ],
     module: {
         rules: [
@@ -27,7 +31,7 @@ const dev = {
                 use: [
                     {
                         loader: 'style-loader',
- 
+
                     },
                     {
                         loader: 'typings-for-css-modules-loader',
@@ -43,7 +47,9 @@ const dev = {
                     {
                         loader: 'less-loader',
                         options: {
-                            paths: [path.resolve(__dirname, 'src', 'styles')],
+                            lessOptions: {
+                                paths: [path.resolve(__dirname, 'src', 'styles')],
+                            }
                         }
                     }
                 ],

@@ -8,14 +8,12 @@ const mapStateToProps = ({groupsState}: RootState) => {
     const {
         groups,
         groupsGettingInProgress,
-        groupsGettingSuccess,
         groupsGettingError,
     } = groupsState;
 
     return {
         groups,
         groupsGettingInProgress,
-        groupsGettingSuccess,
         groupsGettingError,
     };
 };

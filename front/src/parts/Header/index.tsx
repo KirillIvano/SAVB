@@ -18,11 +18,7 @@ const Header = () => (
                 <HeaderHistory />
             </Col>
             <Col xsOffset={4} xs={4}>
-                <HeaderUserInfo
-                    name={'Григорий Кириллов'}
-                    id={'1'}
-                    image={'https://sun9-4.userapi.com/c627218/v627218363/36f33/4wYX5S3fR18.jpg?ava=1'}
-                />
+                <HeaderUserInfo />
             </Col>
         </Grid>
     </header>

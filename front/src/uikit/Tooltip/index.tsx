@@ -4,19 +4,21 @@ import classnames from 'classnames';
 
 interface TooltipProps extends React.ImgHTMLAttributes<HTMLImageElement>{
     className?: string;
-    src: string;
-    size: 'small' | 'large';
+    src?: string;
+    size?: 'small' | 'large';
+    isPlaceholder?: boolean;
 }
 
 const Tooltip: React.FC<TooltipProps> = ({
     className,
     src,
     size,
+    isPlaceholder=false,
     ...props
 }) => (
     <div
         {...props}
-        style={{backgroundImage: `url("${src}")`}}
+        style={isPlaceholder ? {background: '#ccc'} : {backgroundImage: `url("${src}")`}}
         className={
             classnames(
                 styles.tooltip,

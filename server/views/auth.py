@@ -5,6 +5,7 @@ from helpers import jwt
 from helpers import responses
 from helpers import vk_api
 from helpers import cache
+from helpers import heavy_cache
 
 import jwt as jwt_lib
 from aiohttp import web
@@ -16,70 +17,71 @@ routes = web.RouteTableDef()
 
 # check auth decorator
 def check_auth(func):
-	@functools.wraps(func)
-	async def process(request):
-		try:
-			request_dict: dict = request.query
-		except json.decoder.JSONDecodeError:
-			return responses.generate_error_response('no request params', 401)
+    @functools.wraps(func)
+    async def process(request):
 
-		try:
-			verified = jwt.verify_access_request(request.cookies)
-		except AssertionError as e:
-			return responses.generate_error_response(' '.join(e.args), 401)
+        request_dict: dict = request.query
+        if not request_dict:
+            return responses.generate_error_response('no request params', 401)
+          
+        verified = jwt.verify_access_request(request.cookies, request_dict)
+        if not verified:
+            return responses.generate_error_response('not verified', 401)
 
-		if verified:
-			return await func(request)
-		else:
-			return responses.generate_error_response('bad accessJwt ot no accessJwt')
-	return process
+        return await func(request)
+    return process
 
 
 @routes.post('/api/auth/login')
 async def auth_login(request: web.Request):
-	try:
-		request_dict: dict = await request.json()
-	except TypeError:
-		return responses.generate_error_response(
-			'Could not get json from request'
-		)
+    try:
+        request_dict: dict = await request.json()
+    except TypeError:
+        return responses.generate_error_response(
+            'Could not get json from request'
+        )
 
-	access_token_response = await vk_api.get_access_token(
-		redirect_uri=request_dict.get('redirectUri'),
-		code=request_dict.get('code')
-	)
-	user_id: int = access_token_response.get('user_id')
-	print(cache)
-	cache.VkAccessTokens().set(
-		user_id, access_token_response.get('access_token')
-	)
+    access_token_response = await vk_api.get_access_token(
+        redirect_uri=request_dict.get('redirectUri'),
+        code=request_dict.get('code')
+    )
 
-	if user_id is None:
-		return responses.generate_error_response(
-			f'no user_id in vk response: {access_token_response}'
-		)
+    user_id: int = access_token_response.get('user_id')
+    if user_id is None:
+        return responses.generate_error_response(
+            f'no user_id in vk response: {access_token_response}'
+        )
 
-	return responses.generate_access_response(user_id)
+    access_token: str = access_token_response.get('access_token')
+    if access_token is None:
+        return responses.generate_error_response(
+            f'no access_token in vk response: {access_token_response}'
+        )
+
+    cache.get_vk_token_cache().set(user_id, access_token)
+    heavy_cache.set_vk_access_token(user_id, access_token)
+
+    return responses.generate_access_response(user_id)
 
 
 @routes.post('/api/auth/refreshTokens')
 async def auth_refresh_tokens(request: web.Request):
-	request_dict: dict = await request.json()
-	try:
-		user_id = request_dict.get('userId')
-		assert user_id is not None, 'userId is null'
+    request_dict: dict = await request.json()
 
-		jwt_verified = jwt.verify_refresh_request(
-			cookies=request.cookies,
-			body=request_dict
-		)
-	except AssertionError as e:
-		return responses.generate_error_response(';'.join(e.args))
+    user_id = request_dict.get('userId')
+    if user_id is None:
+        return responses.generate_error_response('userId is null')
 
-	except jwt_lib.ExpiredSignatureError as e:
-		return responses.generate_error_response('refresh token expired')
+    try:
+        jwt_verified = jwt.verify_refresh_request(
+            cookies=request.cookies,
+            body=request_dict
+        )
+    except jwt_lib.ExpiredSignatureError as e:
+        return responses.generate_error_response('refresh token expired')
 
-	if not jwt_verified:
-		return responses.generate_error_response('refresh jwt does not match body')
+    if not jwt_verified:
+        return responses.generate_error_response(
+            'refresh jwt does not match body')
 
-	return responses.generate_access_response(user_id)
+    return responses.generate_access_response(user_id)

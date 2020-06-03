@@ -24,6 +24,7 @@ const mockData: JsonFetchResponse<GetBotsDto> = {
             },
         ],
     },
+    status: 200,
     ok: true,
 };
 

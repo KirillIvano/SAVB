@@ -9,7 +9,6 @@ const initialState: BotsStateType = {
     bots: {},
 
     botsGettingInProgress: false,
-    botsGettingSuccess: false,
     botsGettingError: null,
 };
 
@@ -20,7 +19,6 @@ export const botsReducer = createReducer<typeof initialState, RootAction>(
     state => ({
         ...state,
         botsGettingInProgress: true,
-        botsGettingSuccess: false,
         botsGettingError: null,
     }),
 ).handleAction(
@@ -30,7 +28,6 @@ export const botsReducer = createReducer<typeof initialState, RootAction>(
         bots: payload,
         botsGettingInProgress: false,
         botsGettingError: null,
-        botsGettingSuccess: true,
     }),
 ).handleAction(
     actions.getBotsErrorAction,
@@ -39,7 +36,6 @@ export const botsReducer = createReducer<typeof initialState, RootAction>(
         bots: {},
         botsGettingInProgress: false,
         botsGettingError: payload,
-        botsGettingSuccess: true,
     }),
 );
 

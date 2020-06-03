@@ -1,5 +1,5 @@
 import {Epic, combineEpics} from 'redux-observable';
-import {delay, filter, map, mergeMap} from 'rxjs/operators';
+import {delay, filter, mergeMap} from 'rxjs/operators';
 import {isOfType} from 'typesafe-actions';
 import {of} from 'rxjs';
 
@@ -25,14 +25,6 @@ const pushPopupMessageEpic: Epic<RootAction, RootAction, RootState> = (action$, 
         }),
     );
 
-const removePopupMessage: Epic<RootAction, RootAction, RootState> = action$ =>
-    action$.pipe(
-        filter(isOfType(names.REMOVE_POPUP_MESSAGE_START)),
-        delay(600),
-        map(({payload: id}) => actions.removePopupMessageEnd(id)),
-    );
-
 export default combineEpics(
     pushPopupMessageEpic,
-    removePopupMessage,
 );

@@ -40,7 +40,7 @@ async def vk_method(
 		return await vk_response.json()
 
 
-async def users_info(access_token: str, user_id: str):
+async def users_info(access_token: str, user_id: int):
 	return await vk_method(
 		'users.get',
 		access_token,

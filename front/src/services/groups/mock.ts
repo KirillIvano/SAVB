@@ -30,11 +30,11 @@ const mockData: JsonFetchResponse<GetGroupsDto> = {
             },
         ],
     },
+    status: 200,
     ok: true,
 };
 
 export const getGroups = async (): Promise<JsonFetchResponse<GetGroupsDto>> => {
     await new Promise(resolve => (setTimeout(() => resolve(), 500)));
-    // throw new Error('kekek ek e kee');
     return mockData;
 };

@@ -9,14 +9,12 @@ const mapStateToProps = ({botsState}: RootState) => {
         bots,
         botsGettingInProgress,
         botsGettingError,
-        botsGettingSuccess,
     } = botsState;
 
     return {
         bots,
         botsGettingInProgress,
         botsGettingError,
-        botsGettingSuccess,
     };
 };
 

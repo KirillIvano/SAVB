@@ -69,6 +69,8 @@ accessToken: jwt(userId, exp)
     Group: {
         name: string;
         id: number;
+        image: string;
+        isUsed: boolean; // создан ли уже бот для этой группы
     }
 ```
 

@@ -1,34 +1,48 @@
-export type JsonFetchResponse<Payload extends object = {}> = {
+type FetchResponseCommonProps = {
+    status: number;
+}
+
+export type JsonFetchResponse<Payload extends object = {}> = ({
     data: Payload;
     ok: true;
 } | {
     error: string;
     ok: false;
-};
+}) & FetchResponseCommonProps;
 
 export const UNKNOWN_ERROR_RESPONSE: JsonFetchResponse = {
     ok: false,
     error: 'Произошла неизвестная ошибка, перезагрузите, пожалуйста, страницу',
+    status: 400,
 };
+
 
 export const fetchJson = async <ResponsePayload extends object>(
     url: RequestInfo,
     options?: RequestInit,
 ): Promise<JsonFetchResponse<ResponsePayload>> => {
-    let ok: boolean, body;
     try {
         const response = await fetch(url, options);
-        ok = response.ok;
-        body = await response.json();
-    } catch {
+        const {ok, status} = response;
+
+        const body = await response.json();
+
+        if (ok) {
+            const {data} = body as {data: ResponsePayload};
+
+            return {ok, data, status};
+        }
+
+        const error = (body as {error: string}).error;
+        return {ok, error, status};
+
+    } catch(e) {
+        // eslint-disable-next-line no-console
+        console.log(e);
         return UNKNOWN_ERROR_RESPONSE;
     }
-
-    if (ok) {
-        const data = (body as {data: ResponsePayload}).data;
-        return {ok, data};
-    }
-
-    const error = (body as {error: string}).error;
-    return {ok, error};
 };
+
+
+// path is of form: /path/to/smth
+export const getServerRequestUrl = (path: string) => `${__SERVER_ORIGIN__}${path}`;

@@ -57,4 +57,4 @@ def verify_access_request(
 	if not access_jwt:
 		return False
   
-	return match(access_jwt, body, 'userId')
+	return True if verify(access_jwt) else False

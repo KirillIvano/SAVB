@@ -25,6 +25,7 @@ def check_auth(func):
             return responses.generate_error_response('no request params', 401)
 
         verified = jwt.verify_access_request(request.cookies)
+
         if not verified:
             return responses.generate_error_response('not verified', 401)
 

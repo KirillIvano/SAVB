@@ -19,22 +19,16 @@ routes = web.RouteTableDef()
 def check_auth(func):
     @functools.wraps(func)
     async def process(request):
-        try:
-            request_dict: dict = request.query
-        except json.decoder.JSONDecodeError:
+
+        request_dict: dict = request.query
+        if not request_dict:
             return responses.generate_error_response('no request params', 401)
 
-        try:
-            verified = jwt.verify_access_request(request.cookies, request_dict)
-        except AssertionError as e:
-            return responses.generate_error_response(' '.join(e.args), 401)
+        verified = jwt.verify_access_request(request.cookies, request_dict)
+        if not verified:
+            return responses.generate_error_response('not verified', 401)
 
-        if verified:
-            return await func(request)
-        else:
-            return responses.generate_error_response(
-                'bad accessJwt or no accessJwt')
-
+        return await func(request)
     return process
 
 

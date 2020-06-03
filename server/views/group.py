@@ -10,6 +10,7 @@ routes = web.RouteTableDef()
 @routes.get('/api/group')
 @check_auth
 async def handle(request: web.Request):
+
 	user_id: int = int(request.query.get('userId'))
 	if user_id is None:
 		return responses.generate_error_response('no user_id parameter', 401)

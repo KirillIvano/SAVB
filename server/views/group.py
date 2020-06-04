@@ -29,12 +29,14 @@ async def handle(request: web.Request):
 		return responses.generate_error_response(f'bad vk_response: {vk_response}')
 
 	groups = []
-	for group in vk_response_body.get('items'):
-		groups.append({
-			'name': group.get('name'),
-			'id': group.get('id'),
-			'image': group.get('photo_200')
-		})
+	map(
+		lambda g: groups.append(
+			{'name': g.get('name'),
+			 'id': g.get('id'),
+			 'image': g.get('photo_200'),}
+		),
+		vk_response_body.get('items')
+	)
 
 	return responses.generate_json_response(
 		body=dict(

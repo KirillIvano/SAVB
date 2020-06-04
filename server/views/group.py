@@ -30,14 +30,16 @@ async def handle(request: web.Request):
 
 	groups = []
 	for group in vk_response_body.get('items'):
-		group_id = group.get['id']
-		in_db = (await objects.get(Bot, bot_id=group_id)) is not None
+		group_id = group['id']
+		in_db = await objects.execute(
+			Bot.select(Bot.bot_id).where(Bot.bot_id == group_id)
+		)
 		groups.append(
 			{
 				'id': group_id,
 				'name': group['name'],
 				'image': group['photo_200'],
-				'isUsed': in_db
+				'isUsed': len(in_db) > 0
 			}
 		)
 

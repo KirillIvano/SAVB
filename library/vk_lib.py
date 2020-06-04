@@ -35,7 +35,6 @@ async def vk_method(method: str, params: dict):
                 oldtime = cache.Cache(BOT_REQUESTS_CACHE).get(access_token)
                 cache.Cache(BOT_REQUESTS_CACHE).set(access_token, oldtime + 0.06)
 
-                # print("Im sleeping", difference)
                 await asyncio.sleep(difference) 
 
             else:

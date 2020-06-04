@@ -2,6 +2,7 @@
 # Should start with /api/group
 from views.auth import check_auth
 from helpers import vk_api, cache, heavy_cache, responses
+from database.models import objects, Bot
 
 from aiohttp import web
 routes = web.RouteTableDef()
@@ -36,5 +37,7 @@ async def handle(request: web.Request):
 		})
 
 	return responses.generate_json_response(
-		groups=groups
+		body=dict(
+			groups=groups
+		)
 	)

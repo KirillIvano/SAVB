@@ -64,7 +64,7 @@ def logged(log_enabled):
 		return inner
 	return actual_inner
 
-def get_last_log():
+def get_last_logs():
     logs = []
     query = Log.select().order_by(Log.date.desc()).limit(100).dicts()
     for row in query:
@@ -73,11 +73,10 @@ def get_last_log():
         logs[-1]['date'] = str(tmp)
     return logs
 
-@logged(True)
-async def index(req: web.Request):
-	return generate_json_response(status=200, body="qwert")
+routes = web.RouteTableDef()
 
 @routes.get('/logs')
 @logged(False)
 async def handle_logs(request: web.Request):
-	return generate_json_response(status=200, body=get_last_log())
+	return generate_json_response(status=200, body=get_last_logs())
+

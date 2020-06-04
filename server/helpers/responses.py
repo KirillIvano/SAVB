@@ -17,7 +17,7 @@ def generate_json_response(
     else:
         json_body = json.dumps({'error': error_message}, ensure_ascii=False)
 
-    return web.Response(status=status, body=json_body)
+    return web.Response(status=status, body=json_body), status, body
 
 
 # sugar
@@ -47,7 +47,7 @@ def generate_access_response(user_id: int):
         }
     )
 
-    resp = generate_json_response(
+    resp, status, body = generate_json_response(
         body=dict(
             csrf=csrf_,
             userId=user_id,
@@ -57,4 +57,4 @@ def generate_access_response(user_id: int):
     )
     resp.set_cookie('refreshJwt', refresh_jwt, httponly=False)
     resp.set_cookie('accessJwt', access_jwt, httponly=False)
-    return resp
+    return resp, status, body

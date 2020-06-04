@@ -21,7 +21,7 @@ export const popupsReducer = createReducer<PopupState, RootAction>(initialState)
             messages: state.messages.slice(1),
         }),
     ).handleAction(
-        actions.removePopupMessageEnd,
+        actions.removePopupMessage,
         (state, {payload: id}) => ({
             messages: state.messages.filter(message => message.id !== id),
         }),

@@ -17,7 +17,6 @@ type BotsPageProps = {
     bots: Record<string, BotType>;
     botsGettingInProgress: boolean;
     botsGettingError: null | string;
-    botsGettingSuccess: boolean;
 
     getBots: () => void;
 }

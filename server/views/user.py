@@ -19,7 +19,7 @@ async def info(request: web.Request):
     if cache.get_vk_token_cache().includes(user_id):
         access_token = cache.get_vk_token_cache().get(user_id)
     else:
-        access_token = heavy_cache.get_vk_access_token(user_id)
+        access_token = await heavy_cache.get_vk_access_token(user_id)
         if access_token is None:
             return responses.generate_error_response('no access token in cache', 401)
 
@@ -37,7 +37,9 @@ async def info(request: web.Request):
     user_image = vk_response_body['photo_200']
 
     return responses.generate_json_response(
-        userId=user_id,
-        name=user_full_name,
-        image=user_image,
+        body=dict(
+            userId=user_id,
+            name=user_full_name,
+            image=user_image,
+        )
     )

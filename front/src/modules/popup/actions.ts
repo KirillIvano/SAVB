@@ -15,13 +15,8 @@ export const addPopupErrorMessage = createAction(
     (content: string): PopupMessageType => ({content, type: 'error', id: ++id}),
 )();
 
-export const removePopupMessageStart = createAction(
-    names.REMOVE_POPUP_MESSAGE_START,
-    (id: number) => id,
-)();
-
-export const removePopupMessageEnd = createAction(
-    names.REMOVE_POPUP_MESSAGE_END,
+export const removePopupMessage = createAction(
+    names.REMOVE_POPUP_MESSAGE,
     (id: number) => id,
 )();
 

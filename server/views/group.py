@@ -29,17 +29,18 @@ async def handle(request: web.Request):
 		return responses.generate_error_response(f'bad vk_response: {vk_response}')
 
 	groups = []
-	map(
-		lambda g: groups.append(
-			{'name': g.get('name'),
-			 'id': g.get('id'),
-			 'image': g.get('photo_200'),}
-		),
-		vk_response_body.get('items')
-	)
+	for group in vk_response_body.get('items'):
+		group_id = group.get['id']
+		in_db = (await objects.get(Bot, bot_id=group_id)) is not None
+		groups.append(
+			{
+				'id': group_id,
+				'name': group['name'],
+				'image': group['photo_200'],
+				'isUsed': in_db
+			}
+		)
 
 	return responses.generate_json_response(
-		body=dict(
-			groups=groups
-		)
+		body=dict(groups=groups)
 	)

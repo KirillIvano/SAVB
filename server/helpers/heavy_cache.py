@@ -17,5 +17,4 @@ async def set_vk_access_token(user_id: int, access_token: str):
     if user is None:
         await objects.create(User, user_id=user_id, access_token=access_token)
     else:
-        await objects.update(user, {User.access_token: access_token})
-
+        await objects.execute(User.update({'access_token': access_token}))

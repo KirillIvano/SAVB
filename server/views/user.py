@@ -37,7 +37,9 @@ async def info(request: web.Request):
     user_image = vk_response_body['photo_200']
 
     return responses.generate_json_response(
-        userId=user_id,
-        name=user_full_name,
-        image=user_image,
+        body=dict(
+            userId=user_id,
+            name=user_full_name,
+            image=user_image,
+        )
     )

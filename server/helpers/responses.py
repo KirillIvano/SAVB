@@ -6,22 +6,28 @@ from helpers import jwt, csrf
 import settings
 
 
+def generate_json_response(
+        status: int = 200,
+        error_message: str = '',
+        body: dict = None):
+    # add logs here
+
+    if status == 200:
+        json_body = json.dumps(body, ensure_ascii=False)
+    else:
+        json_body = json.dumps({'error': error_message}, ensure_ascii=False)
+
+    return web.Response(status=status, body=json_body), status, body
+
+
+# sugar
 def generate_error_response(message: str, status: int = 401):
-    return web.Response(
-        status=status,
-        body=json.dumps({'error': message})
-    )
+    return generate_json_response(status, message)
 
 
-def generate_json_response(**kwargs):
-    return web.Response(
-        body=json.dumps({"data": kwargs}, ensure_ascii=False)
-    )
-
-
+# sugar
 def generate_access_response(user_id: int):
     csrf_: str = csrf.generate_csrf()
-
     user_id: str = str(user_id)
 
     access_exp = time.time().__int__() + settings.ACCESS_TOKEN_EXP
@@ -41,12 +47,14 @@ def generate_access_response(user_id: int):
         }
     )
 
-    resp = generate_json_response(
-        csrf=csrf_,
-        userId=user_id,
-        accessExp=access_exp,
-        refreshExp=refresh_exp,
+    resp, status, body = generate_json_response(
+        body=dict(
+            csrf=csrf_,
+            userId=user_id,
+            accessExp=access_exp,
+            refreshExp=refresh_exp
+        )
     )
     resp.set_cookie('refreshJwt', refresh_jwt, httponly=False)
     resp.set_cookie('accessJwt', access_jwt, httponly=False)
-    return resp
+    return resp, status, body

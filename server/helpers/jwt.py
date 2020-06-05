@@ -10,12 +10,14 @@ def encode(payload: dict) -> str:
 	).decode()
 
 
-def verify(token: str) -> dict:
-	# raises ExpiredSignatureError if token expired
-	return jwt.decode(
-		jwt=token,
-		key=settings.JWT_TOKEN
-	)
+def verify(token: str) -> dict or bool:
+	try:
+		return jwt.decode(
+			jwt=token,
+			key=settings.JWT_TOKEN
+		)
+	except jwt.exceptions.ExpiredSignatureError:
+		return False
 
 
 def match(token: str, body: dict, *keys: str) -> bool:

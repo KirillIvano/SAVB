@@ -22,7 +22,7 @@ def generate_json_response(
 
 
 # sugar
-def generate_error_response(message: str, status: int = 401):
+def generate_error_response(message: str, status: int):
     return generate_json_response(status, message)
 
 

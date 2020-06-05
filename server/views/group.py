@@ -16,19 +16,23 @@ async def handle(request: web.Request):
 	user_id = cookies_body['userId']
 
 	if user_id is None:
-		return responses.generate_error_response('no user_id parameter')
+		return responses.generate_error_response('no user_id parameter', 400)
 
 	if cache.get_vk_token_cache().includes(user_id):
 		access_token = cache.get_vk_token_cache().get(user_id)
 	else:
 		access_token = await heavy_cache.get_vk_access_token(user_id)
 		if access_token is None:
-			return responses.generate_error_response('no access token in cache')
+			return responses.generate_error_response(
+				'no access token in cache', 401
+			)
 
 	vk_response = await vk_api.group(access_token, user_id)
 	vk_response_body = vk_response.get('response')
 	if not vk_response_body:
-		return responses.generate_error_response(f'bad vk_response: {vk_response}')
+		return responses.generate_error_response(
+			f'bad vk_response: {vk_response}', 400
+		)
 
 	groups = []
 	for group in vk_response_body.get('items'):

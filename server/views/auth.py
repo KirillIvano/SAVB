@@ -35,7 +35,7 @@ async def auth_login(request: web.Request):
         request_dict: dict = await request.json()
     except TypeError:
         return responses.generate_error_response(
-            'Could not get json from request'
+            'Could not get json from request', 400
         )
 
     access_token_response = await vk_api.get_access_token(
@@ -52,7 +52,7 @@ async def auth_login(request: web.Request):
     access_token: str = access_token_response.get('access_token')
     if access_token is None:
         return responses.generate_error_response(
-            f'no access_token in vk response: {access_token_response}'
+            f'no access_token in vk response: {access_token_response}', 400
         )
 
     cache.get_vk_token_cache().set(user_id, access_token)
@@ -67,7 +67,7 @@ async def auth_refresh_tokens(request: web.Request):
 
     user_id = request_dict.get('userId')
     if user_id is None:
-        return responses.generate_error_response('userId is null')
+        return responses.generate_error_response('userId is null', 400)
 
     try:
         jwt_verified = jwt.verify_refresh_request(
@@ -75,10 +75,10 @@ async def auth_refresh_tokens(request: web.Request):
             body=request_dict
         )
     except jwt_lib.ExpiredSignatureError as e:
-        return responses.generate_error_response('refresh token expired')
+        return responses.generate_error_response('refresh token expired', 401)
 
     if not jwt_verified:
         return responses.generate_error_response(
-            'refresh jwt does not match body')
+            'refresh jwt does not match body', 401)
 
     return responses.generate_access_response(user_id)

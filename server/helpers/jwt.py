@@ -17,6 +17,7 @@ def verify(token: str) -> dict or bool:
 			key=settings.JWT_TOKEN
 		)
 	except jwt_lib.exceptions.ExpiredSignatureError:
+		print('expired')
 		return False
 
 

@@ -17,7 +17,7 @@ def generate_json_response(
     else:
         json_body = json.dumps({'error': error_message}, ensure_ascii=False)
 
-    return web.Response(status=status, body=json_body), status, body
+    return web.Response(status=status, body=json_body), status, json_body
 
 
 # sugar

@@ -29,3 +29,6 @@ export const ReloadIcon = createIcon(reloadImage);
 
 import addImage from './images/add.svg';
 export const AddIcon = createIcon(addImage);
+
+import exitImage from './images/exit.svg';
+export const ExitIcon = createIcon(exitImage);

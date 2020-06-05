@@ -20,10 +20,6 @@ def check_auth(func):
     @functools.wraps(func)
     async def process(request):
 
-        request_dict: dict = request.query
-        if not request_dict:
-            return responses.generate_error_response('no request params', 401)
-
         verified = jwt.verify_access_request(request.cookies)
 
         if not verified:

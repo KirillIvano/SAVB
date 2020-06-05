@@ -1,6 +1,5 @@
-venv/
+venv
 __pycache__
 .idea
-.idea/
 static
 .env

@@ -2,12 +2,14 @@
 # Should start with /api/group
 from views.auth import check_auth
 from helpers import vk_api, cache, heavy_cache, responses
+from helpers.log import logged
 
 from aiohttp import web
 routes = web.RouteTableDef()
 
 
 @routes.get('/api/group')
+@logged(True)
 @check_auth
 async def handle(request: web.Request):
 

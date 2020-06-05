@@ -3,7 +3,7 @@ from functools import wraps
 import asyncio
 from aiohttp import web
 import json
-from database.models import Log
+from database.models import Log, objects
 
 async def log_add(
 		status: int,
@@ -13,7 +13,7 @@ async def log_add(
 		res_data: str=None,
 		error: str=None
 		):
-	log = Log(
+	await objects.create(Log,
 		status=status,
 		date = datetime.now(),
 		method=method,
@@ -22,9 +22,8 @@ async def log_add(
 		res_data=res_data,
 		error=error
 	)
-	log.save()
 
-def logged(log_enabled):
+def logged(log_enabled: bool=True):
 	def actual_inner(controller):
 		@wraps(controller)
 		async def inner(req: web.Request):
@@ -63,11 +62,10 @@ def logged(log_enabled):
 		return inner
 	return actual_inner
 
-def get_last_logs():
+async def get_last_logs():
     logs = []
-    query = Log.select().order_by(Log.date.desc()).limit(100).dicts()
-    for row in query:
-        tmp = row['date']
-        logs.append(row)
-        logs[-1]['date'] = str(tmp)
+    query = await objects.execute(Log.select().order_by(Log.date.desc()).limit(100).dicts())
+    for log in query:
+        logs.append(log)
+        logs[-1]['date'] = str(logs[-1]['date'])
     return logs

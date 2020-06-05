@@ -6,6 +6,7 @@ from helpers import responses
 from helpers import vk_api
 from helpers import cache
 from helpers import heavy_cache
+from helpers.log import logged
 
 import jwt as jwt_lib
 from aiohttp import web
@@ -30,6 +31,7 @@ def check_auth(func):
 
 
 @routes.post('/api/auth/login')
+@logged(True)
 async def auth_login(request: web.Request):
     try:
         request_dict: dict = await request.json()
@@ -62,6 +64,7 @@ async def auth_login(request: web.Request):
 
 
 @routes.post('/api/auth/refreshTokens')
+@logged(True)
 async def auth_refresh_tokens(request: web.Request):
     request_dict: dict = await request.json()
 

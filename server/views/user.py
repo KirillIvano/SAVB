@@ -2,6 +2,7 @@
 # Should start with /api/group
 from helpers import vk_api, cache, heavy_cache, responses
 from views.auth import check_auth
+from helpers.log import logged
 
 from aiohttp import web
 
@@ -9,6 +10,7 @@ routes = web.RouteTableDef()
 
 
 @routes.get(path='/api/user/info')
+@logged(True)
 @check_auth
 async def info(request: web.Request):
     try:

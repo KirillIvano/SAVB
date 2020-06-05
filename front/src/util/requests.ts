@@ -16,13 +16,14 @@ export const UNKNOWN_ERROR_RESPONSE: JsonFetchResponse = {
     status: 400,
 };
 
+// path is of form: /path/to/smth
 
 export const fetchJson = async <ResponsePayload extends object>(
-    url: RequestInfo,
+    path: RequestInfo,
     options?: RequestInit,
 ): Promise<JsonFetchResponse<ResponsePayload>> => {
     try {
-        const response = await fetch(url, options);
+        const response = await fetch(path, options);
         const {ok, status} = response;
 
         const body = await response.json();
@@ -43,6 +44,10 @@ export const fetchJson = async <ResponsePayload extends object>(
     }
 };
 
+export const getQueryParams = (
+    params: Record<string, string>,
+) => Object.keys(params)
+    .map(key => `${key}=${params[key]}`)
+    .join('&');
 
-// path is of form: /path/to/smth
-export const getServerRequestUrl = (path: string) => `${__SERVER_ORIGIN__}${path}`;
+export const getServerRequestUri = (path: string ) => `${__SERVER_ORIGIN__}${path}`;

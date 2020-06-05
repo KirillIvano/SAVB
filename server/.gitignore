@@ -4,3 +4,4 @@ __pycache__
 .idea/
 static
 .env
+node_modules

@@ -28,7 +28,8 @@ async def info(request: web.Request):
         vk_response_body = vk_response['response'][0]
     except KeyError:
         return responses.generate_error_response(
-            'vk did not response: ' + str(vk_response)
+            'vk did not response: ' + str(vk_response),
+            400
         )
 
     user_full_name = ' '.join(

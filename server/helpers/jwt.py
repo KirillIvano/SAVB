@@ -1,10 +1,10 @@
-import jwt
+import jwt as jwt_lib
 import settings
 from aiohttp import web
 
 
 def encode(payload: dict) -> str:
-	return jwt.encode(
+	return jwt_lib.encode(
 		payload=payload,
 		key=settings.JWT_TOKEN,
 	).decode()
@@ -12,20 +12,20 @@ def encode(payload: dict) -> str:
 
 def verify(token: str) -> dict or bool:
 	try:
-		return jwt.decode(
+		return jwt_lib.decode(
 			jwt=token,
 			key=settings.JWT_TOKEN
 		)
-	except jwt.exceptions.ExpiredSignatureError:
+	except jwt_lib.exceptions.ExpiredSignatureError:
 		return False
 
 
 def match(token: str, body: dict, *keys: str) -> bool:
 	try:
 		payload = verify(token)
-	except jwt.exceptions.InvalidSignatureError:
+	except jwt_lib.exceptions.InvalidSignatureError:
 		return False
-	except jwt.exceptions.ExpiredSignatureError:
+	except jwt_lib.exceptions.ExpiredSignatureError:
 		return False
 
 	matched = True

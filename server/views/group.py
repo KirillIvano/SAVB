@@ -1,7 +1,8 @@
 # API routes for authorisation
 # Should start with /api/group
 from views.auth import check_auth
-from helpers import vk_api, cache, heavy_cache, responses
+from helpers import vk_api, cache, heavy_cache, responses, jwt
+from database.models import objects, Bot
 
 from aiohttp import web
 routes = web.RouteTableDef()
@@ -11,7 +12,9 @@ routes = web.RouteTableDef()
 @check_auth
 async def handle(request: web.Request):
 
-	user_id: int = int(request.query.get('userId'))
+	cookies_body: dict = jwt.verify(request.cookies['accessJwt'])
+	user_id = cookies_body['userId']
+
 	if user_id is None:
 		return responses.generate_error_response('no user_id parameter', 400)
 
@@ -20,7 +23,9 @@ async def handle(request: web.Request):
 	else:
 		access_token = await heavy_cache.get_vk_access_token(user_id)
 		if access_token is None:
-			return responses.generate_error_response('no access token in cache', 401)
+			return responses.generate_error_response(
+				'no access token in cache', 401
+			)
 
 	vk_response = await vk_api.group(access_token, user_id)
 	vk_response_body = vk_response.get('response')
@@ -31,12 +36,19 @@ async def handle(request: web.Request):
 
 	groups = []
 	for group in vk_response_body.get('items'):
-		groups.append({
-			'name': group.get('name'),
-			'id': group.get('id'),
-			'image': group.get('photo_200')
-		})
+		group_id = group['id']
+		in_db = await objects.execute(
+			Bot.select(Bot.bot_id).where(Bot.bot_id == group_id)
+		)
+		groups.append(
+			{
+				'id': group_id,
+				'name': group['name'],
+				'image': group['photo_200'],
+				'isUsed': len(in_db) > 0,
+			}
+		)
 
 	return responses.generate_json_response(
-		groups=groups
+		body=dict(groups=groups)
 	)

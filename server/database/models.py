@@ -79,6 +79,20 @@ class KeyboardButton(BaseModel):
     trigger_id = ForeignKeyField(Trigger)
 
 
+class Log(BaseModel):
+    log_id = PrimaryKeyField()
+    status = IntegerField()
+    date = DateTimeField()
+    req_data = CharField()
+    method = CharField()
+    url = CharField()
+    res_data = CharField(null=True)
+    error = CharField(null=True)
+
+
+# database.connect(reuse_if_open=True)
+# database.close()
+
 loop = asyncio.new_event_loop()
 objects = peewee_async.Manager(database, loop=loop)
 database.set_allow_sync(False)

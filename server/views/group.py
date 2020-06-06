@@ -1,6 +1,7 @@
 # API routes for authorisation
 # Should start with /api/group
 from views.auth import check_auth
+from helpers.log import logged
 from helpers import vk_api, cache, heavy_cache, responses, jwt
 from database.models import objects, Bot
 
@@ -9,6 +10,7 @@ routes = web.RouteTableDef()
 
 
 @routes.get('/api/group')
+@logged(True)
 @check_auth
 async def handle(request: web.Request):
 

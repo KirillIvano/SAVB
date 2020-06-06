@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, useHistory} from 'react-router-dom';
 
 import {
     Bots,
@@ -9,7 +9,7 @@ import {
 } from '@/pages';
 import {PopupBox, Header} from '@/parts';
 import {withAuthRegulation} from '@/containers/withAuthRegulation';
-import {PageWrapper, Preloader} from '@/uikit';
+import {PageWrapper, Preloader, Button} from '@/uikit';
 import {withAuth} from './containers/withAuth';
 
 type AppProps = {
@@ -26,6 +26,8 @@ const App = ({
         tryAuth();
     }, []);
 
+    const history = useHistory();
+
     if (!isAppInitialized) {
         return <Preloader />;
     }
@@ -34,6 +36,7 @@ const App = ({
         <>
             <Header />
             <PageWrapper>
+                <Button onClick={() => history.push('/bots')}>Боты</Button>
                 <Switch>
                     <Route exact path="/" component={Main} />
                     <Route exact path="/bots" component={withAuthRegulation(Bots)} />

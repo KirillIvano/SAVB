@@ -1,7 +1,7 @@
 import {JsonFetchResponse} from '@/util/requests';
 import {GetBotsDto} from './dto';
 
-const mockData: JsonFetchResponse<GetBotsDto> = {
+const mockBots: JsonFetchResponse<GetBotsDto> = {
     data: {
         bots: [
             {
@@ -30,5 +30,14 @@ const mockData: JsonFetchResponse<GetBotsDto> = {
 
 export const getBots = async (): Promise<JsonFetchResponse<GetBotsDto>> => {
     await new Promise(resolve => (setTimeout(() => resolve(), 500)));
-    return mockData;
+    return mockBots;
+};
+
+export type CreateBotBody = {
+    code: string;
+    redirectUri: string;
+}
+export const createBot = async (body: CreateBotBody): Promise<JsonFetchResponse> => {
+    await new Promise(resolve => (setTimeout(() => resolve(), 500)));
+    return {data: {}, ok: true, status: 200};
 };

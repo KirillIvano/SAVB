@@ -10,33 +10,58 @@ const initialState: BotsStateType = {
 
     botsGettingInProgress: false,
     botsGettingError: null,
+
+    botCreatingInProgress: false,
+    botCreatingError: null,
 };
 
-export const botsReducer = createReducer<typeof initialState, RootAction>(
-    initialState,
-).handleAction(
-    actions.getBotsAction,
-    state => ({
-        ...state,
-        botsGettingInProgress: true,
-        botsGettingError: null,
-    }),
-).handleAction(
-    actions.getBotsSuccessAction,
-    (state, {payload}) => ({
-        ...state,
-        bots: payload,
-        botsGettingInProgress: false,
-        botsGettingError: null,
-    }),
-).handleAction(
-    actions.getBotsErrorAction,
-    (state, {payload}) => ({
-        ...state,
-        bots: {},
-        botsGettingInProgress: false,
-        botsGettingError: payload,
-    }),
-);
+export const botsReducer = createReducer<typeof initialState, RootAction>(initialState)
+    .handleAction(
+        actions.getBotsAction,
+        state => ({
+            ...state,
+            botsGettingInProgress: true,
+            botsGettingError: null,
+        }),
+    ).handleAction(
+        actions.getBotsSuccessAction,
+        (state, {payload}) => ({
+            ...state,
+            bots: payload,
+            botsGettingInProgress: false,
+            botsGettingError: null,
+        }),
+    ).handleAction(
+        actions.getBotsErrorAction,
+        (state, {payload}) => ({
+            ...state,
+            bots: {},
+            botsGettingInProgress: false,
+            botsGettingError: payload,
+        }),
+    )
 
+    .handleAction(
+        actions.createBotAction,
+        (state) => ({
+            ...state,
 
+            botCreatingInProgress: true,
+            botCreatingError: null,
+        }),
+    ).handleAction(
+        actions.createBotsSuccessAction,
+        (state) => ({
+            ...state,
+
+            botCreatingInProgress: false,
+        }),
+    ).handleAction(
+        actions.createBotsErrorAction,
+        (state, {payload: error}) => ({
+            ...state,
+
+            botCreatingInProgress: false,
+            botCreatingError: error,
+        }),
+    );

@@ -25,6 +25,7 @@ async def index(request: web.Request):
 from views.auth import routes as auth_routes
 from views.group import routes as group_routes
 from views.user import routes as user_routes
+from views.logs import routes as getting_logs
 
 app.add_routes(
 	[
@@ -32,6 +33,7 @@ app.add_routes(
 		*group_routes,
 		*user_routes,
 
+		*getting_logs,
 		*index_routes  # must be at the end
 	]
 )

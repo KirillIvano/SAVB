@@ -32,7 +32,7 @@ def get_vk_interactor(type='group'):
     async def vk_bot_method(method: str, params: dict):
         async with aiohttp.ClientSession() as session:
             access_token = params['access_token']
-            print(library_cache())
+
             if library_cache.includes(access_token):
 
                 difference = library_cache.get(access_token) - time.time()

@@ -3,6 +3,7 @@
 ## Разделы
 * [Авторизация](#авторизация)
 * [Группы](#группы)
+* [Боты](#боты)
 
 ## Авторизация
 
@@ -74,7 +75,6 @@ accessToken: jwt(userId, exp)
     }
 ```
 
-### Request
 `GET /api/group?userId=<string>`
 
 Получает все группы, админом которых является юзер
@@ -85,6 +85,43 @@ accessToken: jwt(userId, exp)
         groups: [Group]
     }
 }
+```
+
+## Боты
+
+### Request
+`GET /api/group?userId=<string>`
+
+Получает все группы, админом которых является юзер
+#### Response
+```
+{
+    data {
+        bots: [{
+            id: number;
+            name: string;
+            image: string;
+            membersCount: number
+        }]
+    }
+}
+```
+
+`POST /api/group/createBot`
+
+Создаёт бота на группе (получает токен, создаёт колбэк сервер с дефолтным ответом на стартовое сообщение)
+
+#### Request
+```
+    body: {
+        code: string;
+        redirectUri: string;
+    }
+```
+
+#### Response
+```
+{}
 ```
 
 ## Пользователь

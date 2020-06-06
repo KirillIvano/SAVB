@@ -23,7 +23,9 @@ async def info(request: web.Request):
     else:
         access_token = await heavy_cache.get_vk_access_token(user_id)
         if access_token is None:
-            return responses.generate_error_response('no access token in cache', 401)
+            return responses.generate_error_response(
+                'no access token in cache', 401
+            )
 
     vk_response = await vk_api.users_info(access_token, user_id)
     try:

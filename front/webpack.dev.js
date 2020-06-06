@@ -10,6 +10,7 @@ const dev = {
         historyApiFallback: true,
         hotOnly: true,
         contentBase: path.resolve(__dirname, 'dist'),
+        host: '127.0.0.1',
         port: '8080',
         headers: {
             'Access-Control-Allow-Origin': '*',

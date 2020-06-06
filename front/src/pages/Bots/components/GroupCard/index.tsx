@@ -21,7 +21,7 @@ const GroupCard: React.FC<GroupCardProps> = ({
                 <div className={styles.groupData}>
                     <h3 className={styles.groupName}>{name}</h3>
                     {
-                        isUsed ?
+                        !isUsed ?
                             <p className={classnames(styles.groupUsage)}>+ Подключить бота</p> :
                             <p className={classnames(styles.groupUsage, styles.used)}>Бот подключен</p>
                     }

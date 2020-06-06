@@ -7,8 +7,9 @@ from aiohttp import ClientSession
 import aiohttp
 import json
 from aiohttp import web
-import cache
 from cache import *
+
+library_cache = get_library_cache()
 
 def enchance_params(params: dict):
     params.update({ 'v': "5.92" })
@@ -24,22 +25,31 @@ async def execute_method(
         data = await response.json()
         return data
 
-async def vk_method(method: str, params: dict):
-    async with aiohttp.ClientSession() as session:
-        access_token = params['access_token']
-        if cache.Cache(BOT_REQUESTS_CACHE).includes(access_token):
 
-            difference = cache.Cache(BOT_REQUESTS_CACHE).get(access_token) - time.time()
-        
-            if difference > 0: 
-                oldtime = cache.Cache(BOT_REQUESTS_CACHE).get(access_token)
-                cache.Cache(BOT_REQUESTS_CACHE).set(access_token, oldtime + 0.06)
+def get_vk_interactor(type='group'):
+    delay = .35 if type is 'user' else .06
 
-                await asyncio.sleep(difference) 
+    async def vk_bot_method(method: str, params: dict):
+        async with aiohttp.ClientSession() as session:
+            access_token = params['access_token']
+            print(library_cache())
+            if library_cache.includes(access_token):
 
+                difference = library_cache.get(access_token) - time.time()
+            
+                if difference > 0: 
+                    oldtime = library_cache.get(access_token)
+                    library_cache.set(access_token, oldtime + delay)
+
+                    await asyncio.sleep(difference) 
+
+                else:
+                    library_cache.set(access_token, time.time() + delay)
             else:
-                cache.Cache(BOT_REQUESTS_CACHE).set(access_token, time.time() + 0.06)
-        else:
-            cache.Cache(BOT_REQUESTS_CACHE).set(access_token, time.time() + 0.06)
+                library_cache.set(access_token, time.time() + delay)
 
-        return await execute_method(session, method, params)
+            return await execute_method(session, method, params)
+    
+    return vk_bot_method
+
+

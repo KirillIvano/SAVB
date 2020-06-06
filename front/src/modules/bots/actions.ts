@@ -16,8 +16,7 @@ export const getBotsErrorAction = createAction(
 )();
 
 export type BotCreatePayload = {
-    groupId: number;
-    redirectUrl: string;
+    redirectUri: string;
     code: string;
 }
 export const createBotAction = createAction(

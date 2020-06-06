@@ -1,6 +1,6 @@
 import {Epic, combineEpics} from 'redux-observable';
-import {filter, map, switchMap} from 'rxjs/operators';
-import {from} from 'rxjs';
+import {filter, map, switchMap, mergeMap} from 'rxjs/operators';
+import {from, of} from 'rxjs';
 import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
@@ -9,6 +9,7 @@ import {RawBotType} from '@/services/bots/dto';
 
 import * as botsNames from './names';
 import * as botsActions from './actions';
+import {addPopupSuccessMessage, addPopupErrorMessage} from '../popup/actions';
 
 const getBotsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
@@ -35,10 +36,16 @@ const createBotEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
         filter(isOfType(botsNames.BOT_CREATE_START)),
         switchMap(
-            () => from(createBot()).pipe(
-                map(res => res.ok ?
-                    botsActions.createBotsSuccessAction() :
-                    botsActions.createBotsErrorAction(res.error),
+            ({payload}) => from(createBot(payload)).pipe(
+                mergeMap(res => res.ok ?
+                    of(
+                        botsActions.createBotsSuccessAction(),
+                        addPopupSuccessMessage('Бот был успешно создан!'),
+                    ) :
+                    of(
+                        botsActions.createBotsErrorAction(res.error),
+                        addPopupErrorMessage(res.error),
+                    ),
                 ),
             ),
         ),

@@ -13,6 +13,7 @@ const initialState: BotsStateType = {
 
     botCreatingInProgress: false,
     botCreatingError: null,
+    botCreatingSuccess: false,
 };
 
 export const botsReducer = createReducer<typeof initialState, RootAction>(initialState)
@@ -48,6 +49,7 @@ export const botsReducer = createReducer<typeof initialState, RootAction>(initia
 
             botCreatingInProgress: true,
             botCreatingError: null,
+            botCreatingSuccess: false,
         }),
     ).handleAction(
         actions.createBotsSuccessAction,
@@ -55,6 +57,7 @@ export const botsReducer = createReducer<typeof initialState, RootAction>(initia
             ...state,
 
             botCreatingInProgress: false,
+            botCreatingSuccess: true,
         }),
     ).handleAction(
         actions.createBotsErrorAction,

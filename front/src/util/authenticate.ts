@@ -1,11 +1,27 @@
-import {parse} from 'qs';
+import {parse, stringify} from 'qs';
+import {cached} from './cached';
 
-export const getUserAuthUrl = () =>
-    'https://oauth.vk.com/authorize?' +
-    'client_id=7471373&' +
-    'display=page&' +
-    `redirect_uri=${__CLIENT_ORIGIN__}/userAuthPending&` +
-    'scope=friends&response_type=code&v=5.103';
+const commonVkAuthProps = {
+    'client_id': 7471373,
+    'display': 'page',
+    'response_type': 'code',
+    'v': '5.103',
+};
+
+export const getUserAuthUrl = cached(() =>
+    'https://oauth.vk.com/authorize?' + stringify({
+        ...commonVkAuthProps,
+        'redirect_uri': `${__CLIENT_ORIGIN__}/userAuthPending`,
+        'scope': 'friends,groups,photos,offline',
+    }));
+
+export const getGroupAuthUrl = (groupId: number) =>
+    'https://oauth.vk.com/authorize?' + stringify({
+        ...commonVkAuthProps,
+        'redirect_uri': `${__CLIENT_ORIGIN__}/groupAuthPending`,
+        'scope': 'photos,messages,docs,manage',
+        'group_ids': String(groupId),
+    });
 
 export const getCodeFromSearchParams = (search: string) =>
     parse(search, {ignoreQueryPrefix: true}).code as string | undefined;

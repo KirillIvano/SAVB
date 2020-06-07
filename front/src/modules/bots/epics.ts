@@ -4,7 +4,7 @@ import {from, of} from 'rxjs';
 import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
-import {getBots, createBot} from '@/services/bots/mock';
+import {getBots, createBot, getSingleBot} from '@/services/bots/mock';
 import {RawBotType} from '@/services/bots/dto';
 
 import * as botsNames from './names';
@@ -51,7 +51,27 @@ const createBotEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         ),
     );
 
+const getSingleBotEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+    action$.pipe(
+        filter(isOfType(botsNames.BOT_GET_SINGLE_START)),
+        switchMap(
+            ({payload}) => from(getSingleBot(payload)).pipe(
+                mergeMap(res => res.ok ?
+                    of(
+                        botsActions.getSingleBotSuccessAction(res.data.bot),
+                        addPopupSuccessMessage('Бот был успешно создан!'),
+                    ) :
+                    of(
+                        botsActions.getSingleBotErrorAction(res.error),
+                        addPopupErrorMessage(res.error),
+                    ),
+                ),
+            ),
+        ),
+    );
+
 export default combineEpics(
     getBotsEpic,
     createBotEpic,
+    getSingleBotEpic,
 );

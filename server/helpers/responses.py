@@ -10,7 +10,6 @@ def generate_json_response(
         status: int = 200,
         error_message: str = '',
         body: dict = None):
-    # add logs here
 
     if status == 200:
         json_body = json.dumps({'data': body}, ensure_ascii=False)
@@ -18,7 +17,6 @@ def generate_json_response(
         json_body = json.dumps({'error': error_message}, ensure_ascii=False)
 
     return web.Response(status=status, body=json_body), status, body
-    # return web.Response(status=status, body=json_body)
 
 
 # sugar
@@ -49,7 +47,6 @@ def generate_access_response(user_id: int):
     )
 
     resp, status, body = generate_json_response(
-    # resp = generate_json_response(
         body=dict(
             csrf=csrf_,
             userId=user_id,
@@ -60,5 +57,4 @@ def generate_access_response(user_id: int):
     print(resp)
     resp.set_cookie('refreshJwt', refresh_jwt, httponly=False)
     resp.set_cookie('accessJwt', access_jwt, httponly=False)
-    # return resp, status, body
     return resp, status, body

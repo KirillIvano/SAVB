@@ -12,20 +12,20 @@ from cache import *
 library_cache = get_library_cache()
 
 
-def enchance_params(params: dict):
+def _enchance_params(params: dict):
     params.update({ 'v': "5.92" })
 
     return params
 
 
-async def execute_method(
+async def _execute_method(
     session: aiohttp.ClientSession,
     method: str,
     params: dict
 ):
     async with session.get(
         f'https://api.vk.com/method/{method}', 
-        params = enchance_params(params)
+        params = _enchance_params(params)
     ) as response:
 
         data = await response.json()
@@ -56,7 +56,7 @@ def get_vk_interactor(type='group'):
             else:
                 library_cache.set(access_token, time.time() + delay)
 
-            return await execute_method(session, method, params)
+            return await _execute_method(session, method, params)
     
     return vk_bot_method
 

@@ -1,4 +1,3 @@
-# API routes for authorisation
 # Should start with /api/group
 from views.auth import check_auth
 from helpers.log import logged

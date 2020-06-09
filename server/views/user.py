@@ -1,5 +1,4 @@
-# API routes for authorisation
-# Should start with /api/group
+# Should start with /api/user
 from helpers import vk_api, cache, heavy_cache, responses
 from views.auth import check_auth
 from helpers.log import logged

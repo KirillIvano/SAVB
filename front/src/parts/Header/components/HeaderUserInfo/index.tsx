@@ -6,8 +6,8 @@ import {UserInfoType} from '@/modules/user/types';
 import {getUserAuthUrl} from '@/util/authenticate';
 
 import styles from './styles.less';
-import leaveIcon from './images/leave.svg';
 import {withUserInfo} from './containers/withUserInfo';
+import {ExitIcon} from '@/uikit/Icons';
 
 type HeaderUserInfoProps = {
     info: UserInfoType | null;
@@ -64,11 +64,7 @@ const HeaderUserInfo = ({
                     <p className={styles.userName}>{name}</p>
                 </div>
 
-                <img
-                    src={leaveIcon}
-                    className={styles.leaveIcon}
-                    onClick={logout}
-                />
+                <ExitIcon onClick={logout} size={'large'} />
             </div>
         </Fade>
     );

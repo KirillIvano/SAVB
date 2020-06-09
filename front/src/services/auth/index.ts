@@ -1,4 +1,4 @@
-import {fetchJson, getServerRequestUrl} from '@/util/requests';
+import {fetchJson, getServerRequestUri} from '@/util/requests';
 
 import {
     LoginDto,
@@ -8,7 +8,7 @@ import {
 import {UserCredsType} from '@/modules/user/types';
 
 export const login = (code: string, redirectUri: string) => fetchJson<LoginDto>(
-    getServerRequestUrl('/api/auth/login'),
+    getServerRequestUri('/api/auth/login'),
     {
         credentials: 'include',
         method: 'POST',
@@ -20,7 +20,7 @@ export const login = (code: string, redirectUri: string) => fetchJson<LoginDto>(
 );
 
 export const refreshTokens = (userId: number, csrf: string) => fetchJson<RefreshTokenDto>(
-    getServerRequestUrl('/api/auth/refreshTokens'),
+    getServerRequestUri('/api/auth/refreshTokens'),
     {
         credentials: 'include',
         method: 'POST',
@@ -32,7 +32,7 @@ export const refreshTokens = (userId: number, csrf: string) => fetchJson<Refresh
 );
 
 export const getUser = (userId: number) => fetchJson<GetUserDto>(
-    getServerRequestUrl(`/api/user/info?userId=${userId}`),
+    getServerRequestUri(`/api/user/info?userId=${userId}`),
     {
         credentials: 'include',
         method: 'GET',
@@ -43,8 +43,15 @@ export const getUser = (userId: number) => fetchJson<GetUserDto>(
 );
 
 export const saveCreds = (creds: UserCredsType) => localStorage.setItem('creds', JSON.stringify(creds));
+export const clearCreds = () => localStorage.removeItem('creds');
 export const getCreds = (): UserCredsType | null => {
     const creds = localStorage.getItem('creds');
-    return creds ? JSON.parse(creds) : null;
+    if (!creds) return null;
+
+    try {
+        return JSON.parse(creds);
+    } catch {
+        clearCreds();
+        return null;
+    }
 };
-export const clearCreds = () => localStorage.removeItem('creds');

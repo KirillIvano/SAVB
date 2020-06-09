@@ -1,8 +1,8 @@
 # API routes for authorisation
 # Should start with /api/group
 from views.auth import check_auth
-from helpers import vk_api, cache, heavy_cache, responses, jwt
 from helpers.log import logged
+from helpers import vk_api, cache, heavy_cache, responses, jwt
 from database.models import objects, Bot
 
 from aiohttp import web

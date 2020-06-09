@@ -9,4 +9,3 @@ export const getUserAuthUrl = () =>
 
 export const getCodeFromSearchParams = (search: string) =>
     parse(search, {ignoreQueryPrefix: true}).code as string | undefined;
-

@@ -6,6 +6,7 @@ import {
     switchMap,
     exhaustMap,
     catchError,
+    delay,
 } from 'rxjs/operators';
 import {isOfType} from 'typesafe-actions';
 
@@ -19,11 +20,11 @@ import {
     getUser,
 } from '@/services/auth';
 import {addPopupSuccessMessage, addPopupErrorMessage} from '@/modules/popup/actions';
-import {tryAuthorizeOperator} from '@/util/rxUtil';
 
 import * as names from './names';
 import * as actions from './actions';
 import {UserCredsType} from './types';
+import {retryAction} from './helpers';
 
 const loginEpic: Epic<RootAction, RootAction, RootState> =
     action$ => action$.pipe(
@@ -106,28 +107,19 @@ const tryAuthEpic: Epic<RootAction, RootAction, RootState> =
 
             const presentTimeInSeconds = Date.now() / 1000;
 
-            if (presentTimeInSeconds > creds.accessExp) {
-                if (presentTimeInSeconds > creds.refreshExp) {
-                    return of(
-                        actions.tryAuthErrorAction(),
-                    );
-                }
-
-                return refreshTokensObservableCreator(creds);
+            if (presentTimeInSeconds > creds.refreshExp) {
+                return of(
+                    actions.tryAuthErrorAction(),
+                );
             }
 
-            return of(
-                addPopupSuccessMessage('Вы были успешно авторизованы'),
-                actions.updateCreds(creds),
-                actions.tryAuthSuccessAction(),
-                actions.getUserStartAction(creds.userId),
-            );
+            return refreshTokensObservableCreator(creds);
         }),
     );
 
 const refreshTokensEpic: Epic<RootAction, RootAction, RootState> =
     (action$, state) => action$.pipe(
-        filter(isOfType(names.REFRESH_TOKENS_START)),
+        filter(isOfType(names.RETRY_AFTER_AUTH)),
         exhaustMap(() => {
             const {creds} = state.value.userState;
             const {refreshExp, userId, csrf} = creds as UserCredsType;
@@ -158,17 +150,51 @@ const refreshTokensEpic: Epic<RootAction, RootAction, RootState> =
         }),
     );
 
-const getUserEpic: Epic<RootAction, RootAction, RootState> =
+const retryAfterAuthEpic: Epic<RootAction, RootAction, RootState> =
     (action$, state) => action$.pipe(
+        filter(isOfType(names.RETRY_AFTER_AUTH)),
+        mergeMap(
+            ({payload: {action: sourceAction, retry}}) => {
+                if (retry > 3) return of(
+                    addPopupErrorMessage('Не получилось, не фортануло'),
+                    actions.logoutStartAction(),
+                );
+
+                const {creds} = state.value.userState;
+                const {userId, csrf} = creds as UserCredsType;
+
+                return from(refreshTokens(userId, csrf)).pipe(
+                    mergeMap((res) => {
+                        if (!res.ok) {
+                            const updatedPayload = {action: sourceAction, retry: retry + 1};
+
+                            return of(
+                                addPopupErrorMessage('Пробуем повторный запрос'),
+                                actions.retryAfterAuth(updatedPayload),
+                            ).pipe(delay(1000));
+                        }
+
+                        const newCreds = {...res.data, userId};
+                        saveCreds(newCreds);
+
+                        return of(
+                            actions.updateCreds(newCreds),
+                            sourceAction,
+                        );
+                    }),
+                );
+            },
+        ),
+    );
+
+const getUserEpic: Epic<RootAction, RootAction, RootState> =
+    action$ => action$.pipe(
         filter(isOfType(names.USER_GET_START)),
         switchMap(src =>
             from(getUser(src.payload))
                 .pipe(switchMap(res => {
                     if (res.status === 401) {
-                        return tryAuthorizeOperator(
-                            src,
-                            state.value.userState.creds,
-                        );
+                        return of(retryAction(src));
                     }
 
                     if (res.ok) {
@@ -191,4 +217,5 @@ export default combineEpics(
     getUserEpic,
     refreshTokensEpic,
     tryAuthEpic,
+    retryAfterAuthEpic,
 );

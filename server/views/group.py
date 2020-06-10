@@ -28,7 +28,7 @@ async def handle(request: web.Request):
 				'no access token in cache', 401
 			)
 
-	vk_response = await vk_api.group(access_token, user_id)
+	vk_response = await vk_api.get_user_group_list(access_token, user_id)
 	vk_response_body = vk_response.get('response')
 	if not vk_response_body:
 		return responses.generate_error_response(

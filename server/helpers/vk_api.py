@@ -40,7 +40,7 @@ async def vk_method(
 		return await vk_response.json()
 
 
-async def users_info(access_token: str, user_id: int):
+async def get_users_info(access_token: str, user_id: int):
 	return await vk_method(
 		'users.get',
 		access_token,
@@ -49,12 +49,22 @@ async def users_info(access_token: str, user_id: int):
 	)
 
 
-async def group(access_token: str, user_id: int):
+async def get_user_group_list(access_token: str, user_id: int):
 	return await vk_method(
 		'groups.get',
 		access_token,
 		user_id=user_id,
 		extended=1,
 		filter='admin',
-		fields='photo_200'
+		fields='photo_200,members_count',
 	)
+
+
+async def get_groups(access_token: str, group_ids: [int]):
+	return await vk_method(
+		'groups.getById',
+		access_token,
+		group_ids=','.join(group_ids),
+		fields='photo_200,members_count',
+	)
+

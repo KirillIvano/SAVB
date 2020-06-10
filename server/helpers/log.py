@@ -14,6 +14,7 @@ async def log_add(
         res_data: str = None,
         error: str = None
 ):
+    res_data: str = str(res_data)[:254]
     await objects.create(
         Log,
         status=status,

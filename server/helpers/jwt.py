@@ -10,7 +10,7 @@ def encode(payload: dict) -> str:
 	).decode()
 
 
-def verify(token: str) -> dict or bool:
+def verify(token: str):
 	try:
 		return jwt_lib.decode(
 			jwt=token,
@@ -62,3 +62,10 @@ def verify_access_request(
   
 	return True if verify(access_jwt) else False
 
+
+def get_attr_from_access_jwt(request: web.Request, attr_name: str):
+	# @auth_check should be used before
+	access_jwt = request.cookies.get('accessJwt')
+	access_jwt_body: dict = verify(access_jwt)
+	attr = access_jwt_body.get(attr_name)
+	return attr

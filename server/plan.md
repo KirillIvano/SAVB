@@ -112,7 +112,7 @@ accessToken: jwt(userId, exp)
 }
 ```
 
-### `POST /api/group/createBot`
+### `POST /api/bot/createBot`
 
 Создаёт бота на группе (получает токен, создаёт колбэк сервер с дефолтным ответом на стартовое сообщение)
 

@@ -9,3 +9,10 @@ type MessagePreview = {
 }
 
 type MessagesStorageType = Record<string, MessageType>
+
+type MessagesStateType = {
+    messages: MessagesStorageType;
+
+    getBotMessagesLoading: boolean;
+    getBotMessagesError: string | null;
+}

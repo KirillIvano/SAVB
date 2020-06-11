@@ -1,12 +1,14 @@
 import React from 'react';
 
+import {ShortBotInfo} from '@/components';
+
 import styles from './styles.less';
-import {BotInfo, BotMessages} from './components';
+import {BotMessages} from './components';
 
 const ControlPanel = () => (
     <div className={styles.panelPlaceholder}>
         <div className={styles.panel}>
-            <BotInfo />
+            <ShortBotInfo />
             <BotMessages />
         </div>
     </div>

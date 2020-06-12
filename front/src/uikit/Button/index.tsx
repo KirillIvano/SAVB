@@ -1,14 +1,32 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import styles from './styles.less';
 
-type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
+type ButtonStyleType = 'normal' | 'danger'
 
-const Button: React.FC<ButtonProps> = ({
+interface ButtonProps extends  React.ButtonHTMLAttributes<HTMLButtonElement> {
+    className?: string;
+    styling?: ButtonStyleType;
+}
+
+const Button = ({
     children,
+    className,
+    styling = 'normal',
+
     ...props
-}) => (
-    <button {...props} className={styles.button}>
+}: ButtonProps) => (
+    <button
+        {...props}
+        className={
+            classnames(
+                styles.button,
+                className,
+                {[styles.danger]: styling == 'danger'},
+            )
+        }
+    >
         {children}
     </button>
 );

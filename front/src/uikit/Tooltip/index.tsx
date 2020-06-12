@@ -1,11 +1,13 @@
 import React from 'react';
-import styles from './styles.less';
 import classnames from 'classnames';
+
+import styles from './styles.less';
+import {getBgStyles, getSizesStyle} from './helpers';
 
 interface TooltipProps extends React.ImgHTMLAttributes<HTMLImageElement>{
     className?: string;
     src?: string;
-    size?: 'small' | 'large';
+    size?: 'small' | 'large' | number;
     isPlaceholder?: boolean;
 }
 
@@ -14,11 +16,15 @@ const Tooltip: React.FC<TooltipProps> = ({
     src,
     size,
     isPlaceholder=false,
+
     ...props
 }) => (
     <div
         {...props}
-        style={isPlaceholder ? {background: '#ccc'} : {backgroundImage: `url("${src}")`}}
+        style={{
+            ...getBgStyles(isPlaceholder, src),
+            ...getSizesStyle(size),
+        }}
         className={
             classnames(
                 styles.tooltip,

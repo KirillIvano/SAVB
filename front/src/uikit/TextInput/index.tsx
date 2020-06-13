@@ -19,6 +19,11 @@ const TextInput = ({
 
     return (
         <div className={styles.inputWrapper}>
+            <input
+                {...props}
+                className={classnames(styles.input, className)}
+                id={inputId}
+            />
             <label
                 className={styles.label}
                 htmlFor={inputId}
@@ -26,11 +31,6 @@ const TextInput = ({
                 {labelText}
             </label>
 
-            <input
-                {...props}
-                className={classnames(styles.input, className)}
-                id={inputId}
-            />
         </div>
     );
 };

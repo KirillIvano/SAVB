@@ -1,11 +1,12 @@
-export type MessagePreviewDro = {
+export type MessagePreviewDto = {
     id: number;
+    botId: number;
     name: string;
 };
 
 export type RawMessageDto = {
     text: string;
-} & MessagePreviewDro;
+} & MessagePreviewDto;
 
 export type RawTriggerPreviewDto = {
     id: number;
@@ -16,6 +17,10 @@ export type RawTriggerPreviewDto = {
 
 export type GetMessageDto = {
     presentMessage: RawMessageDto;
-    nextMessages: MessagePreviewDro[];
+    nextMessages: MessagePreviewDto[];
     triggers: RawTriggerPreviewDto[];
+}
+
+export type GetAllMessagesDto = {
+    messages: RawMessageDto[];
 }

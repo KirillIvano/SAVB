@@ -7,7 +7,7 @@ const mockBots: JsonFetchResponse<GetBotsDto> = {
             {
                 name: 'Цветы',
                 id: 1,
-                membersCount: 1,
+                membersCount: 12135,
                 image: 'https://sun9-30.userapi.com/c855324/v855324938/c5b19/ql6n2T90cyk.jpg?ava=1',
             },
             {

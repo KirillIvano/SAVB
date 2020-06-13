@@ -1,4 +1,3 @@
-# API routes for authorisation
 # Should start with /api/group
 from views.auth import check_auth
 from helpers.log import logged
@@ -36,21 +35,26 @@ async def handle(request: web.Request):
 			f'bad vk_response: {vk_response}', 400
 		)
 
-	groups = []
+	groups = {}
 	for group in vk_response_body.get('items'):
-		group_id = group['id']
-		in_db = await objects.execute(
-			Bot.select(Bot.bot_id).where(Bot.bot_id == group_id)
-		)
-		groups.append(
-			{
-				'id': group_id,
-				'name': group['name'],
-				'image': group['photo_200'],
-				'isUsed': len(in_db) > 0,
-			}
-		)
+		group_id = int(group['id'])
+		groups[group_id] = {
+			'id': group_id,
+			'name': group['name'],
+			'image': group['photo_200'],
+			'isUsed': False
+		}
+
+	groups_in_db = await objects.execute(
+		Bot.select(Bot.bot_id).where(Bot.bot_id << list(groups.keys()))
+	)
+	groups_in_db = [int(str(_)) for _ in groups_in_db]
+
+	for g in groups_in_db:
+		groups[g]['isUsed'] = True
 
 	return responses.generate_json_response(
-		body=dict(groups=groups)
+		body=dict(
+			groups=list(groups.values())
+		)
 	)

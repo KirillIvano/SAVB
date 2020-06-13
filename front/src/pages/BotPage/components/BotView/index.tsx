@@ -27,8 +27,19 @@ const BotView = ({
             <p className={styles.members}>{membersCount} участников</p>
 
             <div className={styles.controls}>
-                <Button className={styles.button}>Информация</Button>
-                <Button className={styles.button} styling={'danger'}>Удалить</Button>
+                <Button
+                    disabled={true}
+                    className={styles.button}
+                >
+                    Информация
+                </Button>
+                <Button
+                    disabled={true}
+                    className={styles.button}
+                    styling={'danger'}
+                >
+                    Удалить
+                </Button>
             </div>
         </div>
     </Card>

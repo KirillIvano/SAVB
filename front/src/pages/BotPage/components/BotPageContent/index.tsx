@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 
-import {Preloader, ErrorView} from '@/uikit';
+import {Preloader, ErrorView, Fade} from '@/uikit';
 
-import {withBotInfo} from './container';
+import {withSingleBot} from './container';
 import {BotView} from './..';
 
 type BotPageContentProps = {
@@ -32,12 +32,14 @@ const BotPageContent = ({
     if (botGetSingleError) return <ErrorView content={botGetSingleError} />;
 
     return (
-        <BotView
-            name={name}
-            image={image}
-            membersCount={membersCount}
-        />
+        <Fade duration={.5}>
+            <BotView
+                name={name}
+                image={image}
+                membersCount={membersCount}
+            />
+        </Fade>
     );
 };
 
-export default withBotInfo(BotPageContent);
+export default withSingleBot(BotPageContent);

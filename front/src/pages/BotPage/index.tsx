@@ -1,16 +1,21 @@
 import React from 'react';
-import {Grid} from 'react-flexbox-grid';
 
-import {PageWrapper} from '@/uikit';
+import {SidePaneledLayout, SidePaneledRest} from '@/parts';
 
-import styles from './styles.less';
+import {BotSidePanel, BotPageContent} from './components';
+import {withBotId} from './container';
 
-const BotPage = () => {
-    return (
-        <Grid>
-            xxx
-        </Grid>
-    );
+type BotPageProps = {
+    botId: string;
 };
 
-export default BotPage;
+const BotPage = ({botId}: BotPageProps) => (
+    <SidePaneledLayout>
+        <BotSidePanel botId={botId} />
+        <SidePaneledRest>
+            <BotPageContent botId={botId} />
+        </SidePaneledRest>
+    </SidePaneledLayout>
+);
+
+export default withBotId(BotPage);

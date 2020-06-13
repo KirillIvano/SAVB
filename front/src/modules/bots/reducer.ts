@@ -58,7 +58,6 @@ export const botsReducer = createReducer<BotsStateType, RootAction>(initialState
             ...state,
             bots: {[bot.id]: bot},
             botGetSingleInProgress: false,
-            botGetSingleError: null,
         }),
     ).handleAction(
         actions.getSingleBotErrorAction,

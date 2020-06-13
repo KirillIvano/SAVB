@@ -25,6 +25,7 @@ const getBotsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
                         bot,
                     ) => {
                         acc[String(bot.id)] = bot;
+
                         return acc;
                     }, {}),
                 ) :
@@ -59,7 +60,6 @@ const getSingleBotEpic: Epic<RootAction, RootAction, RootState> = action$ =>
                 mergeMap(res => res.ok ?
                     of(
                         botsActions.getSingleBotSuccessAction(res.data.bot),
-                        addPopupSuccessMessage('Бот был успешно создан!'),
                     ) :
                     of(
                         botsActions.getSingleBotErrorAction(res.error),
@@ -70,7 +70,7 @@ const getSingleBotEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         ),
     );
 
-export default combineEpics(
+export const botsEpic = combineEpics(
     getBotsEpic,
     createBotEpic,
     getSingleBotEpic,

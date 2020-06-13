@@ -25,6 +25,6 @@ const pushPopupMessageEpic: Epic<RootAction, RootAction, RootState> = (action$, 
         }),
     );
 
-export default combineEpics(
+export const popupMessagesEpic = combineEpics(
     pushPopupMessageEpic,
 );

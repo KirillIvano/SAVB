@@ -211,7 +211,7 @@ const getUserEpic: Epic<RootAction, RootAction, RootState> =
         ),
     );
 
-export default combineEpics(
+export const userEpic = combineEpics(
     loginEpic,
     logoutEpic,
     getUserEpic,

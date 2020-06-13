@@ -7,3 +7,4 @@ export {default as Preloader} from './Preloader';
 export {default as Fade} from './Fade';
 export {default as ErrorView} from './ErrorView';
 export {default as Modal} from './Modal';
+export {default as TextInput} from './TextInput';

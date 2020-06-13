@@ -18,6 +18,9 @@ const dev = {
             'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
         },
     },
+    output: {
+        publicPath: '/',
+    },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
@@ -39,19 +42,12 @@ const dev = {
                         options: {
                             modules: true,
                             namedExport: true,
-                            camelCase: 'camelCase',
                             exportOnlyLocals: true,
-                            include: /flexboxgrid/,
                             // localsConvention: 'camelCase',
                         },
                     },
                     {
                         loader: 'less-loader',
-                        options: {
-                            lessOptions: {
-                                paths: [path.resolve(__dirname, 'src', 'styles')],
-                            }
-                        }
                     }
                 ],
             },

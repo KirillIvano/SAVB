@@ -8,3 +8,7 @@ export type RawBotType = {
 export type GetBotsDto = {
     bots: RawBotType[];
 }
+
+export type GetSingleBotDto = {
+    bot: RawBotType;
+}

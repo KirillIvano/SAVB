@@ -5,12 +5,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminPlugin = require('imagemin-webpack');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
+const webpack = require('webpack');
 
 const commonConfig = require('./webpack.config');
 
 const prodConfigs = {
     mode: 'production',
-
+    output: {
+        publicPath: '/static/',
+    },
     optimization: {
         minimizer: [
             new TerserJs(),
@@ -21,6 +24,10 @@ const prodConfigs = {
         new MiniCssExtractPlugin({
             filename: 'main.css',
             chunkFilename: '[id].css'
+        }),
+        new webpack.DefinePlugin({
+            __SERVER_ORIGIN__: '"http://194.67.109.99:500"',
+            __CLIENT_ORIGIN__: '"http://194.67.109.99"'
         }),
         new ImageminPlugin({
             cache: true,
@@ -72,9 +79,6 @@ const prodConfigs = {
                     },
                     {
                         loader: 'less-loader',
-                        options: {
-                            paths: [path.resolve(__dirname, 'src', 'styles')],
-                        }
                     }
                 ],
             },

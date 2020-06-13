@@ -12,7 +12,7 @@ module.exports = {
         },
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist', 'static'),
         publicPath: '/',
         filename: 'bundle.js'
     },
@@ -21,7 +21,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             minify: false,
-            // favicon: './src/favicon.ico',
         }),
     ],
     module: {

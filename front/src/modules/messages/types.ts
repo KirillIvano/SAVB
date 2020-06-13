@@ -1,18 +1,30 @@
-type MessageType = {
+import {ActionType} from 'typesafe-actions';
+
+import * as actions from './actions';
+
+
+export type MessagePreview = {
     id: string;
     name: string;
+    botId: string;
+}
+export type MessageType = {
     text: string;
-}
-type MessagePreview = {
-    id: string;
-    name: string;
-}
+} & MessagePreview;
 
-type MessagesStorageType = Record<string, MessageType>
 
-type MessagesStateType = {
+export type MessagesStorageType = Record<string, MessageType>
+export type MessagesPreviewsStorageType = Record<string, MessagePreview>
+
+export type MessagesStateType = {
     messages: MessagesStorageType;
+    messagePreviews: MessagesPreviewsStorageType;
 
-    getBotMessagesLoading: boolean;
-    getBotMessagesError: string | null;
+    getMessageLoading: boolean;
+    getMessageError: string | null;
+
+    getAllBotMessagesLoading: boolean;
+    getAllBotMessagesError: string | null;
 }
+
+export type MessageActionType = ActionType<typeof actions>

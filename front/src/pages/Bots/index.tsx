@@ -68,6 +68,6 @@ const BotsPage: React.FC<BotsPageProps> = ({
     );
 };
 
-const enchancedBotsPage = withBots(BotsPage);
+const enhancedBotsPage = withBots(BotsPage);
 
-export default enchancedBotsPage;
+export default enhancedBotsPage;

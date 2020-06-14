@@ -1,4 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {
+    useEffect,
+    useState,
+    useMemo,
+} from 'react';
 
 import {MessagePreview} from '@/modules/messages/types';
 import {
@@ -10,6 +14,7 @@ import {
 
 import styles from './styles.less';
 import {withMessages} from './container';
+
 
 type BotMessageProps = {
     id: string;
@@ -26,6 +31,33 @@ const BotMessage = ({
         </a>
     </div>
 );
+
+
+type BotMessagesBlockProps = {
+    messages: MessagePreview[];
+}
+
+const BotMessagesBlock = ({
+    messages,
+}: BotMessagesBlockProps) => (
+    <div className={styles.messagesBlock}>
+        {
+            messages.map(
+                ({name, id}) => (
+                    <BotMessage
+                        name={name}
+                        id={id}
+                        key={id}
+                    />
+                ),
+            )
+        }
+    </div>
+);
+
+
+const filterMessages = (messages: MessagePreview[], searchString: string) =>
+    messages.filter(message => message.name.indexOf(searchString) !== -1);
 
 type BotMessagesProps = {
     messages: MessagePreview[];
@@ -45,33 +77,32 @@ const BotMessages = ({
 }: BotMessagesProps) => {
     const [searchValue, setSearchValue] = useState('');
 
+    const filteredMessages = useMemo(
+        () => filterMessages(messages, searchValue),
+        [messages, searchValue],
+    );
+
     useEffect(() => {getMessages();}, []);
 
     if (getMessagesInProgress) return <Preloader />;
     if (getMessagesError) return <ErrorView content={getMessagesError} />;
 
-    return (<Fade duration={.3}>
-        <TextInput
-            value={searchValue}
-            onChange={e => setSearchValue(e.target.value)}
-            labelText={'Найти сообщение'}
-        />
-        <div className={styles.messagesBlock}>
-            {
-                messages
-                    .filter(message => message.name.indexOf(searchValue) !== -1)
-                    .map(
-                        ({name, id}) => (
-                            <BotMessage
-                                name={name}
-                                id={id}
-                                key={id}
-                            />
-                        ),
-                    )
-            }
-        </div>
-    </Fade>);
+    return (
+        <Fade duration={.3}>
+            <TextInput
+                value={searchValue}
+                onChange={e => setSearchValue(e.target.value)}
+
+                type={'text'}
+                name={'search_message'}
+
+                className={styles.searchInput}
+                labelText={'Найти сообщение'}
+            />
+
+            <BotMessagesBlock messages={filteredMessages} />
+        </Fade>
+    );
 };
 
 export default withMessages(BotMessages);

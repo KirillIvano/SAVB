@@ -19,7 +19,7 @@ const BotCard: React.FC<BotCardProps> = ({
 }) => {
     const history = useHistory();
 
-    const handleClick = () => history.push(`/bots/${id}`);
+    const handleClick = () => history.push(`/bot/${id}`);
 
     return (
         <Col onClick={handleClick} xs={12} md={3}>

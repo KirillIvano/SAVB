@@ -6,10 +6,13 @@ import {
     Main,
     UserLoginPage,
     BotCreatePage,
+    MessagePage,
+    BotPage,
 } from '@/pages';
 import {PopupBox, Header} from '@/parts';
 import {withAuthRegulation} from '@/containers/withAuthRegulation';
-import {PageWrapper, Preloader, Button} from '@/uikit';
+import {PageWrapper, Preloader} from '@/uikit';
+
 import {withAuth} from './containers/withAuth';
 
 type AppProps = {
@@ -26,8 +29,6 @@ const App = ({
         tryAuth();
     }, []);
 
-    const history = useHistory();
-
     if (!isAppInitialized) {
         return <Preloader />;
     }
@@ -36,12 +37,13 @@ const App = ({
         <>
             <Header />
             <PageWrapper>
-                <Button onClick={() => history.push('/bots')}>Боты</Button>
                 <Switch>
                     <Route exact path="/" component={Main} />
                     <Route exact path="/bots" component={withAuthRegulation(Bots)} />
                     <Route exact path="/userAuthPending" component={UserLoginPage} />
                     <Route exact path="/groupAuthPending" component={BotCreatePage} />
+                    <Route exact path="/bot/:botId" component={withAuthRegulation(BotPage)} />
+                    <Route exact path="/message/:messageId" component={withAuthRegulation(MessagePage)} />
                 </Switch>
             </PageWrapper>
             <PopupBox />
@@ -49,6 +51,6 @@ const App = ({
     );
 };
 
-const enchancedApp = withAuth(App);
+const enhancedApp = withAuth(App);
 
-export default enchancedApp;
+export default enhancedApp;

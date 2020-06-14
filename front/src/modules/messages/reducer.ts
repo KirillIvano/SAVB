@@ -26,13 +26,18 @@ export const messagesReducer = createReducer<MessagesStateType, MessageActionTyp
         }),
     ).handleAction(
         actions.getMessageSuccessAction,
-        (state, {payload: {messages}}) => ({
+        (state, {payload: {presentMessage, nextMessages}}) => ({
             ...state,
             getMessageLoading: false,
             messages: {
                 ...state.messages,
-                ...messages,
+                [presentMessage.id]: presentMessage,
             },
+            messagePreviews: {
+                ...state.messagePreviews,
+                ...nextMessages,
+            },
+
         }),
     ).handleAction(
         actions.getMessageErrorAction,

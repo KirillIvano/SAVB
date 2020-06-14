@@ -4,7 +4,7 @@ import {from, of} from 'rxjs';
 import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
-import {getBots, createBot, getSingleBot} from '@/services/bots/mock';
+import {createBot, getSingleBot, getBots} from '@/services/bots/mock';
 import {RawBotType} from '@/services/bots/dto';
 
 import * as botsNames from './names';

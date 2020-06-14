@@ -2,7 +2,7 @@ import {fetchJson, getServerRequestUri} from '@/util/requests';
 
 import {GetMessageDto, GetAllMessagesDto} from './dto';
 
-export const getMessage = (messageId: number) => fetchJson<GetMessageDto>(
+export const getFullMessage = (messageId: number) => fetchJson<GetMessageDto>(
     getServerRequestUri(`/message/${messageId}`),
     {
         credentials: 'include',

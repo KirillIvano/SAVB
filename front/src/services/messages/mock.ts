@@ -133,7 +133,7 @@ const mockData: JsonFetchResponse<GetMessageDto> = {
     ok: true,
 };
 
-export const getMessage = (id: number) => new Promise(r => r(mockData));
+export const getFullMessage = (id: number): Promise<JsonFetchResponse<GetMessageDto>> => new Promise(r => r(mockData));
 export const getAllBotMessages = async (botId: number): Promise<JsonFetchResponse<GetAllMessagesDto>> => ({
     status: 200,
     ok: true,

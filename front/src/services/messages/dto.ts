@@ -1,3 +1,5 @@
+import {TriggerPreviewDto} from '@/services/triggers/dto';
+
 export type MessagePreviewDto = {
     id: number;
     botId: number;
@@ -8,17 +10,11 @@ export type RawMessageDto = {
     text: string;
 } & MessagePreviewDto;
 
-export type RawTriggerPreviewDto = {
-    id: number;
-    sourceMessageId: number;
-    targetMessageId: number;
-    triggerType: 'button' | 'plain_message';
-}
 
 export type GetMessageDto = {
     presentMessage: RawMessageDto;
     nextMessages: MessagePreviewDto[];
-    triggers: RawTriggerPreviewDto[];
+    triggers: TriggerPreviewDto[];
 }
 
 export type GetAllMessagesDto = {

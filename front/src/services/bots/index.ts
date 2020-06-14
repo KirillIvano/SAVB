@@ -3,7 +3,10 @@ import {fetchJson, getServerRequestUri} from '@/util/requests';
 import {GetBotsDto, GetSingleBotDto} from './dto';
 
 export const getBots = () => fetchJson<GetBotsDto>(
-    'http://127.0.0.1:8080/api/',
+    getServerRequestUri('/api/bots'),
+    {
+        credentials: 'include',
+    },
 );
 
 export const getSingleBot = (botId: string) => fetchJson<GetSingleBotDto>(

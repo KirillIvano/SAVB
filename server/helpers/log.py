@@ -34,7 +34,7 @@ def logged(log_enabled: bool = True):
             req_body: str = await req.text()
             method: str = req.method
             url: str = str(req.url)
-            if log_enabled is False:
+            if not log_enabled:
                 res, status, body = await controller(req)
                 return res
             try:

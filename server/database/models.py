@@ -29,6 +29,8 @@ class Bot(BaseModel):
     token = CharField()
     name = CharField()
     admin_id = ForeignKeyField(Admin, backref='belongs_to')
+    secret_key = CharField(max_length=50)
+    confirmation_token = CharField(max_length=10)
 
 
 class User(BaseModel):
@@ -37,7 +39,7 @@ class User(BaseModel):
 
 
 class DialogState(BaseModel):
-    state_id = PrimaryKeyField()
+    state_id = AutoField()
     bot_id = ForeignKeyField(Bot) 
 
 
@@ -48,31 +50,31 @@ class Dialog(BaseModel):
 
 
 class Action(BaseModel):
-    action_id = PrimaryKeyField()
+    action_id = AutoField()
     target_state_id = ForeignKeyField(DialogState)
 
 
 class BotMessage(BaseModel):
-    message_id = PrimaryKeyField()
+    message_id = AutoField()
     bot_id = ForeignKeyField(Bot)
     text = CharField()
     action_id = ForeignKeyField(Action)
 
 
 class Trigger(BaseModel):
-    trigger_id = PrimaryKeyField()
-    initial_state_id = ForeignKeyField(DialogState)
+    trigger_id = AutoField()
+    initial_state_id = ForeignKeyField(DialogState, DialogState.state_id)
     action_id = ForeignKeyField(Action)
 
 
 class UserMessage(BaseModel):
-    message_id = PrimaryKeyField()
+    message_id = AutoField()
     text = CharField()
     trigger_id = ForeignKeyField(Trigger)
 
 
 class KeyboardButton(BaseModel):
-    button_id = PrimaryKeyField()
+    button_id = AutoField()
     text = CharField()
     color = CharField()
     inline = BooleanField()
@@ -95,4 +97,4 @@ class Log(BaseModel):
 
 loop = asyncio.new_event_loop()
 objects = peewee_async.Manager(database, loop=loop)
-database.set_allow_sync(False)
+database.set_allow_sync(True)

@@ -77,7 +77,7 @@ async def auth_refresh_tokens(request: web.Request):
             cookies=request.cookies,
             body=request_dict
         )
-    except jwt_lib.ExpiredSignatureError as e:
+    except jwt_lib.ExpiredSignatureError:
         return responses.generate_error_response('refresh token expired', 401)
 
     if not jwt_verified:

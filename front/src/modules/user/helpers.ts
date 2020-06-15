@@ -1,8 +1,8 @@
 import {RootAction} from '@/store/types';
-import {retryAfterAuth} from './actions';
+import {retryAfterAuthAction} from './actions';
 
 export const retryAction = (action: RootAction) => {
-    return retryAfterAuth({
+    return retryAfterAuthAction({
         action,
         retry: 0,
     });

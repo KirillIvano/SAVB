@@ -170,7 +170,7 @@ const retryAfterAuthEpic: Epic<RootAction, RootAction, RootState> =
 
                             return of(
                                 addPopupErrorMessage('Пробуем повторный запрос'),
-                                actions.retryAfterAuth(updatedPayload),
+                                actions.retryAfterAuthAction(updatedPayload),
                             ).pipe(delay(1000));
                         }
 

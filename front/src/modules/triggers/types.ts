@@ -4,3 +4,9 @@ export type TriggerPreviewType = {
     targetMessageId: string;
     triggerType: 'button' | 'plain_message';
 }
+
+export type TriggerPreviewStorageType = Record<string, TriggerPreviewType>
+
+export type TriggerStateType = {
+    previews: TriggerPreviewStorageType;
+}

@@ -3,7 +3,7 @@ import {ActionType} from 'typesafe-actions';
 import * as actions from './actions';
 
 export type BotType = {
-    id: number;
+    id: string;
     name: string;
     image: string;
     membersCount: number;

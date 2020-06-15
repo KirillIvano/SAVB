@@ -62,7 +62,7 @@ type RetryActionPayload = {
     action: RootAction;
     retry: number;
 }
-export const retryAfterAuth = createAction(
+export const retryAfterAuthAction = createAction(
     names.RETRY_AFTER_AUTH,
     (payload: RetryActionPayload) => payload,
 )();

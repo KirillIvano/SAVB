@@ -5,7 +5,7 @@ import styles from './styles.less';
 
 type PageHeadlineProps = {
     children: React.ReactNode;
-    className: string;
+    className?: string;
 }
 
 const PageHeadline: React.FC<PageHeadlineProps> = ({

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classnames from 'classnames';
 import {getId} from '@/util/getId';
 
@@ -7,30 +7,43 @@ import styles from './styles.less';
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     labelText: string;
     className?: string;
+    wrapperClassName?: string;
 }
 
 const TextInput = ({
     labelText,
     className,
+    wrapperClassName,
+    value,
 
     ...props
 }: InputProps) => {
-    const inputId = getId();
+    const inputId = useMemo(() => getId(), []);
 
     return (
-        <div className={styles.inputWrapper}>
+        <div className={classnames(
+            styles.inputWrapper,
+            wrapperClassName,
+        )}>
             <input
                 {...props}
-                className={classnames(styles.input, className)}
+                value={value}
+                className={classnames(
+                    styles.input,
+                    className,
+                    {
+                        [styles.filled]: Boolean(value),
+                    },
+                )}
                 id={inputId}
             />
+
             <label
                 className={styles.label}
                 htmlFor={inputId}
             >
                 {labelText}
             </label>
-
         </div>
     );
 };

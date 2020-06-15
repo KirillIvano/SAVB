@@ -2,11 +2,28 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    padding-top: .9rem;
+    padding-top: 1rem;
+
+    .input {
+        margin-top: 1px;
+
+        padding: .3rem 3px;
+
+        outline: none;
+        border: none;
+        border-bottom: 2px solid #CED5DD;
+
+        transition: border-bottom .5s;
+    }
+
+    .input:focus {
+        border-bottom: 2px solid #4680C2;
+    }
 
     .label {
         position: absolute;
         top: 0;
+        left: 4px;
 
         font-size: 1rem;
         transform: translateY(1.2rem);
@@ -16,21 +33,12 @@
         
         transition: .5s;
     }
-
-    .input:focus + .label {
-        font-size: .8rem;
+    
+    .input:focus + .label, .input.filled + .label {
+        font-size: .85rem;
         transform: translateY(0);
 
-        color: black;
-    }
-
-    .input {
-        margin-top: 1px;
-
-        padding: .3rem 3px;
-
-        border: none;
-        border-bottom: 2px solid #CED5DD;;
+        color: #333;
     }
 }
 

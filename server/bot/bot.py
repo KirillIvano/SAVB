@@ -3,7 +3,6 @@ import traceback
 import json
 from aiohttp import web
 import asyncio
-import helpers
 from database import *
 from helpers import *
 from library import *
@@ -30,7 +29,8 @@ async def messages(request: web.Request):
     try:
         query = await objects.execute(Bot.select().where(Bot.bot_id == data['group_id']))
         if data['type'] == 'confirmation':
-            return json_response(Bot.select().where(Bot.bot_id == data['group_id'])[0].confirmation_token)
+            confirmation_token = await objects.execute(Bot.select().where(Bot.bot_id == data['group_id']))
+            return json_response(confirmation_token[0].confirmation_token)
         elif data['secret'] == query[0].secret_key:
 
             if data['type'] == 'message_new':
@@ -42,23 +42,8 @@ async def messages(request: web.Request):
                 id = data['object']['message']['from_id']
                 body = str(data['object']['message']['text']).lower()
                 token = token_cache.get(data['group_id'])
-                msg = await objects.execute(BotMessage.select().from_(Dialog).join(
-                    Trigger, on=(Dialog.current_state_id == Trigger.initial_state_id)
-                ).join(
-                    UserMessage, on=(Trigger.trigger_id == UserMessage.trigger_id)
-                ).where(UserMessage.text == body).join(
-                    Action, on=(Trigger.action_id == Action.action_id)
-                ).join(
-                    BotMessage, on=(Action.action_id == BotMessage.action_id)
-                ))
 
-                buttons = await objects.execute(KeyboardButton.select().from_(Dialog).join(
-                    Trigger, on=(Dialog.current_state_id == Trigger.initial_state_id)
-                ).join(
-                    UserMessage, on=(Trigger.trigger_id == UserMessage.trigger_id)
-                ).where(UserMessage.text == body).join(
-                    KeyboardButton, on=(Trigger.trigger_id == KeyboardButton.trigger_id)
-                ))
+                msg, buttons = await get_response_info(body)
 
                 keyboard = create_keyboard(buttons)
                 newdata['keyboard'] = keyboard
@@ -99,5 +84,5 @@ loop = asyncio.get_event_loop()
 bot_app = web.Application()
 
 bot_app.add_routes(
-    [web.post('/', messages)]
+    [web.post('/bot_callback', messages)]
 )

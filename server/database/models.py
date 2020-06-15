@@ -29,6 +29,8 @@ class Bot(BaseModel):
     token = CharField()
     name = CharField()
     admin_id = ForeignKeyField(Admin, backref='belongs_to')
+    secret_key = CharField(max_length=50)
+    confirmation_token = CharField(max_length=10)
 
 
 class User(BaseModel):

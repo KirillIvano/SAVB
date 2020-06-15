@@ -2,8 +2,6 @@ from app import app
 from bot import bot
 from aiohttp import web
 import settings
-from threading import Thread
-import threading
 import asyncio
 
 runners = []

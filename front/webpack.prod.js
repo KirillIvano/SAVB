@@ -27,7 +27,7 @@ const prodConfigs = {
         }),
         new webpack.DefinePlugin({
             __SERVER_ORIGIN__: '"http://194.67.109.99:500"',
-            __CLIENT_ORIGIN__: '"http://194.67.109.99"'
+            __CLIENT_ORIGIN__: '"http://194.67.109.99:8080"'
         }),
         new ImageminPlugin({
             cache: true,

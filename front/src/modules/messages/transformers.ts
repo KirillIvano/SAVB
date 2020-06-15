@@ -1,6 +1,6 @@
-import {MessagePreview, MessageType} from '@/modules/messages/types';
-
 import {MessagePreviewDto, RawMessageDto} from '@/services/messages/dto';
+
+import {MessagePreview, MessageType} from './types';
 
 export const clientifyMessagePreview = (message: MessagePreviewDto): MessagePreview => ({
     ...message,

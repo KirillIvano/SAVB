@@ -10,6 +10,7 @@ const initialState: MessagesStateType = {
 
     getMessageLoading: false,
     getMessageError: null,
+    getMessageSuccess: false,
 
     getAllBotMessagesLoading: false,
     getAllBotMessagesError: null,
@@ -23,12 +24,15 @@ export const messagesReducer = createReducer<MessagesStateType, MessageActionTyp
 
             getMessageLoading: true,
             getMessageError: null,
+            getMessageSuccess: false,
         }),
     ).handleAction(
         actions.getMessageSuccessAction,
         (state, {payload: {presentMessage, nextMessages}}) => ({
             ...state,
             getMessageLoading: false,
+            getMessageSuccess: true,
+
             messages: {
                 ...state.messages,
                 [presentMessage.id]: presentMessage,
@@ -44,6 +48,7 @@ export const messagesReducer = createReducer<MessagesStateType, MessageActionTyp
         (state, {payload: {error}}) => ({
             ...state,
             getMessageError: error,
+            getMessageSuccess: false,
         }),
     )
 

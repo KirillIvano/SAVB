@@ -22,6 +22,7 @@ export type MessagesStateType = {
 
     getMessageLoading: boolean;
     getMessageError: string | null;
+    getMessageSuccess: boolean;
 
     getAllBotMessagesLoading: boolean;
     getAllBotMessagesError: string | null;

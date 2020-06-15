@@ -17,7 +17,7 @@ export const getMessageErrorAction = createAction(
 type GetMessagesSuccessPayload = {
     presentMessage: MessageType;
     nextMessages: Record<string, MessagePreview>;
-    triggers: Record<string, TriggerPreviewType>;
+    triggersPreviews: Record<string, TriggerPreviewType>;
 }
 export const getMessageSuccessAction = createAction(
     names.GET_MESSAGE_SUCCESS,

@@ -10,7 +10,7 @@ import {isOfType} from 'typesafe-actions';
 import {RootAction, RootState} from '@/store/types';
 import {getAllBotMessages, getFullMessage} from '@/services/messages/mock';
 import {clientifyMessagesPreviews, clientifyMessage} from '@/modules/messages/transformers';
-import {clientifyTriggerPreview, clientifyTriggerPreviewsArr} from '@/modules/triggers/transformers';
+import {clientifyTriggerPreviewsArr} from '@/modules/triggers/transformers';
 
 import * as names from './names';
 import {
@@ -39,7 +39,7 @@ const getMessageEpic: Epic<RootAction, RootAction, RootState> = action$ =>
                             const successPayload = {
                                 presentMessage: clientifyMessage(data.presentMessage),
                                 nextMessages: clientifyMessagesPreviews(data.nextMessages),
-                                triggers: clientifyTriggerPreviewsArr(data.triggers),
+                                triggersPreviews: clientifyTriggerPreviewsArr(data.triggersPreviews),
                             };
 
                             return of(
@@ -76,6 +76,6 @@ const getAllBotMessagesEpic: Epic<RootAction, RootAction, RootState> = action$ =
     );
 
 export const messagesEpic = combineEpics(
+    getMessageEpic,
     getAllBotMessagesEpic,
 );
-

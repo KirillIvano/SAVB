@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {useLocation, Redirect, useHistory} from 'react-router';
 
 import {getCodeFromSearchParams} from '@/util/authenticate';
+import {Preloader} from '@/uikit';
 
 import styles from './styles.less';
 import {withLoginProps} from './containers/withLoginProps';
-import { Preloader } from '@/uikit';
 
 type UserAuthProps = {
     loggingInProgress: boolean;
@@ -23,14 +23,15 @@ const UserAuth = ({
 }: UserAuthProps) => {
     const {search: searchParams} = useLocation();
     const history = useHistory();
-    const code = getCodeFromSearchParams(searchParams);
+    const code = useMemo(() => getCodeFromSearchParams(searchParams), []);
 
     useEffect(() => {
         code && login(code, `${window.location.origin}/userAuthPending`);
     }, []);
 
     useEffect(() => {
-        (loggingInSuccess || loggingInError) && history.push('/');
+        loggingInSuccess && history.push('/bots');
+        loggingInError && history.push('/');
     }, [loggingInProgress]);
 
     if (!code) {

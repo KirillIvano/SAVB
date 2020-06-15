@@ -34,12 +34,11 @@ export const fetchJson = async <ResponsePayload extends object>(
             return {ok, data, status};
         }
 
-        const error = (body as {error: string}).error;
+        const error = (body as {error: string}).error || UNKNOWN_ERROR_RESPONSE.error;
         return {ok, error, status};
 
     } catch(e) {
         // eslint-disable-next-line no-console
-        console.log(e);
         return UNKNOWN_ERROR_RESPONSE;
     }
 };

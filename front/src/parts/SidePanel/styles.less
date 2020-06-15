@@ -1,0 +1,31 @@
+@panel-width: 300px;
+
+.sidePaneledLayout {
+    display: flex;
+    flex-direction: row;
+
+    .panelPlaceholder {
+        flex: 0 0 @panel-width;
+    
+        .panel {
+            position: fixed;
+            background: white;
+            bottom: 0;
+            left: 0;
+    
+            padding: 60px 20px;
+    
+            width: @panel-width;
+            height: calc(100vh - 82px);
+            
+            overflow: auto;
+        }
+    }
+
+    .content {
+        flex: 1 1 auto;
+
+        padding: 20px;
+    }
+}
+

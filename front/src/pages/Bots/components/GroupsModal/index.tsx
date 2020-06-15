@@ -40,7 +40,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                 <Row>
                     {groups.map(
                         ({id, ...rest}) =>
-                            <GroupCard {...rest} id={id} key={id}>xxx</GroupCard>,
+                            <GroupCard {...rest} id={id} key={id} />,
                     )}
                 </Row>
             </Grid>

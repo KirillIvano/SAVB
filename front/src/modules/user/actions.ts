@@ -2,6 +2,7 @@ import {createAction} from 'typesafe-actions';
 
 import * as names from './names';
 import {UserInfoType, UserCredsType} from './types';
+import {RootAction} from '@/store/types';
 
 export type LoginStartPayload = {
     code: string;
@@ -56,3 +57,13 @@ export const updateCreds = createAction(
     names.UPDATE_CREDS,
     (creds: UserCredsType) => creds,
 )();
+
+type RetryActionPayload = {
+    action: RootAction;
+    retry: number;
+}
+export const retryAfterAuth = createAction(
+    names.RETRY_AFTER_AUTH,
+    (payload: RetryActionPayload) => payload,
+)();
+

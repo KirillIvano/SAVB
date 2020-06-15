@@ -9,22 +9,19 @@ import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
 import {getGroups} from '@/services/groups';
+import {retryAction} from '@/modules/user/helpers';
 
 import * as names from './names';
 import {getGroupsErrorAction, getGroupsSuccessAction} from './actions';
-import { tryAuthorizeOperator } from '@/util/rxUtil';
 
-const getGroupsEpic: Epic<RootAction, RootAction, RootState> = (action$, state$) =>
+const getGroupsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
         filter(isOfType(names.GET_GROUPS_START)),
         switchMap(
             src => from(getGroups()).pipe(
                 mergeMap(res => {
                     if (res.status === 401) {
-                        return tryAuthorizeOperator(
-                            src,
-                            state$.value.userState.creds,
-                        );
+                        return of(retryAction(src));
                     }
 
                     if (res.ok) {
@@ -36,4 +33,4 @@ const getGroupsEpic: Epic<RootAction, RootAction, RootState> = (action$, state$)
             )),
     );
 
-export default combineEpics(getGroupsEpic);
+export const groupsEpic = combineEpics(getGroupsEpic);

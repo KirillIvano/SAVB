@@ -1,14 +1,15 @@
 import {Epic, combineEpics} from 'redux-observable';
-import {filter, map, switchMap} from 'rxjs/operators';
-import {from} from 'rxjs';
+import {filter, map, switchMap, mergeMap} from 'rxjs/operators';
+import {from, of} from 'rxjs';
 import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
-import {getBots} from '@/services/bots/mock';
+import {getBots, createBot, getSingleBot} from '@/services/bots/mock';
+import {RawBotType} from '@/services/bots/dto';
 
 import * as botsNames from './names';
 import * as botsActions from './actions';
-import { RawBotType } from '@/services/bots/dto';
+import {addPopupSuccessMessage, addPopupErrorMessage} from '../popup/actions';
 
 const getBotsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
     action$.pipe(
@@ -24,6 +25,7 @@ const getBotsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
                         bot,
                     ) => {
                         acc[String(bot.id)] = bot;
+
                         return acc;
                     }, {}),
                 ) :
@@ -31,4 +33,45 @@ const getBotsEpic: Epic<RootAction, RootAction, RootState> = action$ =>
         ),
     );
 
-export default combineEpics(getBotsEpic);
+const createBotEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+    action$.pipe(
+        filter(isOfType(botsNames.BOT_CREATE_START)),
+        switchMap(
+            ({payload}) => from(createBot(payload)).pipe(
+                mergeMap(res => res.ok ?
+                    of(
+                        botsActions.createBotsSuccessAction(),
+                        addPopupSuccessMessage('Бот был успешно создан!'),
+                    ) :
+                    of(
+                        botsActions.createBotsErrorAction(res.error),
+                        addPopupErrorMessage(res.error),
+                    ),
+                ),
+            ),
+        ),
+    );
+
+const getSingleBotEpic: Epic<RootAction, RootAction, RootState> = action$ =>
+    action$.pipe(
+        filter(isOfType(botsNames.BOT_GET_SINGLE_START)),
+        switchMap(
+            ({payload}) => from(getSingleBot(payload)).pipe(
+                mergeMap(res => res.ok ?
+                    of(
+                        botsActions.getSingleBotSuccessAction(res.data.bot),
+                    ) :
+                    of(
+                        botsActions.getSingleBotErrorAction(res.error),
+                        addPopupErrorMessage(res.error),
+                    ),
+                ),
+            ),
+        ),
+    );
+
+export const botsEpic = combineEpics(
+    getBotsEpic,
+    createBotEpic,
+    getSingleBotEpic,
+);

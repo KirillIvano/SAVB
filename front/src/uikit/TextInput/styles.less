@@ -1,0 +1,36 @@
+.inputWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: .9rem;
+
+    .label {
+        position: absolute;
+        top: 0;
+
+        font-size: 1rem;
+        transform: translateY(1.2rem);
+
+        color: #666;
+        pointer-events: none;
+        
+        transition: .5s;
+    }
+
+    .input:focus + .label {
+        font-size: .8rem;
+        transform: translateY(0);
+
+        color: black;
+    }
+
+    .input {
+        margin-top: 1px;
+
+        padding: .3rem 3px;
+
+        border: none;
+        border-bottom: 2px solid #CED5DD;;
+    }
+}
+

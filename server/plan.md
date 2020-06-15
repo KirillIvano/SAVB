@@ -4,6 +4,7 @@
 * [Авторизация](#авторизация)
 * [Группы](#группы)
 * [Боты](#боты)
+* [Сообщения](#сообщения)
 
 ## Авторизация
 
@@ -87,32 +88,7 @@ accessToken: jwt(userId, exp)
 }
 ```
 
-## Боты
-
-### Сущность
-```
-    Group: {
-        id: number;
-        name: string;
-        image: string;
-        membersCount: number
-    }
-```
-
-### Request
-### `GET /api/bots`
-
-Получает всех ботов, админом которых является юзер
-#### Response
-```
-{
-    data {
-        bots: [Bot]
-    }
-}
-```
-
-### `POST /api/bot/createBot`
+### `POST /api/group/createBot`
 
 Создаёт бота на группе (получает токен, создаёт колбэк сервер с дефолтным ответом на стартовое сообщение)
 
@@ -127,6 +103,99 @@ accessToken: jwt(userId, exp)
 #### Response
 ```
 {}
+```
+
+## Боты
+
+### Сущность
+```
+    Group: {
+        id: number;
+        name: string;
+        image: string;
+        membersCount: number
+    }
+```
+
+### `GET /api/bots`
+
+Получает всех ботов, админом которых является юзер
+#### Request
+#### Response
+```
+{
+    data {
+        bots: [Bot]
+    }
+}
+```
+
+### `GET /api/bot/:botId`
+Получает всех ботов, админом которых является юзер
+#### Request
+#### Response
+```
+{
+    data {
+        bot: Bot
+    }
+}
+```
+
+## Сообщения
+
+### Сущности
+ ```
+    MessagePreview: {
+        id: number;
+        botId: number;
+        name: string;
+    }
+```
+```
+    Message: {
+        id: number;
+        botId: number;
+        name: string;
+        text: string;
+    }
+```
+
+```
+    Trigger: {
+        id: number;
+        sourceMessageId: number;
+        targetMessageId: number;
+        triggerType: 'button' | 'plain_message';
+    }
+```
+
+### `GET /api/message/full?messageId=<number>`
+
+Получает все сообщения для бота
+
+#### Response
+```
+{
+    data {
+        message: Message,
+        connectedMessages: [MessagePreview],
+        triggers: [Trigger]
+    }
+}
+```
+
+### `GET /api/message/byBot?botId=<number>`
+
+Получает все сообщения для бота
+
+#### Response
+```
+{
+    data {
+        messages: [MessagePreview]
+    }
+}
 ```
 
 ## Пользователь

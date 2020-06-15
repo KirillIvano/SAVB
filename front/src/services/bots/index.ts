@@ -20,8 +20,8 @@ export type CreateBotBody = {
     code: string;
     redirectUri: string;
 }
-export const authGroup = (body: CreateBotBody) => fetchJson(
-    getServerRequestUri('/api/bot'),
+export const createBot = (body: CreateBotBody) => fetchJson(
+    getServerRequestUri('/api/bot/create'),
     {
         credentials: 'include',
         method: 'POST',

@@ -126,7 +126,7 @@ const mockData: JsonFetchResponse<GetMessageDto> = {
             name: 'xxx',
             text: 'asf asdg sadg asdg asd',
         },
-        triggers: [],
+        triggersPreviews: [],
         nextMessages: messages,
     },
     status: 200,

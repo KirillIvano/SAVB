@@ -14,7 +14,7 @@ export type RawMessageDto = {
 export type GetMessageDto = {
     presentMessage: RawMessageDto;
     nextMessages: MessagePreviewDto[];
-    triggers: TriggerPreviewDto[];
+    triggersPreviews: TriggerPreviewDto[];
 }
 
 export type GetAllMessagesDto = {

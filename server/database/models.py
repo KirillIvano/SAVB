@@ -19,23 +19,26 @@ class BaseModel(Model):
         database = database
 
 
+class Bot(BaseModel):
+    bot_id = PrimaryKeyField()
+    token = CharField()
+    name = CharField()
+    secret_key = CharField(max_length=50)
+    confirmation_token = CharField(max_length=10)
+
+
 class Admin(BaseModel):
     admin_id = PrimaryKeyField()
     token = CharField()
 
 
-class Bot(BaseModel):
-    bot_id = PrimaryKeyField()
-    token = CharField()
-    name = CharField()
-    admin_id = ForeignKeyField(Admin, backref='belongs_to')
-    secret_key = CharField(max_length=50)
-    confirmation_token = CharField(max_length=10)
+class BotAdmin(BaseModel):
+    admin_id = ForeignKeyField(Admin)
+    bot_id = ForeignKeyField(Bot)
 
 
 class User(BaseModel):
     user_id = PrimaryKeyField()
-    access_token = CharField(max_length=512, null=True)
 
 
 class DialogState(BaseModel):
@@ -83,6 +86,8 @@ class KeyboardButton(BaseModel):
 
 class Log(BaseModel):
     log_id = PrimaryKeyField()
+    file_name = CharField(null=True)
+    line = IntegerField(null=True)
     status = IntegerField()
     date = DateTimeField()
     req_data = CharField()
@@ -93,6 +98,22 @@ class Log(BaseModel):
 
 
 # database.connect(reuse_if_open=True)
+# database.create_tables(
+#     [
+#         Bot,
+#         Admin,
+#         BotAdmin,
+#         User,
+#         DialogState,
+#         Dialog,
+#         Action,
+#         BotMessage,
+#         Trigger,
+#         UserMessage,
+#         KeyboardButton,
+#         Log
+#     ]
+# )
 # database.close()
 
 loop = asyncio.new_event_loop()

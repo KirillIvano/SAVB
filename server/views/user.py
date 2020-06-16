@@ -12,7 +12,7 @@ routes = web.RouteTableDef()
 @logged(True)
 @check_auth
 async def info(request: web.Request):
-    user_id = jwt.get_attr_from_access_jwt(request, 'userId')
+    user_id = int(jwt.get_attr_from_access_jwt(request, 'userId'))
 
     if cache.get_vk_token_cache().includes(user_id):
         access_token = cache.get_vk_token_cache().get(user_id)
@@ -22,6 +22,8 @@ async def info(request: web.Request):
             return responses.generate_error_response(
                 'no access token in cache', 401
             )
+
+    print('access_token', access_token)
 
     vk_response = await vk_api.get_users_info(access_token, user_id)
     try:

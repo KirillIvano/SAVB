@@ -31,7 +31,7 @@ def check_auth(func):
 
 
 @routes.post('/api/auth/login')
-@logged(True)
+@logged(False)
 async def auth_login(request: web.Request):
     try:
         request_dict: dict = await request.json()

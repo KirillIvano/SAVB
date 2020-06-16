@@ -2,7 +2,8 @@
 from views.auth import check_auth
 from helpers.log import logged
 from helpers import vk_api, cache, heavy_cache, responses, jwt, csrf
-from database.models import objects, Bot, DialogState, Trigger, Action, BotMessage
+from database.models import objects, Bot, DialogState, Trigger, Action, \
+    BotMessage, BotAdmin
 import settings
 
 from aiohttp import web
@@ -27,7 +28,7 @@ async def bot(request: web.Request):
             )
 
     bot_ids_fetch = await objects.execute(
-        Bot.select(Bot.bot_id).where(Bot.admin_id == user_id)
+        BotAdmin.select(BotAdmin.bot_id).where(BotAdmin.admin_id == user_id)
     )
     bot_ids = [str(_) for _ in bot_ids_fetch]
 
@@ -60,6 +61,9 @@ async def bot(request: web.Request):
 @logged(False)
 @check_auth
 async def bot(request: web.Request):
+
+    # todo: удалять старые колбэки с нашим сервером
+
     request_dict: dict = await request.json()
 
     code = request_dict.get('code')
@@ -100,7 +104,10 @@ async def bot(request: web.Request):
     # если уже добавлен колбэк-сервер с нашим url'ом
     for cb in cb_servers['response']['items']:
         if cb['url'] == settings.CALLBACK_SERVER_URL:
-            return responses.generate_json_response(body={})
+            return responses.generate_error_response(
+                message='group already has our url',
+                status=400
+            )
 
     await vk_api.add_callback_server(
         group_access_token=group_access_token,
@@ -109,13 +116,18 @@ async def bot(request: web.Request):
         secret=group_secret
     )
 
-    bot = await objects.create_or_get(
+    bot = await objects.create(
         Bot,
         bot_id=group_id,
         token=group_access_token,
         name=group_name,
-        admin_id=user_id,
         secret_key=group_secret
+    )
+
+    await objects.create(
+        BotAdmin,
+        bot_id=group_id,
+        admin_id=user_id,
     )
     print(f'bot {bot} created')
 

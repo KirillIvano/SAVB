@@ -44,7 +44,7 @@ const HeaderUserInfo = ({
                 <Button
                     onClick={() => location.href = getUserAuthUrl()}
                 >
-                Войти
+                    Войти
                 </Button>
             </div>
         );
@@ -70,6 +70,6 @@ const HeaderUserInfo = ({
     );
 };
 
-const enchancedUserInfo = withUserInfo(HeaderUserInfo);
+const enhancedUserInfo = withUserInfo(HeaderUserInfo);
 
-export default enchancedUserInfo;
+export default enhancedUserInfo;

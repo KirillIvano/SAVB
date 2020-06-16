@@ -30,6 +30,6 @@ const PopupBox: React.FC<PopupBoxProps> = ({
     );
 };
 
-const enchancedPopup = withMessages(React.memo(PopupBox));
+const enhancedPopup = withMessages(React.memo(PopupBox));
 
-export default enchancedPopup;
+export default enhancedPopup;

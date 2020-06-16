@@ -16,11 +16,11 @@ const SidePanel = ({
 }: SidePanelProps) => (
     <div
         style={{flex: `0 0 ${width}px`}}
-        className={classnames(styles.panelPlaceholder, className)}
+        className={styles.panelPlaceholder}
     >
         <div
             style={{width: `${width}px`}}
-            className={styles.panel}
+            className={classnames(styles.panel, className)}
         >
             {children}
         </div>
@@ -29,8 +29,9 @@ const SidePanel = ({
 
 const SidePaneledRest = ({
     children,
-}: {children: React.ReactNode}) => (
-    <div className={styles.content}>
+    className,
+}: {children: React.ReactNode; className?: string}) => (
+    <div className={classnames(styles.content, className)}>
         {children}
     </div>
 );

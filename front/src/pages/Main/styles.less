@@ -1,3 +1,50 @@
 .main {
-    display: inline;
+    background: white;
+    min-height: 100vh;
+    
+    .introSection {
+        height: calc(100vh - 80px);
+        position: relative;
+
+        .topFigure {
+            position: absolute;
+            z-index: 1;
+            width: 30vw;
+        }
+        .bottomFigure {
+            position: absolute;
+            z-index: 1;
+            bottom: 0;
+            right: 0;
+            width: 50vw;
+        }
+
+        .introContent {
+            position: relative;
+            z-index: 2;
+
+            padding-top: 20vh;
+            padding-bottom: 60px;
+            width: 50vw;
+
+            .introHeadline {
+                font-size: 2.2rem;
+            }
+            .introSubheadline {
+                font-size: 1.5rem;
+                margin-top: 12px;
+                color: #606E7F;
+            }
+            .introButton {
+                margin-top: 100px;
+            }
+        }
+    }
+    .pathSection {
+        padding: 10vh 0;
+    
+        .actionsPath {
+            width: 100%;
+        }
+    }
 }

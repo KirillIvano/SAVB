@@ -21,7 +21,7 @@ type ModalContentProps = {
     groupsGettingError: string | null;
 }
 
-const ModalContent: React.FC<ModalContentProps> = ({
+const GroupsModalContent: React.FC<ModalContentProps> = ({
     groups,
     groupsGettingInProgress,
     groupsGettingError,
@@ -83,11 +83,11 @@ const GroupsModal: React.FC<GroupsModalProps> = ({
                 </div>
             </ModalHead>
 
-            <ModalContent {...{groups, groupsGettingError, groupsGettingInProgress}} />
+            <GroupsModalContent {...{groups, groupsGettingError, groupsGettingInProgress}} />
         </Modal>
     );
 };
 
-const enchancedModal = withGroups(GroupsModal);
+const enhancedModal = withGroups(GroupsModal);
 
-export default enchancedModal;
+export default enhancedModal;

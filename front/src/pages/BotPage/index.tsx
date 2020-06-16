@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {SidePaneledLayout, SidePaneledRest} from '@/parts';
+import {PageWrapper} from '@/uikit';
 
 import {BotSidePanel, BotPageContent} from './components';
 import {withBotId} from './container';
@@ -10,12 +11,14 @@ type BotPageProps = {
 };
 
 const BotPage = ({botId}: BotPageProps) => (
-    <SidePaneledLayout>
-        <BotSidePanel botId={botId} />
-        <SidePaneledRest>
-            <BotPageContent botId={botId} />
-        </SidePaneledRest>
-    </SidePaneledLayout>
+    <PageWrapper>
+        <SidePaneledLayout>
+            <BotSidePanel botId={botId} />
+            <SidePaneledRest>
+                <BotPageContent botId={botId} />
+            </SidePaneledRest>
+        </SidePaneledLayout>
+    </PageWrapper>
 );
 
 export default withBotId(BotPage);

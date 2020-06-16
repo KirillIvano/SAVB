@@ -3,6 +3,7 @@ import {Grid, Row} from 'react-flexbox-grid';
 
 import {
     PageHeadline,
+    PageWrapper,
     Preloader,
     Fade,
 } from '@/uikit';
@@ -43,7 +44,7 @@ const BotsPage: React.FC<BotsPageProps> = ({
     }
 
     return (
-        <>
+        <PageWrapper>
             <Grid>
                 <Fade duration={0.5}>
                     <PageHeadline className={styles.pageHeadline}>
@@ -64,7 +65,7 @@ const BotsPage: React.FC<BotsPageProps> = ({
                 </Fade>
             </Grid>
             <GroupsModal handleClose={() => setOpened(false)} isOpen={isOpen} />
-        </>
+        </PageWrapper>
     );
 };
 

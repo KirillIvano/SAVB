@@ -45,6 +45,6 @@ const UserAuth = ({
     return <div className={styles.auth}></div>;
 };
 
-const enchancedUserAuth = withLoginProps(UserAuth);
+const enhancedUserAuth = withLoginProps(UserAuth);
 
-export default enchancedUserAuth;
+export default enhancedUserAuth;

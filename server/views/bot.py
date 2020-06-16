@@ -3,14 +3,13 @@ from views.auth import check_auth
 from helpers.log import logged
 from helpers import vk_api, cache, heavy_cache, responses, jwt, csrf
 from database.models import objects, Bot, DialogState, Trigger, Action, \
-    BotMessage, BotAdmin
+    BotMessage, BotAdmin, Admin
 import settings
-
 from aiohttp import web
+
 routes = web.RouteTableDef()
 
 vk_token_cache = cache.get_vk_token_cache()
-
 
 @routes.get('/api/bots')
 @logged(True)
@@ -27,10 +26,13 @@ async def bot(request: web.Request):
                 'no access token in cache', 401
             )
 
-    bot_ids_fetch = await objects.execute(
-        BotAdmin.select(BotAdmin.bot_id).where(BotAdmin.admin_id == user_id)
+    bot_admin_fetch = await objects.execute(
+        BotAdmin
+            .select()
+            .where(BotAdmin.admin_id == user_id)
     )
-    bot_ids = [str(_) for _ in bot_ids_fetch]
+
+    bot_ids = [bot_admin.bot_id for bot_admin in bot_admin_fetch]
 
     if not bot_ids:
         return responses.generate_json_response(
@@ -57,10 +59,65 @@ async def bot(request: web.Request):
     )
 
 
+# example: (get) - http://194.67.109.99:500/api/bot?bot_id=12345
+@routes.get('/api/bot/{bot_id}')
+@logged(True)
+@check_auth
+async def get_single_bot(request: web.Request):
+    bot_id = request.match_info.get('bot_id', None)
+    user_id = int(jwt.get_attr_from_access_jwt(request, 'userId'))
+
+    if cache.get_vk_token_cache().includes(user_id):
+        access_token = cache.get_vk_token_cache().get(user_id)
+    else:
+        access_token = await heavy_cache.get_vk_access_token(user_id)
+        if access_token is None:
+            return responses.generate_error_response(
+                'no access token in cache', 401
+            )
+
+    bot_ids_fetch = await objects.execute(
+        BotAdmin.select().where(
+            (BotAdmin.admin_id == user_id) & (BotAdmin.bot_id == bot_id)
+        )
+    )
+
+    if not bot_ids_fetch:
+        return responses.generate_error_response(
+            'У Вас нет такой группы', 400
+        )
+
+    bot_ids = [bot_id]
+
+    bots_vk_info = (
+        await vk_api.get_groups(
+            access_token,
+            bot_ids
+        )
+    ).get('response')
+
+    if not bots_vk_info:
+        return responses.generate_error_response(
+            'Произошла ошибка с vk API', 500
+        )
+
+    bot = {
+        'id': bots_vk_info[0]['id'],
+        'name': bots_vk_info[0]['name'],
+        'image': bots_vk_info[0]['photo_200'],
+        'membersCount': bots_vk_info[0]['members_count'],
+    }
+    
+    return responses.generate_json_response(
+        body=dict(bot=bot)
+    )
+
+
+
 @routes.post('/api/bot/create')
 @logged(False)
 @check_auth
-async def bot(request: web.Request):
+async def create_bot(request: web.Request):
 
     # todo: удалять старые колбэки с нашим сервером
 

@@ -13,7 +13,7 @@ vk_token_cache = cache.get_vk_token_cache()
 
 
 @routes.get('/api/bots')
-@logged(True)
+@logged(False)
 @check_auth
 async def bot(request: web.Request):
     user_id = int(jwt.get_attr_from_access_jwt(request, 'userId'))
@@ -28,19 +28,26 @@ async def bot(request: web.Request):
             )
 
     bot_ids_fetch = await objects.execute(
-        BotAdmin.select(BotAdmin.bot_id).where(BotAdmin.admin_id == user_id)
+        BotAdmin.select().where(BotAdmin.admin_id == user_id)
     )
     bot_ids = [str(_) for _ in bot_ids_fetch]
+    print(bot_ids)
 
     if not bot_ids:
         return responses.generate_json_response(
             body=dict(bots=[])
         )
 
-    bots_vk_info = (
+    bots_vk_info_response = (
         await vk_api.get_groups(access_token, bot_ids)
-    ).get('response')
+    )
+    bots_vk_info = bots_vk_info_response.get('response')
     bots = []
+
+    if not bots_vk_info:
+        return responses.generate_error_response(
+            f'bad vk response: {bots_vk_info_response}', 500
+        )
 
     for b in bots_vk_info:
         bots.append(

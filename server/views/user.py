@@ -23,8 +23,6 @@ async def info(request: web.Request):
                 'no access token in cache', 401
             )
 
-    print('access_token', access_token)
-
     vk_response = await vk_api.get_users_info(access_token, user_id)
     try:
         vk_response_body = vk_response['response'][0]

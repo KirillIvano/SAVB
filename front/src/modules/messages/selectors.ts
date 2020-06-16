@@ -1,12 +1,12 @@
 import {createSelector} from 'reselect';
 import {MessagesPreviewsStorageType, MessagePreview} from './types';
 
-type SelectMessagePreviewsParams = {
+type SelectMessagePreviewsByBotParams = {
     botId: string;
     messages: MessagesPreviewsStorageType;
 }
 export const selectMessagesPreviewsByBot = createSelector<
-    SelectMessagePreviewsParams,
+    SelectMessagePreviewsByBotParams,
     string,
     MessagesPreviewsStorageType,
     MessagePreview[]
@@ -19,3 +19,17 @@ export const selectMessagesPreviewsByBot = createSelector<
             .map(key => messages[key]),
 );
 
+type SelectMessagePreviewsByIdsParams = {
+    ids: string[];
+    messagePreviews: MessagesPreviewsStorageType;
+}
+export const selectMessagesPreviewsByIds = createSelector<
+    SelectMessagePreviewsByIdsParams,
+    string[],
+    MessagesPreviewsStorageType,
+    MessagePreview[]
+>(
+    props => props.ids,
+    props => props.messagePreviews,
+    (ids, messages) => ids.map(id => messages[id]),
+);

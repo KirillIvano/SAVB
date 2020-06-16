@@ -123,10 +123,29 @@ const mockData: JsonFetchResponse<GetMessageDto> = {
         presentMessage: {
             botId: 1,
             id: 1,
-            name: 'xxx',
-            text: 'asf asdg sadg asdg asd',
+            name: 'name',
+            text: 'text',
         },
-        triggersPreviews: [],
+        triggersPreviews: [
+            {
+                id: 1,
+                sourceMessageId: 1,
+                targetMessageId: 2,
+                triggerType: 'plain_message',
+            },
+            {
+                id: 2,
+                sourceMessageId: 1,
+                targetMessageId: 3,
+                triggerType: 'plain_message',
+            },
+            {
+                id: 3,
+                sourceMessageId: 1,
+                targetMessageId: 4,
+                triggerType: 'plain_message',
+            },
+        ],
         nextMessages: messages,
     },
     status: 200,
@@ -138,6 +157,11 @@ export const getAllBotMessages = async (botId: number): Promise<JsonFetchRespons
     status: 200,
     ok: true,
     data: {
-        messages,
+        messages: [...messages, {
+            botId: 1,
+            id: 1,
+            name: 'name',
+            text: 'text',
+        }],
     },
 });

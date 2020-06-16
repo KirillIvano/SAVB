@@ -1,10 +1,12 @@
 .inputWrapper {
     position: relative;
+    
     display: flex;
     flex-direction: column;
     padding-top: 1rem;
 
     .input {
+        position: relative;
         margin-top: 1px;
 
         padding: .3rem 3px;
@@ -33,12 +35,16 @@
         
         transition: .5s;
     }
-    
-    .input:focus + .label, .input.filled + .label {
+
+    .input:focus + .label, .input.filled + .label, .input.edited + .label {
         font-size: .85rem;
         transform: translateY(0);
 
         color: #333;
+    }
+
+    .input.edited {
+        border-bottom: 2px solid #27c741;
     }
 }
 

@@ -8,12 +8,15 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     labelText: string;
     className?: string;
     wrapperClassName?: string;
+    isEdited?: boolean;
 }
 
 const TextInput = ({
     labelText,
     className,
     wrapperClassName,
+    isEdited,
+
     value,
 
     ...props
@@ -33,6 +36,7 @@ const TextInput = ({
                     className,
                     {
                         [styles.filled]: Boolean(value),
+                        [styles.edited]: isEdited,
                     },
                 )}
                 id={inputId}

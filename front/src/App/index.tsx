@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Route, Switch, useHistory} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
 import {
     Bots,
@@ -11,7 +11,7 @@ import {
 } from '@/pages';
 import {PopupBox, Header} from '@/parts';
 import {withAuthRegulation} from '@/containers/withAuthRegulation';
-import {PageWrapper, Preloader} from '@/uikit';
+import {Preloader} from '@/uikit';
 
 import {withAuth} from './containers/withAuth';
 
@@ -36,16 +36,14 @@ const App = ({
     return (
         <>
             <Header />
-            <PageWrapper>
-                <Switch>
-                    <Route exact path="/" component={Main} />
-                    <Route exact path="/bots" component={withAuthRegulation(Bots)} />
-                    <Route exact path="/userAuthPending" component={UserLoginPage} />
-                    <Route exact path="/groupAuthPending" component={BotCreatePage} />
-                    <Route exact path="/bot/:botId" component={withAuthRegulation(BotPage)} />
-                    <Route exact path="/message/:messageId" component={withAuthRegulation(MessagePage)} />
-                </Switch>
-            </PageWrapper>
+            <Switch>
+                <Route exact path="/" component={Main} />
+                <Route exact path="/bots" component={withAuthRegulation(Bots)} />
+                <Route exact path="/userAuthPending" component={UserLoginPage} />
+                <Route exact path="/groupAuthPending" component={BotCreatePage} />
+                <Route exact path="/bot/:botId" component={withAuthRegulation(BotPage)} />
+                <Route exact path="/message/:messageId" component={withAuthRegulation(MessagePage)} />
+            </Switch>
             <PopupBox />
         </>
     );

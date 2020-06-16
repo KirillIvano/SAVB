@@ -36,3 +36,9 @@ export const ExitIcon = createIcon(exitImage);
 import backImage from './images/back.svg';
 export const BackIcon = createIcon(backImage);
 
+import editImage from './images/edit.png';
+export const EditIcon = createIcon(editImage);
+
+import deleteImage from './images/delete.png';
+export const DeleteIcon = createIcon(deleteImage);
+

@@ -131,7 +131,6 @@ accessToken: jwt(userId, exp)
 ```
 
 ### `GET /api/bot/:botId`
-
 Получает всех ботов, админом которых является юзер
 #### Request
 #### Response
@@ -167,21 +166,62 @@ accessToken: jwt(userId, exp)
         id: number;
         sourceMessageId: number;
         targetMessageId: number;
-        triggerType: 'button' | 'plain_message';
+        triggerType: 'button' | 'plain_message'; // тип плиз сделай как тебе удобнее, только поправь тут потом, плез
     }
 ```
 
 ### `GET /api/message/full?messageId=<number>`
 
-Получает все сообщения для бота
+Получает основное сообщение и связаные с ним
 
 #### Response
 ```
 {
     data {
-        message: Message,
-        connectedMessages: [MessagePreview],
-        triggers: [Trigger]
+        message: Message, // начальное сообщение
+        connectedMessages: [MessagePreview], // можешь слать сразу пустой пока что, только todo сделай плиз
+        triggers: [Trigger] // триггеры присылаем всё равно, просто они все обратно в нулевой стэйт ведут, тоже можно пустыми
+    }
+}
+```
+
+### `POST /api/message`
+#### Request
+Создаёт новое сообщение
+```
+{
+    {
+        name: string;
+        text: string;
+        botId: number;
+    }
+}
+```
+#### Response
+```
+{
+    data {
+        message: Message;
+    }
+}
+```
+
+### `PUT /api/message`
+#### Request
+Апдейтит сообщение и возвращает изменённое
+```
+{
+    {
+        name?: string; // ? - опционально
+        text?: string;
+    }
+}
+```
+#### Response
+```
+{
+    data {
+        message: Message;
     }
 }
 ```
@@ -194,16 +234,15 @@ accessToken: jwt(userId, exp)
 ```
 {
     data {
-        messages: [MessagePreview]
+        messages: [MessagePreview],
+        startId: number // id стартового сообщения
     }
 }
 ```
 
 ## Пользователь
 
-#### Request
-`GET /api/user/info`
-
+### `GET /api/user/info`
 #### Response
 ```
    data: {

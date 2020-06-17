@@ -131,7 +131,6 @@ accessToken: jwt(userId, exp)
 ```
 
 ### `GET /api/bot/:botId`
-
 Получает всех ботов, админом которых является юзер
 #### Request
 #### Response

@@ -1,5 +1,5 @@
 # Should start with /api/user
-from helpers import vk_api, cache, heavy_cache, responses
+from helpers import vk_api, cache, heavy_cache, responses, jwt
 from views.auth import check_auth
 from helpers.log import logged
 
@@ -12,10 +12,7 @@ routes = web.RouteTableDef()
 @logged(True)
 @check_auth
 async def info(request: web.Request):
-    try:
-        user_id: int = int(request.query['userId'])
-    except KeyError:
-        return responses.generate_error_response('no user_id parameter', 400)
+    user_id = int(jwt.get_attr_from_access_jwt(request, 'userId'))
 
     if cache.get_vk_token_cache().includes(user_id):
         access_token = cache.get_vk_token_cache().get(user_id)
@@ -26,7 +23,9 @@ async def info(request: web.Request):
                 'no access token in cache', 401
             )
 
-    vk_response = await vk_api.users_info(access_token, user_id)
+    print('access_token', access_token)
+
+    vk_response = await vk_api.get_users_info(access_token, user_id)
     try:
         vk_response_body = vk_response['response'][0]
     except KeyError:

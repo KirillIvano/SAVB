@@ -1,7 +1,7 @@
 import {createReducer} from 'typesafe-actions';
 
 import {RootAction} from '@/store/types';
-import {getMessageSuccessAction} from '@/modules/messages/actions';
+import {getStageSuccessAction} from '@/modules/stages/actions';
 
 import {TriggerStateType} from './types';
 
@@ -12,7 +12,7 @@ const initialState: TriggerStateType = {
 export const triggersReducer = createReducer<TriggerStateType, RootAction>(
     initialState,
 ).handleAction(
-    getMessageSuccessAction,
+    getStageSuccessAction,
     (state, {payload: {triggersPreviews}}) => ({
         ...state,
         previews: {

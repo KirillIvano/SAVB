@@ -4,7 +4,7 @@ import {GroupsActionsType} from '@/modules/groups/types';
 import {BotsActionType} from '@/modules/bots/types';
 import {PopupActionType} from '@/modules/popup/types';
 import {UserActionType} from '@/modules/user/types';
-import {MessageActionType} from '@/modules/messages/types';
+import {StageActionType} from '@/modules/stages/types';
 
 export const uselessAction = createAction('EMPTY')();
 
@@ -12,5 +12,5 @@ export type RootAction = GroupsActionsType |
     BotsActionType |
     PopupActionType |
     UserActionType |
-    MessageActionType |
+    StageActionType |
     ActionType<typeof uselessAction>;

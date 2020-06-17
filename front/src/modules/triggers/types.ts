@@ -1,8 +1,8 @@
 export type TriggerPreviewType = {
     id: string;
-    sourceMessageId: string;
-    targetMessageId: string;
-    triggerType: 'button' | 'plain_message';
+    sourceStageId: string;
+    targetStageId: string;
+    triggerType: 'button' | 'plain_stage';
 }
 
 export type TriggerPreviewStorageType = Record<string, TriggerPreviewType>

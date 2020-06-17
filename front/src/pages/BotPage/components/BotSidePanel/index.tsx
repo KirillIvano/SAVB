@@ -4,7 +4,7 @@ import {SidePanel} from '@/parts';
 import {TextInput} from '@/uikit';
 
 // import styles from './styles.less';
-import {BotMessages} from './../';
+import {BotStages} from './../';
 
 type BotSidePanelProps = {
     botId: string;
@@ -17,7 +17,7 @@ const BotSidePanel = ({
 
     return (
         <SidePanel>
-            <BotMessages botId={botId} />
+            <BotStages botId={botId} />
         </SidePanel>
     );
 };

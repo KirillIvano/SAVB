@@ -6,7 +6,7 @@ import {
     Main,
     UserLoginPage,
     BotCreatePage,
-    MessagePage,
+    StagePage,
     BotPage,
 } from '@/pages';
 import {PopupBox, Header} from '@/parts';
@@ -42,7 +42,7 @@ const App = ({
                 <Route exact path="/userAuthPending" component={UserLoginPage} />
                 <Route exact path="/groupAuthPending" component={BotCreatePage} />
                 <Route exact path="/bot/:botId" component={withAuthRegulation(BotPage)} />
-                <Route exact path="/message/:messageId" component={withAuthRegulation(MessagePage)} />
+                <Route exact path="/stage/:stageId" component={withAuthRegulation(StagePage)} />
             </Switch>
             <PopupBox />
         </>

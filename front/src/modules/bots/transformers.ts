@@ -7,8 +7,8 @@ export const clientifyBot = (bot: RawBotType): BotType => ({
     id: String(bot.id),
 });
 
-export const clientifyBotsArr = (messages: RawBotType[]) =>
-    messages.reduce(
+export const clientifyBotsArr = (stages: RawBotType[]) =>
+    stages.reduce(
         (acc: Record<string, BotType>, bot) => {
             const botId = String(bot.id);
 

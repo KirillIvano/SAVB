@@ -19,7 +19,7 @@ export const getGroupAuthUrl = (groupId: number) =>
     'https://oauth.vk.com/authorize?' + stringify({
         ...commonVkAuthProps,
         'redirect_uri': `${__CLIENT_ORIGIN__}/groupAuthPending`,
-        'scope': 'photos,messages,docs,manage',
+        'scope': 'photos,stages,docs,manage',
         'group_ids': String(groupId),
     });
 

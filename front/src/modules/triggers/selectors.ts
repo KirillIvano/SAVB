@@ -2,20 +2,20 @@ import {createSelector} from 'reselect';
 
 import {TriggerStateType, TriggerPreviewType} from './types';
 
-type NextMessagesSelectorProps = {
+type NextStagesSelectorProps = {
     triggersState: TriggerStateType;
-    messageId: string;
+    stageId: string;
 }
-export const selectNextMessagesIds = createSelector<
-    NextMessagesSelectorProps,
+export const selectNextStagesIds = createSelector<
+    NextStagesSelectorProps,
     string,
     Record<string, TriggerPreviewType>,
     string[]
 >(
-    props => props.messageId,
+    props => props.stageId,
     props => props.triggersState.previews,
-    (messageId, triggers) => Object.keys(triggers)
+    (stageId, triggers) => Object.keys(triggers)
         .map(triggerId => triggers[triggerId])
-        .filter(trigger => trigger.sourceMessageId === messageId)
-        .map(trigger => trigger.targetMessageId),
+        .filter(trigger => trigger.sourceStageId === stageId)
+        .map(trigger => trigger.targetStageId),
 );

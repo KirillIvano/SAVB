@@ -5,8 +5,8 @@ import {TriggerPreviewType} from './types';
 export const clientifyTriggerPreview = (trigger: TriggerPreviewDto): TriggerPreviewType => ({
     ...trigger,
     id: String(trigger.id),
-    sourceMessageId: String(trigger.sourceMessageId),
-    targetMessageId: String(trigger.targetMessageId),
+    sourceStageId: String(trigger.sourceStageId),
+    targetStageId: String(trigger.targetStageId),
 });
 
 export const clientifyTriggerPreviewsArr = (triggers: TriggerPreviewDto[]): Record<string, TriggerPreviewType> =>

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import classnames from 'classnames';
-import {} from 'react-transition-group';
 import {PopupMessageType} from '@/modules/popup/types';
 
 import styles from './styles.less';

@@ -19,27 +19,30 @@ class BaseModel(Model):
         database = database
 
 
+class Bot(BaseModel):
+    bot_id = PrimaryKeyField()
+    token = CharField()
+    name = CharField()
+    secret_key = CharField(max_length=50)
+    confirmation_token = CharField(max_length=10)
+
+
 class Admin(BaseModel):
     admin_id = PrimaryKeyField()
     token = CharField()
 
 
-class Bot(BaseModel):
-    bot_id = PrimaryKeyField()
-    token = CharField()
-    name = CharField()
-    admin_id = ForeignKeyField(Admin, backref='belongs_to')
-    secret_key = CharField(max_length=50)
-    confirmation_token = CharField(max_length=10)
+class BotAdmin(BaseModel):
+    admin_id = ForeignKeyField(Admin)
+    bot_id = ForeignKeyField(Bot)
 
 
 class User(BaseModel):
     user_id = PrimaryKeyField()
-    access_token = CharField(max_length=512, null=True)
 
 
 class DialogState(BaseModel):
-    state_id = PrimaryKeyField()
+    state_id = AutoField()
     bot_id = ForeignKeyField(Bot) 
 
 
@@ -50,31 +53,31 @@ class Dialog(BaseModel):
 
 
 class Action(BaseModel):
-    action_id = PrimaryKeyField()
+    action_id = AutoField()
     target_state_id = ForeignKeyField(DialogState)
 
 
 class BotMessage(BaseModel):
-    message_id = PrimaryKeyField()
+    message_id = AutoField()
     bot_id = ForeignKeyField(Bot)
     text = CharField()
     action_id = ForeignKeyField(Action)
 
 
 class Trigger(BaseModel):
-    trigger_id = PrimaryKeyField()
-    initial_state_id = ForeignKeyField(DialogState)
+    trigger_id = AutoField()
+    initial_state_id = ForeignKeyField(DialogState, DialogState.state_id)
     action_id = ForeignKeyField(Action)
 
 
 class UserMessage(BaseModel):
-    message_id = PrimaryKeyField()
+    message_id = AutoField()
     text = CharField()
     trigger_id = ForeignKeyField(Trigger)
 
 
 class KeyboardButton(BaseModel):
-    button_id = PrimaryKeyField()
+    button_id = AutoField()
     text = CharField()
     color = CharField()
     inline = BooleanField()
@@ -83,6 +86,8 @@ class KeyboardButton(BaseModel):
 
 class Log(BaseModel):
     log_id = PrimaryKeyField()
+    file_name = CharField(null=True)
+    line = IntegerField(null=True)
     status = IntegerField()
     date = DateTimeField()
     req_data = CharField()
@@ -93,8 +98,24 @@ class Log(BaseModel):
 
 
 # database.connect(reuse_if_open=True)
+# database.create_tables(
+#     [
+#         Bot,
+#         Admin,
+#         BotAdmin,
+#         User,
+#         DialogState,
+#         Dialog,
+#         Action,
+#         BotMessage,
+#         Trigger,
+#         UserMessage,
+#         KeyboardButton,
+#         Log
+#     ]
+# )
 # database.close()
 
 loop = asyncio.new_event_loop()
 objects = peewee_async.Manager(database, loop=loop)
-database.set_allow_sync(False)
+database.set_allow_sync(True)

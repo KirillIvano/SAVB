@@ -31,7 +31,7 @@ def check_auth(func):
 
 
 @routes.post('/api/auth/login')
-@logged(True)
+@logged(False)
 async def auth_login(request: web.Request):
     try:
         request_dict: dict = await request.json()
@@ -77,7 +77,7 @@ async def auth_refresh_tokens(request: web.Request):
             cookies=request.cookies,
             body=request_dict
         )
-    except jwt_lib.ExpiredSignatureError as e:
+    except jwt_lib.ExpiredSignatureError:
         return responses.generate_error_response('refresh token expired', 401)
 
     if not jwt_verified:

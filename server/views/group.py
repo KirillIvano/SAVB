@@ -13,8 +13,7 @@ routes = web.RouteTableDef()
 @check_auth
 async def handle(request: web.Request):
 
-	cookies_body: dict = jwt.verify(request.cookies['accessJwt'])
-	user_id = cookies_body['userId']
+	user_id = jwt.get_attr_from_access_jwt(request, 'userId')
 
 	if user_id is None:
 		return responses.generate_error_response('no user_id parameter', 400)
@@ -28,7 +27,7 @@ async def handle(request: web.Request):
 				'no access token in cache', 401
 			)
 
-	vk_response = await vk_api.group(access_token, user_id)
+	vk_response = await vk_api.get_user_group_list(access_token, user_id)
 	vk_response_body = vk_response.get('response')
 	if not vk_response_body:
 		return responses.generate_error_response(

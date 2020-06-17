@@ -28,8 +28,9 @@ async def bot(request: web.Request):
             )
 
     bot_admin_fetch = await objects.execute(
-        BotAdmin.select()
-            .where(BotAdmin.admin_id == user_id)
+        BotAdmin.select().where(
+            BotAdmin.admin_id == user_id
+        )
     )
 
     bot_ids = [bot_admin.bot_id for bot_admin in bot_admin_fetch]
@@ -125,8 +126,6 @@ async def get_single_bot(request: web.Request):
 @check_auth
 async def create_bot(request: web.Request):
 
-    # todo: удалять старые колбэки с нашим сервером
-
     request_dict: dict = await request.json()
 
     code = request_dict.get('code')
@@ -164,28 +163,40 @@ async def create_bot(request: web.Request):
     cb_servers = await vk_api.get_group_callback_servers(
         group_access_token, group_id=group_id
     )
+
     # если уже добавлен колбэк-сервер с нашим url'ом
     for cb in cb_servers['response']['items']:
         if cb['url'] == settings.CALLBACK_SERVER_URL:
-            return responses.generate_error_response(
-                message='group already has our url',
-                status=400
-            )
+            print('already has our cb')
+    else:
+        await vk_api.add_callback_server(
+            group_access_token=group_access_token,
+            group_id=int(group_id),
+            title='savb',
+            secret=group_secret
+        )
+        print('created cb')
 
-    await vk_api.add_callback_server(
+    conf_code_resp = await vk_api.get_callback_confirmation_code(
         group_access_token=group_access_token,
         group_id=int(group_id),
-        title='savb',
-        secret=group_secret
     )
+    conf_code = conf_code_resp['response']['code']
 
-    bot = await objects.create(
+    bot = await objects.create_or_get(
         Bot,
         bot_id=group_id,
         token=group_access_token,
         name=group_name,
-        secret_key=group_secret
+        secret_key=group_secret,
+        confirmation_token=conf_code_resp['response']['code']
     )
+    bot_created = bot[1]
+
+    if not bot_created:
+        return responses.generate_error_response(
+            'Бот уже существует в базе данных', 400
+        )
 
     await objects.create(
         BotAdmin,

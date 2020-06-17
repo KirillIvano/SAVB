@@ -114,3 +114,21 @@ async def get_group_callback_servers(group_access_token, group_id):
 		group_id=group_id
 	)
 
+
+async def get_callback_confirmation_code(group_access_token, group_id):
+
+	return await vk_method(
+		'groups.getCallbackConfirmationCode',
+		group_access_token,
+		group_id=group_id
+	)
+
+
+async def delete_callback_server(group_access_token, group_id, server_id):
+	return await vk_method(
+		'groups.deleteCallbackServer',
+		group_access_token,
+		group_id=group_id,
+		server_id=server_id
+	)
+

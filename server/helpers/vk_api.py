@@ -132,3 +132,14 @@ async def delete_callback_server(group_access_token, group_id, server_id):
 		server_id=server_id
 	)
 
+
+async def set_callback_settings(group_access_token, group_id, server_id):
+	return await vk_method(
+		'groups.setCallbackSettings',
+		group_access_token,
+		group_id=group_id,
+		server_id=server_id,
+		api_version=settings.VK_API_VERSION,
+		message_new=1
+	)
+

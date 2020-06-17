@@ -16,6 +16,7 @@ vk_token_cache = cache.get_vk_token_cache()
 @logged(False)
 @check_auth
 async def bot(request: web.Request):
+
     user_id = int(jwt.get_attr_from_access_jwt(request, 'userId'))
 
     if cache.get_vk_token_cache().includes(user_id):
@@ -160,28 +161,10 @@ async def create_bot(request: web.Request):
         group_ids=[group_id]
     ))['response'][0]['name']
 
-    cb_servers = await vk_api.get_group_callback_servers(
-        group_access_token, group_id=group_id
-    )
-
-    # если уже добавлен колбэк-сервер с нашим url'ом
-    for cb in cb_servers['response']['items']:
-        if cb['url'] == settings.CALLBACK_SERVER_URL:
-            print('already has our cb')
-    else:
-        await vk_api.add_callback_server(
-            group_access_token=group_access_token,
-            group_id=int(group_id),
-            title='savb',
-            secret=group_secret
-        )
-        print('created cb')
-
     conf_code_resp = await vk_api.get_callback_confirmation_code(
         group_access_token=group_access_token,
         group_id=int(group_id),
     )
-    conf_code = conf_code_resp['response']['code']
 
     bot = await objects.create_or_get(
         Bot,
@@ -196,6 +179,31 @@ async def create_bot(request: web.Request):
     if not bot_created:
         return responses.generate_error_response(
             'Бот уже существует в базе данных', 400
+        )
+
+    # если уже добавлен колбэк-сервер с нашим url'ом
+    cb_servers = await vk_api.get_group_callback_servers(
+        group_access_token, group_id=group_id
+    )
+    for cb in cb_servers['response']['items']:
+        if cb['url'] == settings.CALLBACK_SERVER_URL:
+            cb_server_id = cb['id']
+            break
+    else:
+        add_cb_resp = await vk_api.add_callback_server(
+            group_access_token=group_access_token,
+            group_id=int(group_id),
+            title='savb',
+            secret=group_secret
+        )
+        cb_server_id = add_cb_resp.get('response').get('server_id')
+
+    set_settings_resp = await vk_api.set_callback_settings(
+        group_access_token, group_id, cb_server_id
+    )
+    if not set_settings_resp.get('response'):
+        return responses.generate_error_response(
+            'Не удалось установить настройки callback сервера', 400
         )
 
     await objects.create(

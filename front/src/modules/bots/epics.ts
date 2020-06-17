@@ -4,8 +4,7 @@ import {from, of} from 'rxjs';
 import {isOfType} from 'typesafe-actions';
 
 import {RootAction, RootState} from '@/store/types';
-import {createBot, getBots} from '@/services/bots';
-import {getSingleBot} from '@/services/bots/mock';
+import {createBot, getBots, getSingleBot} from '@/services/bots';
 import {retryAction} from '@/modules/user/helpers';
 import {addPopupSuccessMessage, addPopupErrorMessage} from '@/modules/popup/actions';
 

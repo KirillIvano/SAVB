@@ -34,7 +34,7 @@ class Admin(BaseModel):
 
 class BotAdmin(BaseModel):
     admin_id = ForeignKeyField(Admin)
-    bot_id = ForeignKeyField(Bot)
+    bot_id = ForeignKeyField(Bot, on_delete='CASCADE')
 
 
 class User(BaseModel):
@@ -43,37 +43,38 @@ class User(BaseModel):
 
 class DialogState(BaseModel):
     state_id = AutoField()
-    bot_id = ForeignKeyField(Bot) 
+    name = CharField(null=True)
+    bot_id = ForeignKeyField(Bot, on_delete='CASCADE')
 
 
 class Dialog(BaseModel):
-    bot_id = ForeignKeyField(Bot)
+    bot_id = ForeignKeyField(Bot, on_delete='CASCADE')
     user_id = ForeignKeyField(User)
     current_state_id = ForeignKeyField(DialogState)
 
 
 class Action(BaseModel):
     action_id = AutoField()
-    target_state_id = ForeignKeyField(DialogState)
+    target_state_id = ForeignKeyField(DialogState, on_delete='CASCADE')
 
 
 class BotMessage(BaseModel):
     message_id = AutoField()
-    bot_id = ForeignKeyField(Bot)
+    bot_id = ForeignKeyField(Bot, on_delete='CASCADE')
     text = CharField()
-    action_id = ForeignKeyField(Action)
+    action_id = ForeignKeyField(Action, on_delete='CASCADE')
 
 
 class Trigger(BaseModel):
     trigger_id = AutoField()
-    initial_state_id = ForeignKeyField(DialogState, DialogState.state_id)
-    action_id = ForeignKeyField(Action)
+    initial_state_id = ForeignKeyField(DialogState, DialogState.state_id, on_delete='CASCADE')
+    action_id = ForeignKeyField(Action, on_delete='CASCADE')
 
 
 class UserMessage(BaseModel):
     message_id = AutoField()
     text = CharField()
-    trigger_id = ForeignKeyField(Trigger)
+    trigger_id = ForeignKeyField(Trigger, on_delete='CASCADE')
 
 
 class KeyboardButton(BaseModel):
@@ -81,7 +82,7 @@ class KeyboardButton(BaseModel):
     text = CharField()
     color = CharField()
     inline = BooleanField()
-    trigger_id = ForeignKeyField(Trigger)
+    trigger_id = ForeignKeyField(Trigger, on_delete='CASCADE')
 
 
 class Log(BaseModel):

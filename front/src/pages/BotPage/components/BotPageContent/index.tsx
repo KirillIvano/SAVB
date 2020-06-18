@@ -13,6 +13,7 @@ type BotPageContentProps = {
     image: string;
     membersCount: number;
 
+    openDeleteModal: () => void;
     getBotInfo: () => void;
 }
 
@@ -24,6 +25,7 @@ const BotPageContent = ({
     image,
     membersCount,
 
+    openDeleteModal,
     getBotInfo,
 }: BotPageContentProps) => {
     useEffect(() => {getBotInfo();}, []);
@@ -34,6 +36,7 @@ const BotPageContent = ({
     return (
         <Fade duration={.5}>
             <BotView
+                openDeleteModal={openDeleteModal}
                 name={name}
                 image={image}
                 membersCount={membersCount}

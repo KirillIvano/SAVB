@@ -56,11 +56,16 @@ const BotsPage: React.FC<BotsPageProps> = ({
                         />
                     </PageHeadline>
                     <Row>
-                        {Object.keys(bots).map(botId => {
-                            const {id} = bots[botId];
+                        {
+                            Object.keys(bots).length ?
+                                Object.keys(bots).map(botId => {
+                                    const {id} = bots[botId];
 
-                            return <BotCard key={id} {...bots[botId]} />;
-                        })}
+                                    return <BotCard key={id} {...bots[botId]} />;
+                                }) : (
+                                    <div>Создайте своего первого бота!</div>
+                                )
+                        }
                     </Row>
                 </Fade>
             </Grid>

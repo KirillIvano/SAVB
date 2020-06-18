@@ -21,6 +21,10 @@ export type BotsStateType = {
     botGetSingleInProgress: boolean;
     botGetSingleError: string | null;
 
+    botDeletingInProgress: boolean;
+    botDeletingError: string | null;
+    botDeletingSuccess: boolean;
+
     botCreatingInProgress: boolean;
     botCreatingError: string | null;
     botCreatingSuccess: boolean;

@@ -20,14 +20,12 @@ type StageSettingsProps = {
 
 const Settings = ({
     name,
-    text,
 
     getStageLoading,
     getStageError,
     getStageSuccess,
 }: StageSettingsProps) => {
     const [newName, setNewName] = useState(name);
-    const [newText, setNewText] = useState(text);
 
     const history = useHistory();
 
@@ -48,22 +46,13 @@ const Settings = ({
 
             <div className={styles.inputs}>
                 <TextInput
-                    labelText="Название сообщения"
+                    labelText="Название состояния"
                     name="stage_name"
                     wrapperClassName={styles.stageEditInput}
 
                     isEdited={newName !== name}
                     value={newName}
                     onChange={e => setNewName(e.currentTarget.value)}
-                />
-                <TextInput
-                    labelText="Текст сообщения"
-                    name="stage_text"
-                    wrapperClassName={styles.stageEditInput}
-
-                    isEdited={newText !== text}
-                    value={newText}
-                    onChange={e => setNewText(e.currentTarget.value)}
                 />
             </div>
 

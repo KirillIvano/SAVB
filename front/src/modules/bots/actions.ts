@@ -32,6 +32,20 @@ export const getSingleBotErrorAction = createAction(
 )();
 
 
+export const deleteBotAction = createAction(
+    names.DELETE_BOT_START,
+    (botId: string) => ({botId}),
+)();
+export const deleteBotSuccessAction = createAction(
+    names.DELETE_BOT_SUCCESS,
+    (botId: string) => ({botId}),
+)();
+export const deleteBotErrorAction = createAction(
+    names.DELETE_BOT_ERROR,
+    (error: string) => ({error}),
+)();
+
+
 export type BotCreatePayload = {
     redirectUri: string;
     code: string;
@@ -47,4 +61,5 @@ export const createBotsErrorAction = createAction(
     names.BOT_CREATE_ERROR,
     (error: string) => error,
 )();
+
 

@@ -14,6 +14,10 @@ const initialState: BotsStateType = {
     botGetSingleInProgress: false,
     botGetSingleError: null,
 
+    botDeletingInProgress: false,
+    botDeletingError: null,
+    botDeletingSuccess: false,
+
     botCreatingInProgress: false,
     botCreatingError: null,
     botCreatingSuccess: false,
@@ -65,6 +69,40 @@ export const botsReducer = createReducer<BotsStateType, RootAction>(initialState
             ...state,
             botGetSingleInProgress: false,
             botGetSingleError: error,
+        }),
+    )
+
+    .handleAction(
+        actions.deleteBotAction,
+        (state) => ({
+            ...state,
+
+            botCreatingInProgress: true,
+            botDeletingError: null,
+            botDeletingSuccess: false,
+        }),
+    ).handleAction(
+        actions.deleteBotSuccessAction,
+
+        (state, {payload: {botId}}) => {
+            const botsCopy = {...state.bots};
+            delete botsCopy[botId];
+
+            return {
+                ...state,
+
+                bots: botsCopy,
+                botDeletingInProgress: false,
+                botDeletingSuccess: true,
+            };
+        },
+    ).handleAction(
+        actions.deleteBotErrorAction,
+        (state, {payload: {error}}) => ({
+            ...state,
+
+            botCreatingInProgress: false,
+            botDeletingError: error,
         }),
     )
 

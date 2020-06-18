@@ -16,6 +16,14 @@ export const getSingleBot = (botId: string) => fetchJson<GetSingleBotDto>(
     },
 );
 
+export const deleteBot = (botId: string) => fetchJson(
+    getServerRequestUri(`/api/bot/delete?botId=${botId}`),
+    {
+        credentials: 'include',
+        method: 'DELETE',
+    },
+);
+
 export type CreateBotBody = {
     code: string;
     redirectUri: string;

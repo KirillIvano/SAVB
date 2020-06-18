@@ -8,17 +8,21 @@ import {
 
 import styles from './styles.less';
 
-type BotView = {
+type BotViewProps = {
     name: string;
     image: string;
     membersCount: number;
+
+    openDeleteModal: () => void;
 }
 
 const BotView = ({
     name,
     image,
     membersCount,
-}: BotView) => (
+
+    openDeleteModal,
+}: BotViewProps) => (
     <Card className={styles.card}>
         <Tooltip size={150} src={image} />
 
@@ -34,8 +38,8 @@ const BotView = ({
                     Информация
                 </Button>
                 <Button
-                    disabled={true}
                     className={styles.button}
+                    onClick={openDeleteModal}
                     styling={'danger'}
                 >
                     Удалить

@@ -14,7 +14,7 @@ export const withStageId = <TProps extends AdditionalProps>(Comp: React.Componen
     (props: TProps) => {
         const {stageId} = useParams<AdditionalProps>();
 
-        return <Comp {...props} stageId={stageId} />;
+        return <Comp {...props} stageId={1} />;
     };
 
 

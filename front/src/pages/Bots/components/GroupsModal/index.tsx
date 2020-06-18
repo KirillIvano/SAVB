@@ -38,10 +38,16 @@ const GroupsModalContent: React.FC<ModalContentProps> = ({
         <Fade duration={0.5}>
             <Grid fluid>
                 <Row>
-                    {groups.map(
-                        ({id, ...rest}) =>
-                            <GroupCard {...rest} id={id} key={id} />,
-                    )}
+                    {
+                        groups.length ? (groups.map(
+                            ({id, ...rest}) =>
+                                <GroupCard {...rest} id={id} key={id} />,
+                        )) : (
+                            <div className={styles.noGroups}>
+                                Похоже, у вас нет групп, в которых вы являетесь администратором. Создайте новую и приходите назад:)
+                            </div>
+                        )
+                    }
                 </Row>
             </Grid>
         </Fade>
@@ -71,7 +77,6 @@ const GroupsModal: React.FC<GroupsModalProps> = ({
 
     return (
         <Modal
-            headline={'Группы'}
             isOpen={isOpen}
             handleClose={handleClose}
             closable={true}

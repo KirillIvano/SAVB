@@ -5,10 +5,9 @@ import styles from './styles.less';
 
 type ModalProps = {
     isOpen: boolean;
-    headline: string;
     children: React.ReactNode;
     closable?: boolean;
-    handleClose: () => void;
+    handleClose?: () => void;
 };
 
 const appEl = document.getElementById('root') as HTMLDivElement;

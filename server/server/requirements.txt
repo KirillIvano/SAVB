@@ -1,0 +1,16 @@
+aiohttp==3.6.2
+aiopg==1.0.0
+async-timeout==3.0.1
+attrs==19.3.0
+chardet==3.0.4
+et-xmlfile==1.0.1
+idna==2.9
+jdcal==1.4.1
+multidict==4.7.5
+openpyxl==3.0.3
+peewee==3.13.3
+peewee-async==0.7.0
+psycopg2-binary==2.8.5
+PyJWT==1.7.1
+python-dotenv==0.13.0
+yarl==1.4.2

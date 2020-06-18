@@ -159,7 +159,7 @@ async def create_bot(request: web.Request):
     print(f'bot {bot} created')
 
     dialogstate_id = (await objects.create(
-        DialogState, bot_id=group_id, name='Стартовое'
+        DialogState, bot_id=group_id
     )).state_id
 
     action = await objects.create(
@@ -183,7 +183,7 @@ async def create_bot(request: web.Request):
     return responses.generate_json_response(body={})
 
 
-@routes.delete('/api/bot/delete')
+@routes.get('/api/bot/delete')
 @logged(False)
 @check_auth
 async def delete_bot(request: web.Request):
@@ -216,6 +216,11 @@ async def delete_bot(request: web.Request):
         Bot.delete().where(Bot.bot_id == bot_id)
     )
     return responses.generate_json_response(body={})
+    # await objects.execute(
+    #     Bot.delete().where(Bot.bot_id == bot_id)
+    # )
+    return responses.generate_json_response(body={})
+
 
 
 # example: (get) - http://194.67.109.99:500/api/bot/123

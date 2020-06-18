@@ -1,6 +1,7 @@
+venv/
 venv
-__pycache__
-.idea
-static
 .env
-node_modules
+.idea
+.idea/
+__pycache__
+__pycache__/

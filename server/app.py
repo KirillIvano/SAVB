@@ -23,6 +23,7 @@ from views.auth import routes as auth_routes
 from views.group import routes as group_routes
 from views.user import routes as user_routes
 from views.bot import routes as bot_routes
+from views.stage import routes as stage_routes
 from views.logs import routes as logs_routes
 
 app.add_routes(
@@ -31,6 +32,7 @@ app.add_routes(
 		*group_routes,
 		*user_routes,
 		*bot_routes,
+		*stage_routes,
 
 		*logs_routes,
 		*index_routes  # must be at the end

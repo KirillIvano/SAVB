@@ -13,7 +13,7 @@ library_cache = get_library_cache()
 
 
 def _enchance_params(params: dict):
-    params.update({ 'v': "5.103" })
+    params.update({ 'v': "5.92" })
 
     return params
 
@@ -52,10 +52,12 @@ def get_vk_interactor(type='group'):
 
                 else:
                     library_cache.set(access_token, time.time() + delay)
-
+                    
             else:
                 library_cache.set(access_token, time.time() + delay)
 
             return await _execute_method(session, method, params)
     
     return vk_bot_method
+
+

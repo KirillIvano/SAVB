@@ -1,13 +1,11 @@
 aiohttp==3.6.2
+aiohttp-cors==0.7.0
 aiopg==1.0.0
 async-timeout==3.0.1
 attrs==19.3.0
 chardet==3.0.4
-et-xmlfile==1.0.1
 idna==2.9
-jdcal==1.4.1
-multidict==4.7.5
-openpyxl==3.0.3
+multidict==4.7.6
 peewee==3.13.3
 peewee-async==0.7.0
 psycopg2-binary==2.8.5

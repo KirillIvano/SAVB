@@ -127,7 +127,7 @@ async def create_bot(request: web.Request):
         )
 
     # если уже добавлен колбэк-сервер с нашим url'ом
-    cb_servers = await vk_api.get_group_callback_servers(
+    cb_servers = await vk_api.get_callback_servers(
         group_access_token, group_id=group_id
     )
     for cb in cb_servers['response']['items']:

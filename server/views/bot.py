@@ -127,7 +127,7 @@ async def create_bot(request: web.Request):
         )
 
     # если уже добавлен колбэк-сервер с нашим url'ом
-    cb_servers = await vk_api.get_group_callback_servers(
+    cb_servers = await vk_api.get_callback_servers(
         group_access_token, group_id=group_id
     )
     for cb in cb_servers['response']['items']:
@@ -212,9 +212,21 @@ async def delete_bot(request: web.Request):
     if len(is_admin) == 0:
         return responses.generate_error_response('Нет доступа к боту', 400)
 
+    access_token = await objects.execute(
+        Bot.select(Bot.token).where(Bot.bot_id == bot_id)
+    )
+    access_token = access_token[0].token
+
     await objects.execute(
         Bot.delete().where(Bot.bot_id == bot_id)
     )
+
+    cb_servers = await vk_api.get_callback_servers(access_token, bot_id)
+    for cb in cb_servers['response']['items']:
+        if cb['url']:
+            if cb['url'] == settings.CALLBACK_SERVER_URL:
+                await vk_api.delete_callback(access_token, bot_id, cb['id'])
+
     return responses.generate_json_response(body={})
 
 

@@ -106,7 +106,7 @@ async def add_callback_server(
 	)
 
 
-async def get_group_callback_servers(group_access_token, group_id):
+async def get_callback_servers(group_access_token, group_id):
 	# https://vk.com/dev/groups.getCallbackServers
 	return await vk_method(
 		'groups.getCallbackServers',
@@ -124,22 +124,20 @@ async def get_callback_confirmation_code(group_access_token, group_id):
 	)
 
 
-async def delete_callback_server(group_access_token, group_id, server_id):
-	return await vk_method(
-		'groups.deleteCallbackServer',
-		group_access_token,
-		group_id=group_id,
-		server_id=server_id
-	)
-
-
 async def set_callback_settings(group_access_token, group_id, server_id):
 	return await vk_method(
 		'groups.setCallbackSettings',
 		group_access_token,
 		group_id=group_id,
 		server_id=server_id,
-		api_version=settings.VK_API_VERSION,
 		message_new=1
 	)
 
+
+async def delete_callback(group_access_token, group_id, server_id):
+	return await vk_method(
+		'groups.deleteCallbackServer',
+		group_access_token,
+		group_id=group_id,
+		server_id=server_id,
+	)

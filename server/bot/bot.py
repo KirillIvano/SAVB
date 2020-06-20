@@ -27,7 +27,6 @@ def create_new_data(peer_id, message, token):
 
 async def messages(request: web.Request):
     data = await request.json()
-    print(data)
 
     try:
         bot_keys = (await get_bot_keys(data['group_id']))[0]

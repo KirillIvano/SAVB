@@ -153,10 +153,11 @@ accessToken: jwt(userId, exp)
     }
 ```
 ```
-    Stage: {
+    Message: {
         id: number;
         botId: number;
         name: string;
+        text: string;
     }
 ```
 
@@ -169,7 +170,7 @@ accessToken: jwt(userId, exp)
     }
 ```
 
-### `GET /api/stage/full?messageId=<number>`
+### `GET /api/message/full?messageId=<number>`
 
 Получает основное сообщение и связаные с ним
 
@@ -205,14 +206,14 @@ accessToken: jwt(userId, exp)
 }
 ```
 
-### `PUT /api/stage`
+### `PUT /api/message`
 #### Request
 Апдейтит сообщение и возвращает изменённое
 ```
 {
     {
-        name: string; // ? - опционально
-        stageId: int
+        name?: string; // ? - опционально
+        text?: string;
     }
 }
 ```
@@ -220,12 +221,12 @@ accessToken: jwt(userId, exp)
 ```
 {
     data {
-        stage: Stage;
+        message: Message;
     }
 }
 ```
 
-### `GET /api/stage/byBot?botId=<number>`
+### `GET /api/message/byBot?botId=<number>`
 
 Получает все сообщения для бота
 

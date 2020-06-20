@@ -1,6 +1,5 @@
 # Should start with /api/user
-from helpers import cache, heavy_cache, responses, jwt
-from library import vk_api
+from helpers import vk_api, cache, heavy_cache, responses, jwt
 from views.auth import check_auth
 from helpers.log import logged
 

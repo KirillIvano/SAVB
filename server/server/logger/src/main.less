@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+body {
+    background: rgb(41, 41, 41);
+
+    .log {
+        padding: 20px;
+        background: #eee;
+        margin-top: 24px;
+        .url {
+            font-size: 1rem;
+        }
+    
+        .status {
+            margin-top: 12px;
+            font-size: 1.2rem;
+            color: rgb(0, 158, 66);
+        }
+
+        .status.error {
+            color: rgb(148, 1, 1);
+        }
+
+        .date {
+            margin-top: 6px;
+        }
+        .content-wrapper {
+            margin-top: 12px;
+            span {
+                font-weight: bold;
+            }
+            .content {
+                white-space: pre;
+                padding: 8px;
+                margin-top: 6px;
+                background: black;
+                color: rgb(208, 252, 255);
+            }
+        }
+    }
+}
+
+

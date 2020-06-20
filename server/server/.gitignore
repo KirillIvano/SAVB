@@ -1,0 +1,7 @@
+venv
+__pycache__
+__init__.py
+.idea
+static
+.env
+node_modules

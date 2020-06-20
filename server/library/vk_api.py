@@ -1,3 +1,4 @@
+from library import vk_lib
 from helpers.session import sess
 from urllib import parse
 import settings
@@ -48,16 +49,9 @@ async def vk_method(
 		access_token: str = None,
 		**parameters
 ) -> dict:
-	url = f"https://api.vk.com/method/{method_name}?"
-	parameters.update({"v": settings.VK_API_VERSION})
-	if access_token:
-		parameters.update(
-			{"access_token": access_token,}
-		)
-
-	query = parse.urlencode(parameters)
-	async with sess.get(url + query) as vk_response:
-		return await vk_response.json()
+	interactor = vk_lib.get_vk_interactor()
+	parameters['access_token'] = access_token
+	return await interactor(method_name, **parameters)
 
 
 async def get_users_info(access_token: str, user_id: int):
@@ -130,6 +124,7 @@ async def set_callback_settings(group_access_token, group_id, server_id):
 		group_access_token,
 		group_id=group_id,
 		server_id=server_id,
+		api_version=settings.VK_API_VERSION,
 		message_new=1
 	)
 

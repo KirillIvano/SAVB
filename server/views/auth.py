@@ -3,10 +3,10 @@
 import settings
 from helpers import jwt
 from helpers import responses
-from helpers import vk_api
 from helpers import cache
 from helpers import heavy_cache
 from helpers.log import logged
+from library import vk_api
 
 import jwt as jwt_lib
 from aiohttp import web

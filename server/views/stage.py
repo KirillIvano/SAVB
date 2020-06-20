@@ -1,6 +1,6 @@
 from views.auth import check_auth
 from helpers.log import logged
-from helpers import vk_api, cache, heavy_cache, responses, jwt
+from helpers import responses, jwt
 from database.models import objects, DialogState, BotAdmin
 
 from aiohttp import web

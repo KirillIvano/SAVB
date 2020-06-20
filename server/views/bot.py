@@ -1,7 +1,8 @@
 # Should start with /api/bot[s]
 from views.auth import check_auth
 from helpers.log import logged
-from helpers import vk_api, cache, heavy_cache, responses, jwt, csrf
+from helpers import cache, heavy_cache, responses, jwt, csrf
+from library import vk_api
 from database.models import objects, Bot, DialogState, Trigger, Action, \
     BotMessage, BotAdmin, Admin
 import settings
@@ -232,7 +233,7 @@ async def delete_bot(request: web.Request):
 
 # example: (get) - http://194.67.109.99:500/api/bot/123
 @routes.get('/api/bot/{bot_id}')
-@logged(True)
+@logged(False)
 @check_auth
 async def get_single_bot(request: web.Request):
     bot_id = request.match_info.get('bot_id', None)

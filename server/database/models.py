@@ -88,6 +88,8 @@ class Log(BaseModel):
     url = CharField()
     res_data = CharField(null=True)
     error = CharField(null=True)
+    file_name = TextField(null=True)
+    line = IntegerField(null=True)
 
 
 # database.connect(reuse_if_open=True)
@@ -95,4 +97,4 @@ class Log(BaseModel):
 
 loop = asyncio.new_event_loop()
 objects = peewee_async.Manager(database, loop=loop)
-database.set_allow_sync(False)
+database.set_allow_sync(True)

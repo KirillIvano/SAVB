@@ -3,6 +3,8 @@ from functools import wraps
 import asyncio
 from aiohttp import web
 import json
+import traceback
+import sys
 from database.models import Log, objects
 
 async def log_add(
@@ -11,8 +13,13 @@ async def log_add(
 		method: str,
 		url: str,
 		res_data: str=None,
-		error: str=None
+		error: str=None,
+		file_name: str=None,
+		line: int=None
 		):
+	res_data: str = str(res_data)[:254]
+	req_data: str = str(req_data)[:254]
+	error: str = str(error)[:254]
 	await objects.create(Log,
 		status=status,
 		date = datetime.now(),
@@ -20,7 +27,9 @@ async def log_add(
 		url=url,
 		req_data=req_data,
 		res_data=res_data,
-		error=error
+		error=error,
+		file_name=file_name,
+		line=line
 	)
 
 def logged(log_enabled: bool=True):
@@ -46,13 +55,16 @@ def logged(log_enabled: bool=True):
 				)
 				return res
 			except Exception as e:
+				exc_type, exc_value, exc_traceback = sys.exc_info()
 				asyncio.ensure_future(
 					log_add(
 						status = 500,
 						method = method,
 						url = url,
 						req_data = reqBody,
-						error = e
+						error = str(e),
+						line = traceback.extract_stack()[0][1],
+						file_name = traceback.extract_stack()[0][0]
 					)
 				)
 				return web.Response(

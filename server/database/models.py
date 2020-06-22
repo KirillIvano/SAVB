@@ -38,7 +38,7 @@ class User(BaseModel):
 
 class DialogState(BaseModel):
     state_id = PrimaryKeyField()
-    bot_id = ForeignKeyField(Bot) 
+    bot_id = ForeignKeyField(Bot)
 
 
 class Dialog(BaseModel):
@@ -83,11 +83,11 @@ class Log(BaseModel):
     log_id = PrimaryKeyField()
     status = IntegerField()
     date = DateTimeField()
-    req_data = CharField()
+    req_data = TextField()
     method = CharField()
     url = CharField()
-    res_data = CharField(null=True)
-    error = CharField(null=True)
+    res_data = TextField(null=True)
+    error = TextField(null=True)
     file_name = TextField(null=True)
     line = IntegerField(null=True)
 

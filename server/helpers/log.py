@@ -17,9 +17,6 @@ async def log_add(
 		file_name: str=None,
 		line: int=None
 		):
-	res_data: str = str(res_data)[:254]
-	req_data: str = str(req_data)[:254]
-	error: str = str(error)[:254]
 	await objects.create(Log,
 		status=status,
 		date = datetime.now(),
@@ -45,7 +42,7 @@ def logged(log_enabled: bool=True):
 			try:
 				res, status, body = await controller(req)
 				asyncio.ensure_future(
-					log_add( 
+					log_add(
 						status = status,
 						req_data = reqBody,
 						method = method,

@@ -11,6 +11,6 @@ openpyxl==3.0.3
 peewee==3.13.3
 peewee-async==0.7.0
 psycopg2-binary==2.8.5
-PyJWT==1.7.1
+PyJWT==2.4.0
 python-dotenv==0.13.0
 yarl==1.4.2
